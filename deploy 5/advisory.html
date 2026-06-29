@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement('script');
+  s.src = './support.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F4EEE3; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #EAD9CC; color: #2B2620; }
+  @media (max-width: 860px){ [data-stack]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 680px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #2B2620; background: #F4EEE3; overflow-x: hidden;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(244,238,227,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #E2D7C4;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #2B2620; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .28em; color: #B5623C; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #2B2620; font-size: 14px; font-weight: 700;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="work.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">About</a>
+        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
+        <a href="contact.html" style="text-decoration: none; color: #fff; background: #2B2620; padding: 11px 19px; border-radius: 999px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section style="background: #2B2620; color: #F4EEE3; position: relative; overflow: hidden;">
+    <div aria-hidden="true" style="position: absolute; top: -160px; right: -130px; width: 560px; height: 560px; border-radius: 999px; border: 1px solid rgba(244,238,227,.10);"></div>
+    <div aria-hidden="true" style="position: absolute; top: -70px; right: -50px; width: 380px; height: 380px; border-radius: 999px; border: 1px solid rgba(181,98,60,.45);"></div>
+    <div style="max-width: 1100px; margin: 0 auto; padding: clamp(56px,8vw,112px) 32px; position: relative;">
+      <div style="font-family: 'Spline Sans Mono', monospace; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: #D69A78; margin-bottom: 24px;">Strategic Advisory</div>
+      <h1 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: clamp(38px,5vw,72px); line-height: 1.03; letter-spacing: -.02em; margin: 0; max-width: 18ch;">Evidence-based advice for the decisions you are <span style="font-style: italic; color: #D69A78;">accountable for.</span></h1>
+      <p style="font-size: clamp(16px,1.5vw,19px); line-height: 1.6; color: rgba(244,238,227,.74); max-width: 58ch; margin: 26px 0 0;">We partner with foundations, nonprofits, CDFIs, and community institutions on strategy, governance, programs, research, and funding. Rigorous social science, translated into practical moves you can act on.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px;">
+        <a href="contact.html" style="text-decoration: none; background: #B5623C; color: #fff; padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 700;">Book a consultation</a>
+        <a href="index.html#assessments" style="text-decoration: none; color: #F4EEE3; border: 1px solid rgba(244,238,227,.34); padding: 16px 28px; border-radius: 999px; font-size: 16px; font-weight: 700;">Try a free assessment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section style="background: #F4EEE3; border-bottom: 1px solid #E2D7C4;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(72px,9vw,116px) 32px;">
+      <div style="max-width: 62ch; margin-bottom: 50px;">
+        <div style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #B5623C; margin-bottom: 20px;">How we work</div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(30px,4.2vw,50px); line-height: 1.06; letter-spacing: -.015em; margin: 0 0 16px;">From diagnosis to durable capacity.</h2>
+        <p style="font-size: 17.5px; line-height: 1.6; color: #6B6256; margin: 0;">We don't start with a proposal; we start with evidence. Every engagement moves through the same arc: understand where you really stand, decide what matters most, then build the capacity to sustain it.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(258px, 100%), 1fr)); gap: 18px;">
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #B5623C; margin-bottom: 18px;">01 · Diagnose</div>
+          <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 24px; margin: 0 0 12px;">See clearly, with evidence</h3>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 0;">We map where your organization actually stands, through data, candid conversation, and our own diagnostic tools, not assumptions.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #B5623C; margin-bottom: 18px;">02 · Plan</div>
+          <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 24px; margin: 0 0 12px;">Decide what matters most</h3>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 0;">We translate findings into a prioritized, realistic roadmap: the few moves that will move the needle, sequenced for your stage and capacity.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #B5623C; margin-bottom: 18px;">03 · Build capacity</div>
+          <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 24px; margin: 0 0 12px;">Put it into practice</h3>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 0;">We work alongside your team to strengthen strategy, governance, systems, and skills, so the gains outlast the engagement. Funding readiness follows naturally.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section style="background: #FBF7EF; border-bottom: 1px solid #E2D7C4;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(72px,9vw,120px) 32px;">
+      <div style="max-width: 60ch; margin-bottom: 48px;">
+        <div style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #B5623C; margin-bottom: 20px;">What we do</div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(30px,4.2vw,50px); line-height: 1.08; letter-spacing: -.015em; margin: 0;">Advisory across the full arc of mission-driven work.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 18px;">
+        <div style="background: #2B2620; color: #F4EEE3; border-radius: 18px; padding: 30px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Organizational &amp; Nonprofit Advisory</h3>
+            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #D69A78; white-space: nowrap;">by need</span>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,238,227,.74); margin: 14px 0 20px; flex: 1;">Board governance, strategic planning, program development, and grant management: the strategy and capacity behind every mission that lasts.</p>
+          <a href="contact.html" style="align-self: flex-start; text-decoration: none; background: #B5623C; color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; font-weight: 700;">Book a consultation →</a>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Grant Research</h3><span style="font-family: 'Spline Sans Mono', monospace; font-size: 15px; color: #B5623C;">$2,000</span></div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 14px 0 0;">Detailed prospect research to identify up to 20 viable funding opportunities aligned to your mission, plus a tailored grants calendar.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Grant &amp; Proposal Writing</h3><span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #9A8F7E;">by scope</span></div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 14px 0 0;">Competitive, funder-tailored proposals, from statement of need and master template to a reusable grant-language repository and submission.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Document &amp; Compliance Review</h3><span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #9A8F7E;">1–3 hrs</span></div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 14px 0 0;">A comprehensive review against the funder's guidelines, with line-item edits and clear notes to strengthen your case for funding.</p>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Grant Readiness Assessment</h3><span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #6F7E54; text-transform: uppercase; letter-spacing: .08em;">Free</span></div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 14px 0 18px; flex: 1;">We assess your organization and compile a detailed action plan that makes you ready to pursue and manage funding with confidence. Free for every organization we work with.</p>
+          <a href="index.html#assessments" style="align-self: flex-start; text-decoration: none; background: #B5623C; color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; font-weight: 700;">Try the free assessment →</a>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 18px; padding: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;"><h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 25px; margin: 0;">Data Analysis &amp; Evaluation</h3><span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #9A8F7E;">by scope</span></div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #6B6256; margin: 14px 0 0;">Qualitative and quantitative analysis, plus independent third-party evaluation for grants that require it.</p>
+        </div>
+      </div>
+      <div style="margin-top: 22px; background: #F0E8D9; border: 1px solid #E2D7C4; border-radius: 18px; padding: 26px 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 40px;">
+        <div style="font-family: 'Newsreader', serif; font-size: 22px; flex: 1; min-width: 240px;">How fees work</div>
+        <div style="font-size: 14.5px; color: #6B6256; line-height: 1.55; flex: 3; min-width: 280px;">Every engagement starts with a <strong style="color:#2B2620;">free consultation</strong>. From there: hourly at <strong style="color:#2B2620;">$110/hr</strong>, fixed project pricing, or a monthly retainer for ongoing work. Fees flex with the size and stage of your organization.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES CROSS-LINK -->
+  <section style="background: #F4EEE3; border-bottom: 1px solid #E2D7C4;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,88px) 32px;">
+      <div data-stack style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px;">
+        <a href="index.html#resources" style="text-decoration: none; color: inherit; background: #fff; border: 1px solid #E2D7C4; border-radius: 20px; padding: 34px; display: block;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 14px;">Free resource</div>
+          <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 26px; margin: 0 0 10px;">The nonprofit policy checklist</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #6B6256; margin: 0 0 16px;">The governance and financial policies every nonprofit should have, with what a strong version of each should cover.</p>
+          <span style="font-size: 14px; font-weight: 700; color: #B5623C;">See the checklist →</span>
+        </a>
+        <a href="index.html#assessments" style="text-decoration: none; color: inherit; background: #fff; border: 1px solid #E2D7C4; border-radius: 20px; padding: 34px; display: block;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 14px;">Free tools</div>
+          <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 26px; margin: 0 0 10px;">Grant readiness &amp; research tools</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #6B6256; margin: 0 0 16px;">Score your readiness or build a funding-research brief in minutes. The best way to start a conversation with us.</p>
+          <span style="font-size: 14px; font-weight: 700; color: #B5623C;">Open the tools →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background: #FBF7EF;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(64px,8vw,104px) 32px;">
+      <div style="background: #2B2620; color: #F4EEE3; border-radius: 24px; padding: clamp(40px,6vw,72px); text-align: center;">
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(28px,4vw,48px); line-height: 1.08; margin: 0 auto 16px; max-width: 22ch;">Start with a free consultation.</h2>
+        <p style="font-size: 17px; line-height: 1.6; color: rgba(244,238,227,.74); max-width: 50ch; margin: 0 auto 30px;">Tell us where your organization is headed. We will be honest about where we can add the most value.</p>
+        <a href="contact.html" style="text-decoration: none; background: #B5623C; color: #fff; padding: 16px 30px; border-radius: 999px; font-size: 16.5px; font-weight: 700; display: inline-block;">Book a consultation →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #2B2620; color: rgba(244,238,227,.6);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,80px) 32px 40px;">
+      <div data-stack style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px 32px; padding-bottom: 44px; border-bottom: 1px solid rgba(244,238,227,.14);">
+        <div>
+          <div style="display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px;">
+            <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F4EEE3;">NELCRUM</span>
+            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .26em; color: #D69A78; text-transform: uppercase;">Solutions, LLC</span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(244,238,227,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, CDFIs, and community institutions.</p>
+          <a href="contact.html" style="text-decoration: none; background: #B5623C; color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; display: inline-block;">Book a consultation</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 4px;">Explore</div>
+          <a href="advisory.html" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Advisory</a>
+          <a href="applications.html" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Applications</a>
+          <a href="work.html" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Work</a>
+          <a href="insights.html" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Insights</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 4px;">Resources</div>
+          <a href="index.html#resources" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Policy checklist</a>
+          <a href="index.html#assessments" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">Free assessments</a>
+          <a href="about.html" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">About</a>
+          <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 14px; height: 12px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#E3E8EC"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 4px;">Contact</div>
+          <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">hello@nelcrum.com</a>
+          <a href="tel:7706762824" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">770-676-2824</a>
+          <span style="color: rgba(244,238,227,.6); font-size: 14px;">Kennesaw, GA</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 13px; color: rgba(244,238,227,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC</span>
+        <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

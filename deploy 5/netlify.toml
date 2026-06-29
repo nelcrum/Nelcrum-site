@@ -1,0 +1,33 @@
+# NELCRUM Solutions — Netlify configuration
+# Internal links point directly at the .html files, so the site works with
+# no redirects at all. These optional rewrites just let the older clean URLs
+# (e.g. /advisory) still resolve to the right page if anyone visits one.
+
+[[redirects]]
+  from = "/advisory"
+  to = "/advisory.html"
+  status = 200
+[[redirects]]
+  from = "/applications"
+  to = "/applications.html"
+  status = 200
+[[redirects]]
+  from = "/work"
+  to = "/work.html"
+  status = 200
+[[redirects]]
+  from = "/insights"
+  to = "/insights.html"
+  status = 200
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+[[redirects]]
+  from = "/capability-statement"
+  to = "/capability-statement.html"
+  status = 200
