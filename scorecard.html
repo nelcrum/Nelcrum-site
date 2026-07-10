@@ -19,6 +19,10 @@
   var s = document.createElement('script');
   s.src = './support.js' + (m ? '?t=' + m[1] : '');
   document.head.appendChild(s);
+  window.NC_POPUP = true;
+  var se = document.createElement('script');
+  se.src = './enhance.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(se);
 })();
 </script>
 </head>
