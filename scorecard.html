@@ -31,15 +31,15 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: #F4EEE3; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
   * { box-sizing: border-box; }
-  ::selection { background: #EAD9CC; color: #2B2620; }
+  ::selection { background: #E4EDE1; color: #17140F; }
   @keyframes a360fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   @keyframes a360bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  a { color: #B5623C; }
+  a { color: #14432F; }
   a:hover { color: #8A4225; }
   @media (max-width: 820px){ [data-stack]{ grid-template-columns: 1fr !important; } }
   @media (max-width: 680px){
@@ -50,23 +50,24 @@
 </style>
 </helmet>
 
-<div style="font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #2B2620; background: #F4EEE3; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;">
+<div style="font-family: 'Archivo', system-ui, sans-serif; color: #17140F; background: #F5F4F0; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- ===================== NAV ===================== -->
-  <header style="position: sticky; top: 0; z-index: 50; background: rgba(244,238,227,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #E2D7C4;">
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(245,244,240,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #DDDBD2;">
     <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
-      <a href="index.html" style="text-decoration: none; color: #2B2620; display: flex; align-items: baseline; gap: 9px;">
-        <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
-        <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .28em; color: #B5623C; text-transform: uppercase;">Solutions</span>
+      <a href="index.html" style="text-decoration: none; color: #17140F; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
       </a>
       <nav data-nav style="display: flex; align-items: center; gap: 22px;">
-        <a href="advisory.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Advisory</a>
-        <a href="applications.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Applications</a>
-        <a href="tools.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Free tools</a>
-        <a href="work.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Work</a>
-        <a href="insights.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Insights</a>
-        <a href="about.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">About</a>
-        <a href="index.html#contact" style="text-decoration: none; color: #fff; background: #2B2620; padding: 11px 19px; border-radius: 999px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
+        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
+        <a href="index.html#contact" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
       </nav>
     </div>
   </header>
@@ -76,41 +77,41 @@
 
     <!-- ---------- Breadcrumb + heading ---------- -->
     <div style="text-align: center; max-width: 62ch; margin: 0 auto clamp(28px,4vw,44px);">
-      <div style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #B5623C; margin-bottom: 18px;"><a href="tools.html" style="text-decoration: none; color: #B5623C;">Free tools</a> · Grant Readiness Scorecard</div>
-      <h1 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -.02em; margin: 0 0 16px;">Are you <span style="font-style: italic; color: #B5623C;">ready</span> for the grant you want?</h1>
-      <p style="font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #6B6256; margin: 0;">Fifteen questions across the six areas funders scrutinize. Answer honestly and we will show you a readiness score, a breakdown by area, and the exact gaps to close before you apply.</p>
+      <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 18px;"><a href="tools.html" style="text-decoration: none; color: #14432F;">Free tools</a> · Grant Readiness Scorecard</div>
+      <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -.02em; margin: 0 0 16px;">Are you <span style="font-style: italic; color: #14432F;">ready</span> for the grant you want?</h1>
+      <p style="font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #57534A; margin: 0;">Fifteen questions across the six areas funders scrutinize. Answer honestly and we will show you a readiness score, a breakdown by area, and the exact gaps to close before you apply.</p>
     </div>
 
     <!-- ---------- Card ---------- -->
-    <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 24px; box-shadow: 0 1px 2px rgba(60,45,25,.05), 0 30px 60px -42px rgba(60,45,25,.5); overflow: hidden;">
+    <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; box-shadow: 0 1px 2px rgba(20,25,20,.05), 0 30px 60px -42px rgba(20,25,20,.5); overflow: hidden;">
 
       <!-- INTRO -->
       <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
         <div style="padding: clamp(30px,4.5vw,56px);">
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 34px;" data-stack>
-            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
-              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">{{ total }}</div>
-              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">quick questions</div>
+            <div style="background: #FCFCFA; border: 1px solid #EFE6D6; border-radius: 3px; padding: 18px 20px;">
+              <div style="font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 30px; line-height: 1;">{{ total }}</div>
+              <div style="font-size: 12.5px; color: #8A857B; margin-top: 5px;">quick questions</div>
             </div>
-            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
-              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">~4 min</div>
-              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">to complete</div>
+            <div style="background: #FCFCFA; border: 1px solid #EFE6D6; border-radius: 3px; padding: 18px 20px;">
+              <div style="font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 30px; line-height: 1;">~4 min</div>
+              <div style="font-size: 12.5px; color: #8A857B; margin-top: 5px;">to complete</div>
             </div>
-            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
-              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">6</div>
-              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">readiness areas</div>
+            <div style="background: #FCFCFA; border: 1px solid #EFE6D6; border-radius: 3px; padding: 18px 20px;">
+              <div style="font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 30px; line-height: 1;">6</div>
+              <div style="font-size: 12.5px; color: #8A857B; margin-top: 5px;">readiness areas</div>
             </div>
           </div>
 
-          <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(22px,2.8vw,30px); line-height: 1.14; margin: 0 0 14px;">What you will get</h2>
+          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(22px,2.8vw,30px); line-height: 1.14; margin: 0 0 14px;">What you will get</h2>
           <ul style="list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 12px;">
-            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> An overall grant-readiness score with a plain-language reading</li>
-            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> A breakdown across governance, finances, impact, systems, strategy, and story</li>
-            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> Your top three gaps to close first, each with a concrete next step</li>
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> An overall grant-readiness score with a plain-language reading</li>
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> A breakdown across governance, finances, impact, systems, strategy, and story</li>
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Your top three gaps to close first, each with a concrete next step</li>
           </ul>
 
-          <button onClick="{{ start }}" style="border: none; cursor: pointer; font-family: inherit; background: #B5623C; color: #fff; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700;">Start the scorecard →</button>
-          <p style="font-size: 12.5px; color: #9A8F7E; margin: 18px 0 0; line-height: 1.5;">This is a self-assessment, not a guarantee of funding. Your responses stay private; we ask for an email only to send your results.</p>
+          <button onClick="{{ start }}" style="border: none; cursor: pointer; font-family: inherit; background: #14432F; color: #fff; padding: 16px 30px; border-radius: 4px; font-size: 16px; font-weight: 700;">Start the scorecard →</button>
+          <p style="font-size: 12.5px; color: #8A857B; margin: 18px 0 0; line-height: 1.5;">This is a self-assessment, not a guarantee of funding. Your responses stay private; we ask for an email only to send your results.</p>
         </div>
       </sc-if>
 
@@ -119,21 +120,21 @@
         <div style="padding: clamp(30px,4.5vw,56px);">
           <!-- progress -->
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px;">
-            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #B5623C;">{{ curDim }}</span>
-            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; color: #9A8F7E;">{{ qNum }} / {{ total }}</span>
+            <span style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #14432F;">{{ curDim }}</span>
+            <span style="font-family: 'Archivo', sans-serif; font-size: 11.5px; color: #8A857B;">{{ qNum }} / {{ total }}</span>
           </div>
-          <div style="height: 6px; background: #EFE6D6; border-radius: 999px; overflow: hidden; margin-bottom: 34px;">
-            <div style="height: 100%; background: #B5623C; border-radius: 999px; width: {{ progressPct }}%; transition: width .3s ease;"></div>
+          <div style="height: 6px; background: #EFE6D6; border-radius: 4px; overflow: hidden; margin-bottom: 34px;">
+            <div style="height: 100%; background: #14432F; border-radius: 4px; width: {{ progressPct }}%; transition: width .3s ease;"></div>
           </div>
 
           <div style="min-height: 92px; display: flex; align-items: center; margin-bottom: 30px;">
-            <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(23px,3.2vw,34px); line-height: 1.18; margin: 0; text-wrap: pretty;">{{ curText }}</h2>
+            <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(23px,3.2vw,34px); line-height: 1.18; margin: 0; text-wrap: pretty;">{{ curText }}</h2>
           </div>
 
           <!-- three-point scale -->
           <div data-scale style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
             <sc-for list="{{ scale }}" as="opt" hint-placeholder-count="3">
-              <button onClick="{{ opt.pick }}" style="cursor: pointer; font-family: inherit; text-align: left; background: {{ opt.bg }}; color: {{ opt.fg }}; border: 1.5px solid {{ opt.border }}; border-radius: 14px; padding: 18px 18px; display: flex; flex-direction: column; gap: 6px;" style-hover="border-color: #B5623C;">
+              <button onClick="{{ opt.pick }}" style="cursor: pointer; font-family: inherit; text-align: left; background: {{ opt.bg }}; color: {{ opt.fg }}; border: 1.5px solid {{ opt.border }}; border-radius: 3px; padding: 18px 18px; display: flex; flex-direction: column; gap: 6px;" style-hover="border-color: #14432F;">
                 <span style="font-size: 16px; line-height: 1.1; font-weight: 700;">{{ opt.label }}</span>
                 <span style="font-size: 12.5px; line-height: 1.35; opacity: .8;">{{ opt.hint }}</span>
               </button>
@@ -142,7 +143,7 @@
 
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
             <button onClick="{{ back }}" disabled="{{ atStart }}" style="border: none; cursor: pointer; font-family: inherit; background: transparent; color: {{ backColor }}; font-size: 14.5px; font-weight: 700; padding: 8px 0;">← Back</button>
-            <span style="font-size: 12.5px; color: #9A8F7E;">Pick the honest answer</span>
+            <span style="font-size: 12.5px; color: #8A857B;">Pick the honest answer</span>
           </div>
         </div>
       </sc-if>
@@ -150,34 +151,32 @@
       <!-- EMAIL GATE -->
       <sc-if value="{{ isGate }}" hint-placeholder-val="{{ false }}">
         <div style="display: grid; grid-template-columns: 1fr 1fr;" data-stack>
-          <div style="background: #2B2620; color: #F4EEE3; padding: clamp(30px,4vw,48px); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
-            <div aria-hidden="true" style="position: absolute; top: -60px; right: -50px; width: 220px; height: 220px; border-radius: 999px; border: 1px solid rgba(214,154,120,.4);"></div>
-            <div aria-hidden="true" style="position: absolute; bottom: -70px; left: -40px; width: 180px; height: 180px; border-radius: 999px; border: 1px solid rgba(244,238,227,.12);"></div>
-            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 16px; position: relative;">Your score is ready</div>
-            <div style="font-family: 'Newsreader', serif; font-size: clamp(46px,7vw,64px); line-height: 1; position: relative;">{{ score }}<span style="font-size: .5em; color: rgba(244,238,227,.6);">/100</span></div>
-            <p style="font-size: 15px; line-height: 1.6; color: rgba(244,238,227,.72); margin: 18px 0 0; position: relative;">Tell us where to send your full breakdown across all six areas, plus the three gaps to close first.</p>
+          <div style="background: #17140F; color: #F5F4F0; padding: clamp(30px,4vw,48px); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 16px; position: relative;">Your score is ready</div>
+            <div style="font-family: 'Archivo', sans-serif; font-size: clamp(46px,7vw,64px); line-height: 1; position: relative;">{{ score }}<span style="font-size: .5em; color: rgba(245,244,240,.6);">/100</span></div>
+            <p style="font-size: 15px; line-height: 1.6; color: rgba(245,244,240,.72); margin: 18px 0 0; position: relative;">Tell us where to send your full breakdown across all six areas, plus the three gaps to close first.</p>
           </div>
           <div style="padding: clamp(30px,4vw,48px);">
             <sc-if value="{{ gateIdle }}" hint-placeholder-val="{{ true }}">
               <form onSubmit="{{ submitGate }}">
-                <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(22px,2.8vw,28px); line-height: 1.12; margin: 0 0 22px;">See your full results</h2>
+                <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(22px,2.8vw,28px); line-height: 1.12; margin: 0 0 22px;">See your full results</h2>
                 <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Work email</span>
-                  <input type="email" required value="{{ gEmail }}" onChange="{{ setEmail }}" placeholder="you@org.com" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                  <span style="font-size: 13px; font-weight: 700; color: #17140F;">Work email</span>
+                  <input type="email" required value="{{ gEmail }}" onChange="{{ setEmail }}" placeholder="you@org.com" style="font-family: inherit; font-size: 15px; color: #17140F; background: #FCFCFA; border: 1.5px solid #DDDBD2; border-radius: 3px; padding: 12px 14px; outline: none;" style-focus="border-color: #14432F;" />
                 </label>
                 <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Name <span style="color: #9A8F7E; font-weight: 500;">(optional)</span></span>
-                  <input type="text" value="{{ gName }}" onChange="{{ setName }}" placeholder="Your name" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                  <span style="font-size: 13px; font-weight: 700; color: #17140F;">Name <span style="color: #8A857B; font-weight: 500;">(optional)</span></span>
+                  <input type="text" value="{{ gName }}" onChange="{{ setName }}" placeholder="Your name" style="font-family: inherit; font-size: 15px; color: #17140F; background: #FCFCFA; border: 1.5px solid #DDDBD2; border-radius: 3px; padding: 12px 14px; outline: none;" style-focus="border-color: #14432F;" />
                 </label>
                 <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 22px;">
-                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Organization <span style="color: #9A8F7E; font-weight: 500;">(optional)</span></span>
-                  <input type="text" value="{{ gOrg }}" onChange="{{ setOrg }}" placeholder="Organization name" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                  <span style="font-size: 13px; font-weight: 700; color: #17140F;">Organization <span style="color: #8A857B; font-weight: 500;">(optional)</span></span>
+                  <input type="text" value="{{ gOrg }}" onChange="{{ setOrg }}" placeholder="Organization name" style="font-family: inherit; font-size: 15px; color: #17140F; background: #FCFCFA; border: 1.5px solid #DDDBD2; border-radius: 3px; padding: 12px 14px; outline: none;" style-focus="border-color: #14432F;" />
                 </label>
                 <sc-if value="{{ gateError }}" hint-placeholder-val="{{ false }}">
-                  <div style="font-size: 13.5px; color: #B5623C; margin-bottom: 16px;">Something went wrong. You can still view your results below, or email hello@nelcrum.com.</div>
+                  <div style="font-size: 13.5px; color: #14432F; margin-bottom: 16px;">Something went wrong. You can still view your results below, or email hello@nelcrum.com.</div>
                 </sc-if>
-                <button type="submit" disabled="{{ gateSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #B5623C; color: #fff; padding: 15px 26px; border-radius: 999px; font-size: 16px; font-weight: 700; opacity: {{ gateOpacity }};">{{ gateLabel }}</button>
-                <p style="font-size: 12px; color: #9A8F7E; margin: 14px 0 0; line-height: 1.5;">We will send your results and occasional insights for mission-driven leaders. Unsubscribe anytime. We never share your details.</p>
+                <button type="submit" disabled="{{ gateSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #14432F; color: #fff; padding: 15px 26px; border-radius: 4px; font-size: 16px; font-weight: 700; opacity: {{ gateOpacity }};">{{ gateLabel }}</button>
+                <p style="font-size: 12px; color: #8A857B; margin: 14px 0 0; line-height: 1.5;">We will send your results and occasional insights for mission-driven leaders. Unsubscribe anytime. We never share your details.</p>
               </form>
             </sc-if>
           </div>
@@ -195,40 +194,40 @@
                 <circle cx="60" cy="60" r="52" fill="none" stroke="{{ bandColor }}" stroke-width="12" stroke-linecap="round" stroke-dasharray="{{ ringDash }}" stroke-dashoffset="{{ ringOffset }}"></circle>
               </svg>
               <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <div style="font-family: 'Newsreader', serif; font-size: 44px; line-height: 1;">{{ score }}</div>
-                <div style="font-size: 11px; color: #9A8F7E; letter-spacing: .04em;">out of 100</div>
+                <div style="font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 44px; line-height: 1;">{{ score }}</div>
+                <div style="font-size: 11px; color: #8A857B; letter-spacing: .04em;">out of 100</div>
               </div>
             </div>
             <div>
-              <div style="display: inline-block; background: {{ bandBg }}; color: {{ bandColor }}; font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;">{{ band }}</div>
-              <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(24px,3.2vw,34px); line-height: 1.12; margin: 0 0 12px;">{{ bandHead }}</h2>
-              <p style="font-size: 15.5px; line-height: 1.6; color: #6B6256; margin: 0;">{{ bandDesc }}</p>
+              <div style="display: inline-block; background: {{ bandBg }}; color: {{ bandColor }}; font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 4px; margin-bottom: 14px;">{{ band }}</div>
+              <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(24px,3.2vw,34px); line-height: 1.12; margin: 0 0 12px;">{{ bandHead }}</h2>
+              <p style="font-size: 15.5px; line-height: 1.6; color: #57534A; margin: 0;">{{ bandDesc }}</p>
             </div>
           </div>
 
           <!-- area bars -->
-          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 18px;">Your six readiness areas</div>
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 18px;">Your six readiness areas</div>
           <div style="display: grid; gap: 16px; margin-bottom: 40px;">
             <sc-for list="{{ dims }}" as="d" hint-placeholder-count="6">
               <div style="display: grid; grid-template-columns: 180px 1fr auto; gap: 16px; align-items: center;" data-stack>
-                <span style="font-size: 14.5px; font-weight: 700; color: #2B2620;">{{ d.name }}</span>
-                <div style="height: 12px; background: #EFE6D6; border-radius: 999px; overflow: hidden;">
-                  <div style="height: 100%; width: {{ d.pct }}%; background: {{ d.color }}; border-radius: 999px; transform-origin: left; animation: a360bar .6s ease both;"></div>
+                <span style="font-size: 14.5px; font-weight: 700; color: #17140F;">{{ d.name }}</span>
+                <div style="height: 12px; background: #EFE6D6; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: {{ d.pct }}%; background: {{ d.color }}; border-radius: 4px; transform-origin: left; animation: a360bar .6s ease both;"></div>
                 </div>
-                <span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #6B6256; min-width: 42px; text-align: right;">{{ d.pct }}%</span>
+                <span style="font-family: 'Archivo', sans-serif; font-size: 13px; color: #57534A; min-width: 42px; text-align: right;">{{ d.pct }}%</span>
               </div>
             </sc-for>
           </div>
 
           <!-- next three moves -->
-          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 16px;">{{ gapsTitle }}</div>
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 16px;">{{ gapsTitle }}</div>
           <div style="display: grid; gap: 14px; margin-bottom: 36px;">
             <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="3">
-              <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-left: 3px solid #B5623C; border-radius: 14px; padding: 20px 22px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;">
-                <span style="font-family: 'Newsreader', serif; font-size: 26px; line-height: 1; color: #B5623C;">{{ g.num }}</span>
+              <div style="background: #FCFCFA; border: 1px solid #EFE6D6; border-left: 3px solid #14432F; border-radius: 3px; padding: 20px 22px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;">
+                <span style="font-family: 'Archivo', sans-serif; font-weight: 800; letter-spacing: -.02em; font-size: 26px; line-height: 1; color: #14432F;">{{ g.num }}</span>
                 <div>
-                  <div style="font-size: 12px; font-family: 'Spline Sans Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #9A8F7E; margin-bottom: 7px;">{{ g.area }}</div>
-                  <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(18px,2.1vw,22px); line-height: 1.22; margin: 0 0 8px;">{{ g.head }}</h3>
+                  <div style="font-size: 12px; font-family: 'Archivo', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #8A857B; margin-bottom: 7px;">{{ g.area }}</div>
+                  <h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(18px,2.1vw,22px); line-height: 1.22; margin: 0 0 8px;">{{ g.head }}</h3>
                   <p style="font-size: 14.5px; line-height: 1.6; color: #4A443B; margin: 0;">{{ g.rec }}</p>
                 </div>
               </div>
@@ -236,41 +235,41 @@
           </div>
 
           <!-- CTA -->
-          <div style="background: #2B2620; color: #F4EEE3; border-radius: 18px; padding: clamp(26px,3.5vw,40px); display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;" data-stack>
+          <div style="background: #17140F; color: #F5F4F0; border-radius: 4px; padding: clamp(26px,3.5vw,40px); display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;" data-stack>
             <div>
-              <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(21px,2.6vw,28px); line-height: 1.16; margin: 0 0 8px;">Want help closing these gaps?</h3>
-              <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,238,227,.72); margin: 0;">Our advisory team turns this scorecard into a prioritized readiness plan and a funder list matched to your work, so your first applications land.</p>
+              <h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(21px,2.6vw,28px); line-height: 1.16; margin: 0 0 8px;">Want help closing these gaps?</h3>
+              <p style="font-size: 14.5px; line-height: 1.6; color: rgba(245,244,240,.72); margin: 0;">Our advisory team turns this scorecard into a prioritized readiness plan and a funder list matched to your work, so your first applications land.</p>
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
-              <a href="index.html#contact" style="text-decoration: none; text-align: center; background: #B5623C; color: #fff; padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
-              <a href="{{ mailto }}" style="text-decoration: none; text-align: center; color: #F4EEE3; border: 1px solid rgba(244,238,227,.34); padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 700; white-space: nowrap;">Email my results</a>
+              <a href="index.html#contact" style="text-decoration: none; text-align: center; background: #14432F; color: #fff; padding: 14px 26px; border-radius: 4px; font-size: 15px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+              <a href="{{ mailto }}" style="text-decoration: none; text-align: center; color: #F5F4F0; border: 1px solid rgba(245,244,240,.34); padding: 14px 26px; border-radius: 4px; font-size: 15px; font-weight: 700; white-space: nowrap;">Email my results</a>
             </div>
           </div>
 
           <div style="text-align: center; margin-top: 26px;">
-            <button onClick="{{ restart }}" style="border: none; cursor: pointer; font-family: inherit; background: transparent; color: #6B6256; font-size: 14px; font-weight: 700; text-decoration: underline;">Retake the scorecard</button>
+            <button onClick="{{ restart }}" style="border: none; cursor: pointer; font-family: inherit; background: transparent; color: #57534A; font-size: 14px; font-weight: 700; text-decoration: underline;">Retake the scorecard</button>
           </div>
         </div>
       </sc-if>
 
     </div>
 
-    <p style="text-align: center; font-size: 13px; color: #9A8F7E; margin: 26px auto 0; max-width: 54ch; line-height: 1.55;">Looking for our other tools? Explore the full <a href="tools.html" style="font-weight: 700;">free tools suite</a>, including the Workplace mini-360 and our community data dashboard.</p>
+    <p style="text-align: center; font-size: 13px; color: #8A857B; margin: 26px auto 0; max-width: 54ch; line-height: 1.55;">Looking for our other tools? Explore the full <a href="tools.html" style="font-weight: 700;">free tools suite</a>, including the Workplace mini-360 and our community data dashboard.</p>
 
   </section>
   </main>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer style="background: #2B2620; color: rgba(244,238,227,.6);">
+  <footer style="background: #17140F; color: rgba(245,244,240,.6);">
     <div style="max-width: 1200px; margin: 0 auto; padding: clamp(48px,6vw,68px) 32px 36px;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: center; padding-bottom: 30px; border-bottom: 1px solid rgba(244,238,227,.14);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: center; padding-bottom: 30px; border-bottom: 1px solid rgba(245,244,240,.14);">
         <div style="display: flex; align-items: baseline; gap: 9px;">
-          <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F4EEE3;">NELCRUM</span>
-          <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .26em; color: #D69A78; text-transform: uppercase;">Solutions, LLC</span>
+          <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F5F4F0;">NELCRUM</span>
+          <span style="font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .26em; color: #C98A2B; text-transform: uppercase;">Solutions, LLC</span>
         </div>
-        <a href="index.html#contact" style="text-decoration: none; background: #B5623C; color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700;">Book a consultation</a>
+        <a href="index.html#contact" style="text-decoration: none; background: #14432F; color: #fff; padding: 12px 20px; border-radius: 4px; font-size: 14px; font-weight: 700;">Book a consultation</a>
       </div>
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 22px; font-size: 13px; color: rgba(244,238,227,.5);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 22px; font-size: 13px; color: rgba(245,244,240,.5);">
         <span>© 2026 NELCRUM Solutions, LLC</span>
         <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
       </div>
@@ -378,10 +377,10 @@ class Component extends DCLogic {
   }
 
   band(score) {
-    if (score >= 80) return { band: "Grant-ready", color: "#6F7E54", bg: "#EBEFE0",
+    if (score >= 80) return { band: "Grant-ready", color: "#4E6B43", bg: "#EBEFE0",
       head: "You are ready to pursue grants.",
       desc: "The fundamentals funders look for are in place. Focus now on matching to the right funders and keeping your evidence and reporting sharp as you scale." };
-    if (score >= 60) return { band: "Nearly ready", color: "#B5623C", bg: "#F3E4DA",
+    if (score >= 60) return { band: "Nearly ready", color: "#14432F", bg: "#F3E4DA",
       head: "Nearly ready, with a few gaps to close.",
       desc: "The foundation is solid, but a handful of areas are holding you back from competitive applications. Close the gaps below and you will be in strong shape." };
     if (score >= 40) return { band: "Building the foundation", color: "#C08A2E", bg: "#F5EAD4",
@@ -393,7 +392,7 @@ class Component extends DCLogic {
   }
 
   colorFor(pct) {
-    if (pct >= 67) return "#6F7E54";
+    if (pct >= 67) return "#4E6B43";
     if (pct >= 40) return "#C08A2E";
     return "#B04A3C";
   }
@@ -456,9 +455,9 @@ class Component extends DCLogic {
         num: s.num,
         label: s.label,
         hint: s.hint,
-        bg: chosen ? "#B5623C" : "#FBF7EF",
-        fg: chosen ? "#fff" : "#2B2620",
-        border: chosen ? "#B5623C" : "#E2D7C4",
+        bg: chosen ? "#14432F" : "#FCFCFA",
+        fg: chosen ? "#fff" : "#17140F",
+        border: chosen ? "#14432F" : "#DDDBD2",
         pick: () => this.answer(s.num),
       };
     });
@@ -498,7 +497,7 @@ class Component extends DCLogic {
       progressPct: Math.round((idx / total) * 100),
       scale,
       atStart: idx === 0,
-      backColor: idx === 0 ? "#C9BFAF" : "#6B6256",
+      backColor: idx === 0 ? "#C9BFAF" : "#57534A",
       back: () => this.setState((s) => ({ index: Math.max(0, s.index - 1) })),
       gEmail: g.email, gName: g.name, gOrg: g.org,
       setEmail: (e) => { const v = e.target.value; this.setState((s) => ({ gate: { ...s.gate, email: v } })); },

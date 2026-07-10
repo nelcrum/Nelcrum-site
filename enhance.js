@@ -82,9 +82,9 @@
     return n;
   }
 
-  var F_SERIF = "'Newsreader', Georgia, serif";
-  var F_SANS = "'Hanken Grotesk', system-ui, sans-serif";
-  var F_MONO = "'Spline Sans Mono', ui-monospace, monospace";
+  var F_SERIF = "'Archivo', sans-serif";
+  var F_SANS = "'Archivo', system-ui, sans-serif";
+  var F_MONO = "'Archivo', sans-serif";
 
   function setupPopup() {
     if (window.NC_POPUP !== true || seen()) return;
@@ -114,43 +114,43 @@
       overlay.setAttribute('aria-modal', 'true');
 
       var card = el('div',
-        'position:relative;width:100%;max-width:440px;background:#F4EEE3;border:1px solid #E2D7C4;' +
-        'border-radius:22px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(28,20,10,.7);' +
+        'position:relative;width:100%;max-width:440px;background:#F5F4F0;border:1px solid #DDDBD2;' +
+        'border-radius: 4px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(28,20,10,.7);' +
         'transform:translateY(24px) scale(.97);opacity:0;transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s ease;');
 
       // close button
       var close = el('button', 'position:absolute;top:13px;right:13px;z-index:2;width:32px;height:32px;' +
-        'border:none;border-radius:999px;cursor:pointer;background:rgba(244,238,227,.16);color:#F4EEE3;' +
+        'border:none;border-radius: 4px;cursor:pointer;background:rgba(245,244,240,.16);color:#F5F4F0;' +
         'font:600 18px/1 ' + F_SANS + ';display:flex;align-items:center;justify-content:center;', '&times;');
       close.setAttribute('aria-label', 'Close');
 
       // dark header band
-      var head = el('div', 'position:relative;background:#2B2620;color:#F4EEE3;padding:30px 30px 26px;overflow:hidden;');
-      head.appendChild(el('div', 'position:absolute;top:-50px;right:-40px;width:180px;height:180px;border-radius:999px;border:1px solid rgba(214,154,120,.4);pointer-events:none;'));
+      var head = el('div', 'position:relative;background:#17140F;color:#F5F4F0;padding:30px 30px 26px;overflow:hidden;');
+      head.appendChild(el('div', 'position:absolute;top:-50px;right:-40px;width:180px;height:180px;border-radius: 4px;border:1px solid rgba(201,138,43,.4);pointer-events:none;'));
       head.appendChild(el('div',
-        'position:relative;font-family:' + F_MONO + ';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#D69A78;margin-bottom:14px;',
+        'position:relative;font-family:' + F_MONO + ';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C98A2B;margin-bottom:14px;',
         'NELCRUM &middot; Limited offer'));
       head.appendChild(el('div',
         'position:relative;font-family:' + F_SERIF + ';font-weight:500;font-size:32px;line-height:1.08;letter-spacing:-.01em;',
-        'Get <span style="font-style:italic;color:#D69A78;">10% off</span> your first project.'));
+        'Get <span style="font-style:italic;color:#C98A2B;">10% off</span> your first project.'));
 
       // body
       var body = el('div', 'padding:24px 30px 30px;');
-      body.appendChild(el('p', 'font-size:14.5px;line-height:1.6;color:#6B6256;margin:0 0 20px;',
+      body.appendChild(el('p', 'font-size:14.5px;line-height:1.6;color:#57534A;margin:0 0 20px;',
         'Join our list for evidence-led insights and tool updates, and get a code for 10% off your first engagement or Wenbee plan.'));
 
       var form = el('form', 'display:flex;flex-direction:column;gap:10px;');
-      var input = el('input', 'font-family:' + F_SANS + ';font-size:15px;color:#2B2620;background:#fff;' +
-        'border:1.5px solid #E2D7C4;border-radius:12px;padding:13px 15px;outline:none;');
+      var input = el('input', 'font-family:' + F_SANS + ';font-size:15px;color:#17140F;background:#fff;' +
+        'border:1.5px solid #DDDBD2;border-radius: 3px;padding:13px 15px;outline:none;');
       input.type = 'email'; input.required = true; input.placeholder = 'you@org.com';
-      input.addEventListener('focus', function () { input.style.borderColor = '#B5623C'; });
-      input.addEventListener('blur', function () { input.style.borderColor = '#E2D7C4'; });
+      input.addEventListener('focus', function () { input.style.borderColor = '#14432F'; });
+      input.addEventListener('blur', function () { input.style.borderColor = '#DDDBD2'; });
 
       var submit = el('button', 'font-family:' + F_SANS + ';font-weight:700;font-size:15.5px;color:#fff;' +
-        'background:#B5623C;border:none;border-radius:999px;padding:14px 22px;cursor:pointer;', 'Get my 10% off &rarr;');
+        'background:#14432F;border:none;border-radius: 4px;padding:14px 22px;cursor:pointer;', 'Get my 10% off &rarr;');
       submit.type = 'submit';
 
-      var fine = el('p', 'font-size:11.5px;line-height:1.5;color:#9A8F7E;margin:14px 0 0;',
+      var fine = el('p', 'font-size:11.5px;line-height:1.5;color:#8A857B;margin:14px 0 0;',
         'No spam. Unsubscribe anytime. We never share your details.');
 
       form.appendChild(input);
@@ -207,22 +207,22 @@
 
       function success() {
         head.innerHTML = '';
-        head.appendChild(el('div', 'position:absolute;top:-50px;right:-40px;width:180px;height:180px;border-radius:999px;border:1px solid rgba(214,154,120,.4);pointer-events:none;'));
+        head.appendChild(el('div', 'position:absolute;top:-50px;right:-40px;width:180px;height:180px;border-radius: 4px;border:1px solid rgba(201,138,43,.4);pointer-events:none;'));
         head.appendChild(el('div',
-          'position:relative;font-family:' + F_MONO + ';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#D69A78;margin-bottom:14px;',
+          'position:relative;font-family:' + F_MONO + ';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#C98A2B;margin-bottom:14px;',
           'You&rsquo;re on the list'));
         head.appendChild(el('div',
           'position:relative;font-family:' + F_SERIF + ';font-weight:500;font-size:30px;line-height:1.1;',
           'Welcome to NELCRUM.'));
 
         body.innerHTML = '';
-        body.appendChild(el('p', 'font-size:14.5px;line-height:1.6;color:#6B6256;margin:0 0 18px;',
+        body.appendChild(el('p', 'font-size:14.5px;line-height:1.6;color:#57534A;margin:0 0 18px;',
           'Here is your code. Mention it during your first consultation to claim 10% off.'));
-        var codeRow = el('div', 'display:flex;align-items:center;gap:10px;background:#fff;border:1.5px dashed #C99A6E;' +
-          'border-radius:12px;padding:14px 16px;margin-bottom:20px;');
-        codeRow.appendChild(el('span', 'font-family:' + F_MONO + ';font-weight:600;font-size:20px;letter-spacing:.12em;color:#B5623C;flex:1;', OFFER_CODE));
-        var copy = el('button', 'font-family:' + F_SANS + ';font-weight:700;font-size:13px;color:#2B2620;background:#EAD9CC;' +
-          'border:none;border-radius:999px;padding:9px 15px;cursor:pointer;', 'Copy');
+        var codeRow = el('div', 'display:flex;align-items:center;gap:10px;background:#fff;border:1.5px dashed #C98A2B;' +
+          'border-radius: 3px;padding:14px 16px;margin-bottom:20px;');
+        codeRow.appendChild(el('span', 'font-family:' + F_MONO + ';font-weight:600;font-size:20px;letter-spacing:.12em;color:#14432F;flex:1;', OFFER_CODE));
+        var copy = el('button', 'font-family:' + F_SANS + ';font-weight:700;font-size:13px;color:#17140F;background:#E4EDE1;' +
+          'border:none;border-radius: 4px;padding:9px 15px;cursor:pointer;', 'Copy');
         copy.addEventListener('click', function () {
           try { navigator.clipboard.writeText(OFFER_CODE); copy.innerHTML = 'Copied'; } catch (e) { copy.innerHTML = 'Copied'; }
           setTimeout(function () { copy.innerHTML = 'Copy'; }, 1600);
@@ -230,7 +230,7 @@
         codeRow.appendChild(copy);
         body.appendChild(codeRow);
         var done = el('button', 'width:100%;font-family:' + F_SANS + ';font-weight:700;font-size:15px;color:#fff;' +
-          'background:#2B2620;border:none;border-radius:999px;padding:13px 22px;cursor:pointer;', 'Keep exploring');
+          'background:#17140F;border:none;border-radius: 4px;padding:13px 22px;cursor:pointer;', 'Keep exploring');
         done.addEventListener('click', function () { dismiss(false); });
         body.appendChild(done);
       }
