@@ -113,21 +113,92 @@
     h += card('Total expenses', money(pick(latest, ['totfuncexpns'])), 'FY ' + yr);
     h += '</div>';
 
-    var series = fils.slice(0, 5).reverse().map(function (f) { var g = pick(f, GIVE_KEYS); if (g == null) g = pick(f, ['totfuncexpns']); return { y: f.tax_prd_yr, v: g || 0 }; });
-    var max = Math.max.apply(null, series.map(function (s) { return s.v; }).concat([1]));
-    h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:26px;">';
-    h += '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:16px;">' + (givingIsEst ? 'Annual outlay trend' : 'Giving trend') + '</div>';
-    h += '<div style="display:flex; align-items:flex-end; gap:14px; height:120px;">';
-    series.forEach(function (s) {
-      var pct = Math.round(s.v / max * 100);
-      h += '<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px;"><div style="font-family:Archivo,sans-serif; font-size:11px; font-weight:700; color:#14432F;">' + money(s.v) + '</div><div style="width:100%; background:#C98A2B; border-radius:3px 3px 0 0; height:' + Math.max(pct, 3) + '%;"></div><div style="font-size:11px; color:#8A857B;">' + s.y + '</div></div>';
-    });
-    h += '</div></div>';
+    h += '<div id="fr-chart"></div>';
     $('fr-teaser').innerHTML = h;
+    window.__frEst = givingIsEst;
+    compare = [{ name: org.name || 'This funder', ein: (org.ein && org.ein !== '000000000') ? org.ein : '', series: seriesOf(fils), color: PALETTE[0] }];
+    renderChart();
 
     buildGate(d, fils, givingIsEst);
     try { var y = res.getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) {}
   }
+
+  var PALETTE = ['#C98A2B', '#14432F', '#4E6B43', '#B04A3C', '#2A6FDB'];
+  var compare = [];
+
+  function seriesOf(fils) {
+    return (fils || []).slice().sort(function (a, b) { return a.tax_prd_yr - b.tax_prd_yr; })
+      .map(function (f) { var g = pick(f, GIVE_KEYS); if (g == null) g = pick(f, ['totfuncexpns']); return { y: +f.tax_prd_yr, v: g || 0 }; })
+      .filter(function (p) { return p.y; });
+  }
+
+  function renderChart() {
+    var box = $('fr-chart'); if (!box) return;
+    var W = 760, H = 280, padL = 56, padR = 18, padT = 18, padB = 34;
+    var plotW = W - padL - padR, plotH = H - padT - padB;
+    var years = [];
+    compare.forEach(function (c) { c.series.forEach(function (p) { if (years.indexOf(p.y) < 0) years.push(p.y); }); });
+    years.sort(function (a, b) { return a - b; });
+    var maxV = 1;
+    compare.forEach(function (c) { c.series.forEach(function (p) { if (p.v > maxV) maxV = p.v; }); });
+    function xFor(y) { return years.length <= 1 ? padL + plotW / 2 : padL + (years.indexOf(y) / (years.length - 1)) * plotW; }
+    function yFor(v) { return padT + plotH - (v / maxV) * plotH; }
+
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block;" font-family="Archivo, sans-serif">';
+    for (var g = 0; g <= 4; g++) {
+      var gv = maxV * g / 4, gy = yFor(gv);
+      svg += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" stroke="#EDEBE4" stroke-width="1"/>';
+      svg += '<text x="' + (padL - 8) + '" y="' + (gy + 3) + '" text-anchor="end" font-size="10" fill="#8A857B">' + money(gv) + '</text>';
+    }
+    years.forEach(function (y) { svg += '<text x="' + xFor(y) + '" y="' + (H - 12) + '" text-anchor="middle" font-size="10" fill="#8A857B">' + y + '</text>'; });
+    compare.forEach(function (c) {
+      var pts = c.series.filter(function (p) { return years.indexOf(p.y) >= 0; });
+      if (pts.length > 1) {
+        var d = pts.map(function (p) { return xFor(p.y) + ',' + yFor(p.v); }).join(' ');
+        svg += '<polyline points="' + d + '" fill="none" stroke="' + c.color + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+      }
+      pts.forEach(function (p) { svg += '<circle cx="' + xFor(p.y) + '" cy="' + yFor(p.v) + '" r="3.5" fill="' + c.color + '"/>'; });
+    });
+    svg += '</svg>';
+
+    var legend = '<div style="display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:14px;">';
+    compare.forEach(function (c, i) {
+      legend += '<span style="display:inline-flex; align-items:center; gap:7px; font-size:13px; color:#17140F; background:#F5F4F0; border:1px solid #DDDBD2; border-radius:4px; padding:5px 10px;"><span style="width:11px; height:11px; border-radius:2px; background:' + c.color + '; flex:none;"></span>' + esc(c.name) + (i > 0 ? ' <button data-fr-rm="' + i + '" title="Remove" style="border:none; background:none; cursor:pointer; color:#8A857B; font-size:15px; line-height:1; padding:0 0 0 4px;">&times;</button>' : '') + '</span>';
+    });
+    legend += '</div>';
+
+    var ctrl;
+    if (compare.length < 5) {
+      ctrl = '<form id="fr-cmpform" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; max-width:520px;"><input id="fr-cmp" type="text" placeholder="Add an organization to compare (name or EIN)" style="flex:1; min-width:220px; font-family:inherit; font-size:14px; padding:11px 13px; border:1.5px solid #DDDBD2; border-radius:4px; background:#fff;"><button id="fr-add" type="submit" style="font-family:inherit; font-weight:700; font-size:14px; color:#17140F; background:#C98A2B; border:none; border-radius:4px; padding:11px 18px; cursor:pointer;">Add</button></form><div id="fr-cmpmsg" style="font-size:12.5px; color:#8A857B; margin-top:8px; min-height:14px;"></div>';
+    } else {
+      ctrl = '<div style="font-size:12.5px; color:#8A857B; margin-top:14px;">Comparing the maximum of 5 organizations. Remove one to add another.</div>';
+    }
+
+    box.innerHTML = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:26px;"><div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:16px;">Annual giving / outlay over time</div>' + svg + legend + ctrl + '</div>';
+  }
+
+  function addOrg(query) {
+    query = (query || '').trim();
+    if (!query || compare.length >= 5) return;
+    var msg = $('fr-cmpmsg'); if (msg) msg.textContent = 'Loading...';
+    var ein = query.replace(/[^0-9]/g, '');
+    var url = ENDPOINT + (ein.length === 9 ? '?action=funder&ein=' + ein : '?action=funder&q=' + encodeURIComponent(query));
+    fetch(url).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.organization && d.organizations && d.organizations[0]) { addOrg(d.organizations[0].ein); return; }
+      if (!d.organization) throw new Error('no org');
+      if (compare.some(function (c) { return c.ein && c.ein === d.organization.ein; })) { if (msg) msg.textContent = 'That organization is already on the chart.'; return; }
+      compare.push({ name: d.organization.name || 'Funder', ein: d.organization.ein || '', series: seriesOf(d.filings_with_data || []), color: PALETTE[compare.length % PALETTE.length] });
+      renderChart();
+    }).catch(function () { var m = $('fr-cmpmsg'); if (m) m.textContent = 'Could not load that organization. Try its 9-digit EIN.'; });
+  }
+
+  document.addEventListener('submit', function (e) {
+    if (e.target && e.target.id === 'fr-cmpform') { e.preventDefault(); addOrg($('fr-cmp') ? $('fr-cmp').value : ''); }
+  });
+  document.addEventListener('click', function (e) {
+    var rm = e.target && e.target.closest ? e.target.closest('[data-fr-rm]') : null;
+    if (rm) { e.preventDefault(); var i = +rm.getAttribute('data-fr-rm'); if (i > 0 && i < compare.length) { compare.splice(i, 1); renderChart(); } }
+  });
 
   function buildGate(d, fils, givingIsEst) {
     var done = false; try { done = localStorage.getItem('nc_funder_unlock') === '1'; } catch (e) {}

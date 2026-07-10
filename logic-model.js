@@ -66,7 +66,7 @@
     var h = '<div style="flex:1; min-width:150px; background:#fff; border:1px solid #DDDBD2; border-top:3px solid ' + accent + '; border-radius:4px; padding:16px 16px 18px;">';
     h += '<div style="font-family:Archivo,sans-serif; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">' + title + '</div>';
     if (items.length) { h += '<ul style="margin:0; padding-left:16px; display:flex; flex-direction:column; gap:7px;">'; items.forEach(function (x) { h += '<li style="font-size:13px; line-height:1.45; color:#2B2A25;">' + esc(x) + '</li>'; }); h += '</ul>'; }
-    else h += '<div style="font-size:13px; color:#B7B0A2;">—</div>';
+    else h += '<div style="font-size:13px; color:#B7B0A2;">Not yet specified</div>';
     return h + '</div>';
   }
 
