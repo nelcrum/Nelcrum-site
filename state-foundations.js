@@ -75,13 +75,95 @@
   ready(function () {
     loadDataset(function () {
       fillStates();
+      renderMap();
       // The DC runtime may re-render the template after our first fill, replacing
       // the <select> with an empty one. Watch for that and repopulate.
-      var mo = new MutationObserver(function () { fillStates(); });
+      var mo = new MutationObserver(function () { fillStates(); if (!$('sf-map') || !$('sf-map').__drawn) renderMap(); });
       if (document.body) mo.observe(document.body, { childList: true, subtree: true });
       setTimeout(function () { mo.disconnect(); }, 12000);
     });
   });
+
+  // ---------- MAP VIEW (state tile-grid cartogram) ----------
+  // 8-row x 11-col grid, geographically arranged. Shades every state by the
+  // selected metric from the estimate dataset (all 51 states, instant), grouped
+  // by census region. Clicking a tile drills into that state's detail below.
+  var GRID = { AK:[0,0], ME:[0,10], VT:[1,9], NH:[1,10], WA:[2,0], ID:[2,1], MT:[2,2], ND:[2,3], MN:[2,4], IL:[2,5], WI:[2,6], MI:[2,7], NY:[2,9], MA:[2,10], OR:[3,0], NV:[3,1], WY:[3,2], SD:[3,3], IA:[3,4], IN:[3,5], OH:[3,6], PA:[3,7], NJ:[3,8], CT:[3,9], RI:[3,10], CA:[4,0], UT:[4,1], CO:[4,2], NE:[4,3], MO:[4,4], KY:[4,5], WV:[4,6], VA:[4,7], MD:[4,8], DE:[4,9], AZ:[5,1], NM:[5,2], KS:[5,3], AR:[5,4], TN:[5,5], NC:[5,6], SC:[5,7], DC:[5,8], OK:[6,3], LA:[6,4], MS:[6,5], AL:[6,6], GA:[6,7], HI:[7,0], TX:[7,2], FL:[7,7] };
+  var REGION = { Northeast: ['CT','ME','MA','NH','RI','VT','NJ','NY','PA'], Midwest: ['IL','IN','MI','OH','WI','IA','KS','MN','MO','NE','ND','SD'], South: ['DE','FL','GA','MD','NC','SC','VA','DC','WV','AL','KY','MS','TN','AR','LA','OK','TX'], West: ['AZ','CO','ID','MT','NV','NM','UT','WY','AK','CA','HI','OR','WA'] };
+  var REGION_COLOR = { Northeast: '#2A6FDB', Midwest: '#4E6B43', South: '#C98A2B', West: '#B04A3C' };
+  function regionOf(ab) { for (var r in REGION) if (REGION[r].indexOf(ab) >= 0) return r; return ''; }
+  var mapMetric = 'giving', mapRegion = '';
+
+  function mapVal(ab) {
+    var st = DATA.states[ab]; if (!st) return 0;
+    var yr = st.years[st.years.length - 1];
+    var v = mapMetric === 'giving' ? yr.giving : mapMetric === 'assets' ? yr.assets : mapMetric === 'count' ? yr.count : yr.avgGrant;
+    if (perCapita && mapMetric !== 'avgGrant') { var p = popOf(ab); if (p) v = mapMetric === 'count' ? v / p * 100000 : v / p; }
+    return v || 0;
+  }
+  // Cream -> ochre -> deep green ramp for the choropleth.
+  function ramp(t) {
+    t = Math.max(0, Math.min(1, t));
+    var stops = [[244,238,227],[233,205,150],[201,138,43],[75,90,60],[20,67,47]];
+    var seg = t * (stops.length - 1), i = Math.floor(seg), f = seg - i;
+    if (i >= stops.length - 1) return 'rgb(' + stops[stops.length - 1].join(',') + ')';
+    var a = stops[i], b = stops[i + 1];
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * f) + ',' + Math.round(a[1] + (b[1] - a[1]) * f) + ',' + Math.round(a[2] + (b[2] - a[2]) * f) + ')';
+  }
+  function mapFmt(v) { if (mapMetric === 'count') return perCapita ? (Math.round(v * 10) / 10) : Math.round(v).toLocaleString(); var a = Math.abs(v); if (a >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B'; if (a >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M'; if (a >= 1e3) return '$' + Math.round(v / 1e3) + 'K'; return '$' + Math.round(v); }
+  function mapLabel() { var base = mapMetric === 'giving' ? 'Total giving' : mapMetric === 'assets' ? 'Total assets' : mapMetric === 'count' ? 'Foundations' : 'Avg grant size'; if (perCapita && mapMetric !== 'avgGrant') base += mapMetric === 'count' ? ' per 100k' : ' per resident'; return base; }
+
+  function renderMap() {
+    var box = $('sf-map'); if (!box || !DATA) return;
+    box.__drawn = true;
+    var abbrs = Object.keys(GRID).filter(function (a) { return DATA.states[a] && (!mapRegion || regionOf(a) === mapRegion); });
+    var vals = abbrs.map(mapVal);
+    var max = Math.max.apply(null, vals.concat([1]));
+    var min = Math.min.apply(null, vals);
+    // log scale so a few giant states don't wash everyone out
+    function norm(v) { if (max <= 0) return 0; var lm = Math.log(1 + max - min) || 1; return Math.log(1 + v - min) / lm; }
+
+    var h = '';
+    h += '<div style="font-family:Archivo,sans-serif; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#14432F; margin-bottom:8px;">Map view</div>';
+    h += '<h2 style="font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(24px,3.2vw,38px); letter-spacing:-.02em; margin:0 0 8px;">' + esc(mapLabel()) + ' by state</h2>';
+    h += '<p style="font-size:14px; line-height:1.55; color:#57534A; margin:0 0 20px; max-width:60ch;">Every state shaded by the measure you choose. Click a state to open its full detail below, with the live IRS layers.</p>';
+
+    // metric buttons
+    h += '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">';
+    [['giving','Giving'],['assets','Assets'],['count','Foundations'],['avgGrant','Avg grant']].forEach(function (m) { var on = m[0] === mapMetric; h += '<button data-sfmap-metric="' + m[0] + '" style="font-family:Archivo,sans-serif; font-weight:600; font-size:12.5px; padding:7px 13px; border:1px solid ' + (on ? '#17140F' : '#DDDBD2') + '; border-radius:4px; background:' + (on ? '#17140F' : '#fff') + '; color:' + (on ? '#F5F4F0' : '#57534A') + '; cursor:pointer;">' + m[1] + '</button>'; });
+    h += '</div>';
+    // region filter + per capita
+    h += '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; align-items:center;">';
+    h += '<span style="font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#8A857B; margin-right:2px;">Region</span>';
+    ['', 'Northeast', 'Midwest', 'South', 'West'].forEach(function (r) { var on = r === mapRegion; var lbl = r || 'All'; h += '<button data-sfmap-region="' + r + '" style="font-family:Archivo,sans-serif; font-weight:600; font-size:12px; padding:6px 12px; border:1px solid ' + (on ? (r ? REGION_COLOR[r] : '#17140F') : '#DDDBD2') + '; border-radius:999px; background:' + (on ? (r ? REGION_COLOR[r] : '#17140F') : '#fff') + '; color:' + (on ? '#fff' : '#57534A') + '; cursor:pointer;">' + lbl + '</button>'; });
+    h += '<span style="flex:1;"></span>';
+    h += '<button data-sfmap-pc="1" style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; padding:6px 13px; border:1px solid ' + (perCapita ? '#14432F' : '#DDDBD2') + '; border-radius:4px; background:' + (perCapita ? '#14432F' : '#fff') + '; color:' + (perCapita ? '#fff' : '#57534A') + '; cursor:pointer;">Per capita ' + (perCapita ? 'on' : 'off') + '</button>';
+    h += '</div>';
+
+    // the grid
+    h += '<div style="display:grid; grid-template-columns:repeat(11, 1fr); gap:6px; max-width:760px;">';
+    for (var r = 0; r < 8; r++) {
+      for (var c = 0; c < 11; c++) {
+        var ab = null;
+        for (var k in GRID) { if (GRID[k][0] === r && GRID[k][1] === c) { ab = k; break; } }
+        if (!ab || !DATA.states[ab] || (mapRegion && regionOf(ab) !== mapRegion)) { h += '<div style="aspect-ratio:1;"></div>'; continue; }
+        var v = mapVal(ab), fill = ramp(norm(v));
+        var lum = (mapMetric ? norm(v) : 0);
+        var txt = lum > 0.55 ? '#F5F4F0' : '#17140F';
+        h += '<button data-sfmap-state="' + ab + '" title="' + esc(DATA.states[ab].name) + ': ' + mapFmt(v) + '" style="aspect-ratio:1; border:1px solid rgba(0,0,0,.08); border-top:3px solid ' + REGION_COLOR[regionOf(ab)] + '; border-radius:4px; background:' + fill + '; color:' + txt + '; cursor:pointer; font-family:Archivo,sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:2px; line-height:1;"><span style="font-weight:800; font-size:12px;">' + ab + '</span><span style="font-size:8.5px; opacity:.85; font-weight:600;">' + mapFmt(v) + '</span></button>';
+      }
+    }
+    h += '</div>';
+
+    // legend
+    h += '<div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:18px;">';
+    h += '<div style="display:flex; align-items:center; gap:8px;"><span style="font-size:11.5px; color:#8A857B;">Low</span><span style="display:inline-block; width:160px; height:12px; border-radius:3px; background:linear-gradient(90deg,' + ramp(0) + ',' + ramp(.25) + ',' + ramp(.5) + ',' + ramp(.75) + ',' + ramp(1) + ');"></span><span style="font-size:11.5px; color:#8A857B;">High</span></div>';
+    Object.keys(REGION_COLOR).forEach(function (r) { h += '<span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#57534A;"><span style="width:10px; height:10px; border-radius:2px; background:' + REGION_COLOR[r] + ';"></span>' + r + '</span>'; });
+    h += '</div>';
+    h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:80ch;">Map shading uses the representative estimate dataset so the whole country renders instantly. Click any state for its detail, where the community-foundation and private-foundation layers pull live IRS data. Metro / MSA shading arrives when the county crosswalk is built.</div>';
+
+    box.innerHTML = h;
+  }
 
   document.addEventListener('submit', function (e) {
     if (e.target && e.target.id === 'sf-form') { e.preventDefault(); var s = $('sf-state'); if (s && s.value) run(s.value); else msg('Pick a state first.', true); }
@@ -93,6 +175,14 @@
     }
   });
   document.addEventListener('click', function (e) {
+    var mps = e.target && e.target.closest ? e.target.closest('[data-sfmap-state]') : null;
+    if (mps) { var ab = mps.getAttribute('data-sfmap-state'); var sel = $('sf-state'); if (sel) sel.value = ab; run(ab); return; }
+    var mpm = e.target && e.target.closest ? e.target.closest('[data-sfmap-metric]') : null;
+    if (mpm) { mapMetric = mpm.getAttribute('data-sfmap-metric'); renderMap(); return; }
+    var mpr = e.target && e.target.closest ? e.target.closest('[data-sfmap-region]') : null;
+    if (mpr) { mapRegion = mpr.getAttribute('data-sfmap-region'); renderMap(); return; }
+    var mpc = e.target && e.target.closest ? e.target.closest('[data-sfmap-pc]') : null;
+    if (mpc) { perCapita = !perCapita; renderMap(); if (current) run(current); return; }
     var lb = e.target && e.target.closest ? e.target.closest('[data-sf-layer]') : null;
     if (lb) { var nl = lb.getAttribute('data-sf-layer'); if (nl !== layer) { layer = nl; metric = 'giving'; if (current) run(current); } return; }
     var pcb = e.target && e.target.closest ? e.target.closest('[data-sf-pc]') : null;

@@ -27,6 +27,18 @@
   }
   function ready(cb) { var t = 0; (function p() { if ($('fr-form')) return cb(); if (t++ > 600) return; requestAnimationFrame(p); })(); }
 
+  var STATES = [['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['DC','District of Columbia'],['FL','Florida'],['GA','Georgia'],['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming']];
+  function fillStates() {
+    var sel = $('fr-state'); if (!sel || sel.options.length > 1) return;
+    sel.innerHTML = '<option value="">All states</option>' + STATES.map(function (s) { return '<option value="' + s[0] + '">' + s[1] + '</option>'; }).join('');
+  }
+  ready(function () {
+    fillStates();
+    var mo = new MutationObserver(function () { fillStates(); });
+    if (document.body) mo.observe(document.body, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 12000);
+  });
+
   var SAMPLE = {
     sample: true,
     organization: { name: 'Example Family Foundation', ein: '000000000', city: 'Atlanta', state: 'GA', ntee_code: 'S20', subsection_code: 3 },
@@ -42,7 +54,7 @@
   // Bind via document-level delegation so handlers survive support.js
   // re-mounting the <x-dc> template (which replaces #fr-form / #fr-sample).
   document.addEventListener('submit', function (e) {
-    if (e.target && e.target.id === 'fr-form') { e.preventDefault(); var q = $('fr-q'); run(q ? q.value.trim() : ''); }
+    if (e.target && e.target.id === 'fr-form') { e.preventDefault(); doSearch(); }
   });
   document.addEventListener('click', function (e) {
     var s = e.target && e.target.closest ? e.target.closest('#fr-sample') : null;
@@ -55,13 +67,34 @@
     m.style.color = err ? '#F2B8A2' : 'rgba(245,244,240,.6)';
   }
 
+  // Entry from the search form: read name + state + program-area filters and
+  // resolve to either a single org (exact EIN) or a picker of partial matches.
+  function doSearch() {
+    var q = $('fr-q') ? $('fr-q').value.trim() : '';
+    var state = $('fr-state') ? $('fr-state').value : '';
+    var ntee = $('fr-ntee') ? $('fr-ntee').value : '';
+    var ein = q.replace(/[^0-9]/g, '');
+    if (ein.length === 9) { run(ein); return; }
+    if (!q && !state && !ntee) { setMsg('Enter a name or EIN, or pick a state or program area.', true); return; }
+    setMsg('<span style="display:inline-block;width:13px;height:13px;border:2px solid rgba(245,244,240,.4);border-top-color:#C98A2B;border-radius:50%;animation:frspin .8s linear infinite;vertical-align:-2px;"></span> Searching IRS records...');
+    var url = ENDPOINT + '?action=funder&q=' + encodeURIComponent(q) + (state ? '&state=' + state : '') + (ntee ? '&ntee=' + ntee : '');
+    fetch(url).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.organizations && d.organizations.length) { pickList(d.organizations, d); return; }
+      if (d && d.organization) { setMsg(''); render(d); return; }
+      setMsg('No organizations matched. Try fewer words, a different spelling, or widen the filters.', true);
+    }).catch(function () {
+      setMsg('Could not reach the live IRS data service yet (the proxy may not be deployed). Showing a sample report so you can see the format.', true);
+      render(SAMPLE);
+    });
+  }
+
   function run(query) {
     if (!query) { setMsg('Enter a foundation name or EIN.', true); return; }
     setMsg('<span style="display:inline-block;width:13px;height:13px;border:2px solid rgba(245,244,240,.4);border-top-color:#C98A2B;border-radius:50%;animation:frspin .8s linear infinite;vertical-align:-2px;"></span> Pulling IRS 990 filings...');
     var ein = query.replace(/[^0-9]/g, '');
     var url = ENDPOINT + (ein.length === 9 ? '?action=funder&ein=' + ein : '?action=funder&q=' + encodeURIComponent(query));
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
-      if (d && d.organizations && !d.organization) { pickList(d.organizations); return; }
+      if (d && d.organizations && !d.organization) { pickList(d.organizations, d); return; }
       if (d && d.organization) { setMsg(''); render(d); return; }
       throw new Error('no data');
     }).catch(function () {
@@ -70,12 +103,14 @@
     });
   }
 
-  function pickList(orgs) {
+  function pickList(orgs, d) {
     setMsg('');
     $('fr-results').style.display = 'block';
-    var h = '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:14px;">Select an organization</div>';
+    var total = (d && d.total_results) || orgs.length;
+    var shown = Math.min(orgs.length, 25);
+    var h = '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:14px;">' + (total > shown ? shown + ' of ' + total + ' matches \u00b7 refine your search to narrow' : total + ' match' + (total === 1 ? '' : 'es')) + '</div>';
     h += '<div style="display:flex; flex-direction:column; gap:8px;">';
-    orgs.slice(0, 8).forEach(function (o) {
+    orgs.slice(0, 25).forEach(function (o) {
       h += '<button data-ein="' + esc(o.ein) + '" class="fr-pick" style="text-align:left; cursor:pointer; background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:14px 16px; font-family:inherit;"><span style="font-weight:700; font-size:15px; color:#17140F;">' + esc(o.name) + '</span><br><span style="font-size:12.5px; color:#8A857B;">' + esc(o.city || '') + (o.state ? ', ' + esc(o.state) : '') + ' &middot; EIN ' + esc(o.ein) + '</span></button>';
     });
     h += '</div>';
@@ -83,6 +118,7 @@
     $('fr-teaser').innerHTML = ''; $('fr-gate').innerHTML = ''; $('fr-full').innerHTML = ''; $('fr-full').style.display = 'none';
     var btns = document.querySelectorAll('.fr-pick');
     for (var i = 0; i < btns.length; i++) { btns[i].addEventListener('click', function () { run(this.getAttribute('data-ein')); }); }
+    try { var y = $('fr-results').getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) {}
   }
 
   function card(label, val, sub) {
@@ -233,6 +269,7 @@
     h += '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:13.5px; color:#2B2A25; min-width:520px;"><thead><tr style="text-align:right; font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#8A857B;"><th style="text-align:left; padding:0 10px 8px;">Year</th><th style="padding:0 10px 8px;">Revenue</th><th style="padding:0 10px 8px;">Expenses</th><th style="padding:0 10px 8px;">Grants/outlay</th><th style="padding:0 10px 8px;">Assets</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
     if (givingIsEst) h += '<div style="font-size:12px; color:#8A857B; margin-top:12px; line-height:1.5;">Grants figure shown is total functional expenses as a proxy; the exact grants-paid line appears on the Form 990-PF. Open a filing below to verify.</div>';
     h += '</div>';
+    h += '<div id="fr-grants"></div>';
     if (pdfs && pdfs.length) {
       h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:24px 26px; margin-top:16px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:20px; margin-bottom:14px;">Original 990 filings</div><div style="display:flex; flex-wrap:wrap; gap:8px;">';
       pdfs.slice(0, 12).forEach(function (p) { if (p.pdf_url) h += '<a href="' + esc(p.pdf_url) + '" target="_blank" rel="noopener" style="text-decoration:none; font-family:Archivo,sans-serif; font-weight:600; font-size:13px; color:#14432F; border:1px solid #DDDBD2; border-radius:4px; padding:8px 13px;">' + (p.tax_prd_yr || '990') + ' PDF &#8599;</a>'; });
@@ -240,5 +277,42 @@
     }
     h += '<div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; background:#17140F; color:#F5F4F0; border-radius:4px; padding:26px 30px; margin-top:16px;"><div style="flex:1; min-width:260px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:19px; margin-bottom:5px;">Want a tailored funder shortlist?</div><div style="font-size:14px; line-height:1.55; color:rgba(245,244,240,.72);">We build prospect lists matched to your mission, budget, and geography, with the case for support to win them.</div></div><a href="contact.html" style="text-decoration:none; background:#C98A2B; color:#17140F; padding:13px 22px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:14.5px; white-space:nowrap;">Book a consultation &#8594;</a></div>';
     full.innerHTML = h;
+    var ein = (d.organization && d.organization.ein) || '';
+    if (!d.sample && /^[0-9]{9}$/.test(ein)) loadGrants(ein);
+  }
+
+  // Lazy-load the real grant records + estimated program-area split for a funder.
+  function loadGrants(ein) {
+    var slot = $('fr-grants'); if (!slot) return;
+    slot.innerHTML = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:24px 26px; margin-top:16px; color:#57534A; font-size:14px;"><span style="display:inline-block;width:13px;height:13px;border:2px solid #EDEBE4;border-top-color:#C98A2B;border-radius:50%;animation:frspin .8s linear infinite;vertical-align:-2px;margin-right:8px;"></span>Reading the funder\u2019s grant records from its e-file 990...</div>';
+    fetch(ENDPOINT + '?action=grants&ein=' + ein).then(function (r) { return r.json(); }).then(function (g) {
+      if (!g || g.error || !g.grantCount) { slot.innerHTML = grantsUnavailable(g); return; }
+      slot.innerHTML = grantsPanel(g);
+    }).catch(function () { slot.innerHTML = grantsUnavailable(null); });
+  }
+
+  function grantsUnavailable(g) {
+    var note = (g && g.note) ? g.note : 'Grant-level detail is not available for this funder yet. It appears when the funder has a machine-readable e-file 990 with itemized grants.';
+    return '<div style="background:#FAF7F1; border:1px solid #E2D7C4; border-radius:4px; padding:20px 24px; margin-top:16px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:16px; margin-bottom:6px;">Where the money goes</div><div style="font-size:13.5px; line-height:1.55; color:#8A857B;">' + esc(note) + '</div></div>';
+  }
+
+  function grantsPanel(g) {
+    var COLORS = ['#C98A2B', '#14432F', '#4E6B43', '#B04A3C', '#2A6FDB', '#8A6D3B', '#6B7B43', '#A2643F', '#3B6B6B', '#7A5C8A', '#8A857B'];
+    var maxA = (g.byNtee[0] && g.byNtee[0].amt) || 1;
+    var h = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:24px 26px; margin-top:16px;">';
+    h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:20px;">Where the money goes</div><div style="font-size:12px; color:#8A857B;">' + money(g.grantTotal) + ' across ' + g.grantCount.toLocaleString() + ' grants \u00b7 FY ' + (g.year || '') + '</div></div>';
+    h += '<div style="font-size:12.5px; color:#8A857B; margin-bottom:18px; line-height:1.5;">Program areas are estimated by classifying each grant\u2019s stated purpose. Recipient names and amounts below are exact, taken directly from the funder\u2019s IRS e-file 990.</div>';
+    g.byNtee.forEach(function (n, i) {
+      h += '<div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;"><div style="width:180px; font-size:13px; color:#17140F; flex:none;">' + esc(n.label) + '</div><div style="flex:1; background:#F0EEE7; border-radius:3px; height:16px; overflow:hidden;"><div style="height:100%; width:' + Math.max(Math.round(n.amt / maxA * 100), 2) + '%; background:' + COLORS[i % COLORS.length] + ';"></div></div><div style="width:74px; text-align:right; font-family:Archivo,sans-serif; font-weight:700; font-size:13px; color:#14432F; flex:none;">' + money(n.amt) + '</div><div style="width:40px; text-align:right; font-size:12px; color:#8A857B; flex:none;">' + n.pct + '%</div></div>';
+    });
+    h += '</div>';
+    if (g.topGrants && g.topGrants.length) {
+      h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:24px 26px; margin-top:16px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:20px; margin-bottom:14px;">Largest grants, most recent year</div><div style="display:flex; flex-direction:column;">';
+      g.topGrants.forEach(function (gr, i) {
+        h += '<div style="display:flex; align-items:baseline; gap:14px; padding:11px 0; ' + (i ? 'border-top:1px solid #EDEBE4;' : '') + '"><div style="flex:1; min-width:0;"><div style="font-weight:700; font-size:14px; color:#17140F;">' + esc(gr.name) + '</div>' + (gr.purpose ? '<div style="font-size:12.5px; color:#8A857B; line-height:1.45; margin-top:2px;">' + esc(gr.purpose) + '</div>' : '') + '</div><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:14px; color:#14432F; white-space:nowrap; font-variant-numeric:tabular-nums;">' + money(gr.amt) + '</div></div>';
+      });
+      h += '</div></div>';
+    }
+    return h;
   }
 })();

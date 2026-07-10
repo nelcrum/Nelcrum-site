@@ -68,10 +68,26 @@
     <div style="max-width: 1000px; margin: 0 auto; padding: clamp(52px,8vw,104px) 32px clamp(40px,5vw,64px);">
       <div style="font-family: 'Archivo', sans-serif; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: #C98A2B; margin-bottom: 22px;">Funder Intelligence · Free tool</div>
       <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(36px,5vw,68px); line-height: 1.03; letter-spacing: -.02em; margin: 0; max-width: 16ch;">See what a funder actually <span style="color: #C98A2B;">funds</span>.</h1>
-      <p style="font-size: clamp(16px,1.5vw,19px); line-height: 1.6; color: rgba(245,244,240,.74); max-width: 60ch; margin: 24px 0 30px;">Enter a foundation's name or 9-digit EIN. We pull its public IRS Form 990 filings and summarize giving, assets, and multi-year trend, so you know whether you fit before you spend time applying.</p>
-      <form id="fr-form" style="display: flex; gap: 12px; max-width: 620px;">
-        <input id="fr-q" type="text" autocomplete="off" placeholder="Foundation name or EIN (e.g. 13-1837418)" style="flex: 1; font-family: inherit; font-size: 16px; color: #17140F; background: #F5F4F0; border: 1px solid rgba(245,244,240,.3); border-radius: 4px; padding: 15px 17px; outline: none;">
-        <button id="fr-go" type="submit" style="font-family: inherit; font-weight: 700; font-size: 16px; color: #17140F; background: #C98A2B; border: none; border-radius: 4px; padding: 15px 24px; cursor: pointer; white-space: nowrap;">Analyze funder</button>
+      <p style="font-size: clamp(16px,1.5vw,19px); line-height: 1.6; color: rgba(245,244,240,.74); max-width: 60ch; margin: 24px 0 30px;">Search by name (partial is fine), 9-digit EIN, or browse by state and program area. We pull public IRS Form 990 filings and summarize giving, assets, and multi-year trend, so you know whether you fit before you spend time applying.</p>
+      <form id="fr-form" style="display: flex; gap: 12px; max-width: 640px; flex-wrap: wrap;">
+        <input id="fr-q" type="text" autocomplete="off" placeholder="Foundation name or EIN (e.g. 13-1837418)" style="flex: 1 1 260px; font-family: inherit; font-size: 16px; color: #17140F; background: #F5F4F0; border: 1px solid rgba(245,244,240,.3); border-radius: 4px; padding: 15px 17px; outline: none;">
+        <button id="fr-go" type="submit" style="font-family: inherit; font-weight: 700; font-size: 16px; color: #17140F; background: #C98A2B; border: none; border-radius: 4px; padding: 15px 24px; cursor: pointer; white-space: nowrap;">Search</button>
+        <div style="display: flex; gap: 12px; flex: 1 1 100%; flex-wrap: wrap;">
+          <select id="fr-state" style="flex: 1 1 200px; font-family: inherit; font-size: 15px; color: #17140F; background: #F5F4F0; border: 1px solid rgba(245,244,240,.3); border-radius: 4px; padding: 13px 15px; outline: none;"><option value="">All states</option></select>
+          <select id="fr-ntee" style="flex: 1 1 200px; font-family: inherit; font-size: 15px; color: #17140F; background: #F5F4F0; border: 1px solid rgba(245,244,240,.3); border-radius: 4px; padding: 13px 15px; outline: none;">
+            <option value="">All program areas</option>
+            <option value="1">Arts, culture &amp; humanities</option>
+            <option value="2">Education</option>
+            <option value="3">Environment &amp; animals</option>
+            <option value="4">Health</option>
+            <option value="5">Human services</option>
+            <option value="6">International &amp; foreign affairs</option>
+            <option value="7">Public &amp; societal benefit</option>
+            <option value="8">Religion-related</option>
+            <option value="9">Mutual &amp; membership benefit</option>
+            <option value="10">Unclassified</option>
+          </select>
+        </div>
       </form>
       <div id="fr-msg" style="font-size: 13.5px; color: rgba(245,244,240,.6); margin-top: 14px; min-height: 18px;"></div>
       <div style="font-size: 13px; color: rgba(245,244,240,.5); margin-top: 6px;">No account needed. Try a <a id="fr-sample" href="#" style="color: #C98A2B; font-weight: 600;">sample report</a>.</div>
