@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grant Readiness Scorecard · NELCRUM Solutions</title>
+<script>
+(function(){
+  var RO = 'ResizeObserver loop';
+  window.addEventListener('error', function(e){
+    if (e && e.message && e.message.indexOf(RO) !== -1) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
+  var _ce = console.error;
+  console.error = function(){
+    try { if (arguments[0] && String(arguments[0]).indexOf(RO) !== -1) return; } catch(_) {}
+    return _ce.apply(console, arguments);
+  };
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement('script');
+  s.src = './support.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F4EEE3; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #EAD9CC; color: #2B2620; }
+  @keyframes a360fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes a360bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  a { color: #B5623C; }
+  a:hover { color: #8A4225; }
+  @media (max-width: 820px){ [data-stack]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 680px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+    [data-scale]{ grid-template-columns: 1fr !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #2B2620; background: #F4EEE3; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- ===================== NAV ===================== -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(244,238,227,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #E2D7C4;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #2B2620; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .28em; color: #B5623C; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="work.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #6B6256; font-size: 14px; font-weight: 600;">About</a>
+        <a href="index.html#contact" style="text-decoration: none; color: #fff; background: #2B2620; padding: 11px 19px; border-radius: 999px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="flex: 1;">
+  <section style="max-width: 920px; margin: 0 auto; padding: clamp(40px,6vw,80px) 24px clamp(64px,8vw,104px); width: 100%;">
+
+    <!-- ---------- Breadcrumb + heading ---------- -->
+    <div style="text-align: center; max-width: 62ch; margin: 0 auto clamp(28px,4vw,44px);">
+      <div style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #B5623C; margin-bottom: 18px;"><a href="tools.html" style="text-decoration: none; color: #B5623C;">Free tools</a> · Grant Readiness Scorecard</div>
+      <h1 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -.02em; margin: 0 0 16px;">Are you <span style="font-style: italic; color: #B5623C;">ready</span> for the grant you want?</h1>
+      <p style="font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #6B6256; margin: 0;">Fifteen questions across the six areas funders scrutinize. Answer honestly and we will show you a readiness score, a breakdown by area, and the exact gaps to close before you apply.</p>
+    </div>
+
+    <!-- ---------- Card ---------- -->
+    <div style="background: #fff; border: 1px solid #E2D7C4; border-radius: 24px; box-shadow: 0 1px 2px rgba(60,45,25,.05), 0 30px 60px -42px rgba(60,45,25,.5); overflow: hidden;">
+
+      <!-- INTRO -->
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+        <div style="padding: clamp(30px,4.5vw,56px);">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 34px;" data-stack>
+            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
+              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">{{ total }}</div>
+              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">quick questions</div>
+            </div>
+            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
+              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">~4 min</div>
+              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">to complete</div>
+            </div>
+            <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; padding: 18px 20px;">
+              <div style="font-family: 'Newsreader', serif; font-size: 30px; line-height: 1;">6</div>
+              <div style="font-size: 12.5px; color: #9A8F7E; margin-top: 5px;">readiness areas</div>
+            </div>
+          </div>
+
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(22px,2.8vw,30px); line-height: 1.14; margin: 0 0 14px;">What you will get</h2>
+          <ul style="list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 12px;">
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> An overall grant-readiness score with a plain-language reading</li>
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> A breakdown across governance, finances, impact, systems, strategy, and story</li>
+            <li style="display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; color: #4A443B;"><span style="color: #6F7E54; font-weight: 800; flex: none;">✓</span> Your top three gaps to close first, each with a concrete next step</li>
+          </ul>
+
+          <button onClick="{{ start }}" style="border: none; cursor: pointer; font-family: inherit; background: #B5623C; color: #fff; padding: 16px 30px; border-radius: 999px; font-size: 16px; font-weight: 700;">Start the scorecard →</button>
+          <p style="font-size: 12.5px; color: #9A8F7E; margin: 18px 0 0; line-height: 1.5;">This is a self-assessment, not a guarantee of funding. Your responses stay private; we ask for an email only to send your results.</p>
+        </div>
+      </sc-if>
+
+      <!-- QUESTION -->
+      <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: clamp(30px,4.5vw,56px);">
+          <!-- progress -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 10px;">
+            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #B5623C;">{{ curDim }}</span>
+            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; color: #9A8F7E;">{{ qNum }} / {{ total }}</span>
+          </div>
+          <div style="height: 6px; background: #EFE6D6; border-radius: 999px; overflow: hidden; margin-bottom: 34px;">
+            <div style="height: 100%; background: #B5623C; border-radius: 999px; width: {{ progressPct }}%; transition: width .3s ease;"></div>
+          </div>
+
+          <div style="min-height: 92px; display: flex; align-items: center; margin-bottom: 30px;">
+            <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(23px,3.2vw,34px); line-height: 1.18; margin: 0; text-wrap: pretty;">{{ curText }}</h2>
+          </div>
+
+          <!-- three-point scale -->
+          <div data-scale style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <sc-for list="{{ scale }}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{ opt.pick }}" style="cursor: pointer; font-family: inherit; text-align: left; background: {{ opt.bg }}; color: {{ opt.fg }}; border: 1.5px solid {{ opt.border }}; border-radius: 14px; padding: 18px 18px; display: flex; flex-direction: column; gap: 6px;" style-hover="border-color: #B5623C;">
+                <span style="font-size: 16px; line-height: 1.1; font-weight: 700;">{{ opt.label }}</span>
+                <span style="font-size: 12.5px; line-height: 1.35; opacity: .8;">{{ opt.hint }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
+            <button onClick="{{ back }}" disabled="{{ atStart }}" style="border: none; cursor: pointer; font-family: inherit; background: transparent; color: {{ backColor }}; font-size: 14.5px; font-weight: 700; padding: 8px 0;">← Back</button>
+            <span style="font-size: 12.5px; color: #9A8F7E;">Pick the honest answer</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- EMAIL GATE -->
+      <sc-if value="{{ isGate }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: 1fr 1fr;" data-stack>
+          <div style="background: #2B2620; color: #F4EEE3; padding: clamp(30px,4vw,48px); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+            <div aria-hidden="true" style="position: absolute; top: -60px; right: -50px; width: 220px; height: 220px; border-radius: 999px; border: 1px solid rgba(214,154,120,.4);"></div>
+            <div aria-hidden="true" style="position: absolute; bottom: -70px; left: -40px; width: 180px; height: 180px; border-radius: 999px; border: 1px solid rgba(244,238,227,.12);"></div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 16px; position: relative;">Your score is ready</div>
+            <div style="font-family: 'Newsreader', serif; font-size: clamp(46px,7vw,64px); line-height: 1; position: relative;">{{ score }}<span style="font-size: .5em; color: rgba(244,238,227,.6);">/100</span></div>
+            <p style="font-size: 15px; line-height: 1.6; color: rgba(244,238,227,.72); margin: 18px 0 0; position: relative;">Tell us where to send your full breakdown across all six areas, plus the three gaps to close first.</p>
+          </div>
+          <div style="padding: clamp(30px,4vw,48px);">
+            <sc-if value="{{ gateIdle }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ submitGate }}">
+                <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(22px,2.8vw,28px); line-height: 1.12; margin: 0 0 22px;">See your full results</h2>
+                <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Work email</span>
+                  <input type="email" required value="{{ gEmail }}" onChange="{{ setEmail }}" placeholder="you@org.com" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Name <span style="color: #9A8F7E; font-weight: 500;">(optional)</span></span>
+                  <input type="text" value="{{ gName }}" onChange="{{ setName }}" placeholder="Your name" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 7px; margin-bottom: 22px;">
+                  <span style="font-size: 13px; font-weight: 700; color: #2B2620;">Organization <span style="color: #9A8F7E; font-weight: 500;">(optional)</span></span>
+                  <input type="text" value="{{ gOrg }}" onChange="{{ setOrg }}" placeholder="Organization name" style="font-family: inherit; font-size: 15px; color: #2B2620; background: #FBF7EF; border: 1.5px solid #E2D7C4; border-radius: 11px; padding: 12px 14px; outline: none;" style-focus="border-color: #B5623C;" />
+                </label>
+                <sc-if value="{{ gateError }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 13.5px; color: #B5623C; margin-bottom: 16px;">Something went wrong. You can still view your results below, or email hello@nelcrum.com.</div>
+                </sc-if>
+                <button type="submit" disabled="{{ gateSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #B5623C; color: #fff; padding: 15px 26px; border-radius: 999px; font-size: 16px; font-weight: 700; opacity: {{ gateOpacity }};">{{ gateLabel }}</button>
+                <p style="font-size: 12px; color: #9A8F7E; margin: 14px 0 0; line-height: 1.5;">We will send your results and occasional insights for mission-driven leaders. Unsubscribe anytime. We never share your details.</p>
+              </form>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- RESULT -->
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: clamp(30px,4.5vw,56px);">
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: clamp(22px,4vw,40px); align-items: center; margin-bottom: 40px;" data-stack>
+            <!-- ring -->
+            <div style="position: relative; width: 168px; height: 168px; margin: 0 auto;">
+              <svg viewBox="0 0 120 120" style="width: 168px; height: 168px; transform: rotate(-90deg);">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="#EFE6D6" stroke-width="12"></circle>
+                <circle cx="60" cy="60" r="52" fill="none" stroke="{{ bandColor }}" stroke-width="12" stroke-linecap="round" stroke-dasharray="{{ ringDash }}" stroke-dashoffset="{{ ringOffset }}"></circle>
+              </svg>
+              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-family: 'Newsreader', serif; font-size: 44px; line-height: 1;">{{ score }}</div>
+                <div style="font-size: 11px; color: #9A8F7E; letter-spacing: .04em;">out of 100</div>
+              </div>
+            </div>
+            <div>
+              <div style="display: inline-block; background: {{ bandBg }}; color: {{ bandColor }}; font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;">{{ band }}</div>
+              <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(24px,3.2vw,34px); line-height: 1.12; margin: 0 0 12px;">{{ bandHead }}</h2>
+              <p style="font-size: 15.5px; line-height: 1.6; color: #6B6256; margin: 0;">{{ bandDesc }}</p>
+            </div>
+          </div>
+
+          <!-- area bars -->
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 18px;">Your six readiness areas</div>
+          <div style="display: grid; gap: 16px; margin-bottom: 40px;">
+            <sc-for list="{{ dims }}" as="d" hint-placeholder-count="6">
+              <div style="display: grid; grid-template-columns: 180px 1fr auto; gap: 16px; align-items: center;" data-stack>
+                <span style="font-size: 14.5px; font-weight: 700; color: #2B2620;">{{ d.name }}</span>
+                <div style="height: 12px; background: #EFE6D6; border-radius: 999px; overflow: hidden;">
+                  <div style="height: 100%; width: {{ d.pct }}%; background: {{ d.color }}; border-radius: 999px; transform-origin: left; animation: a360bar .6s ease both;"></div>
+                </div>
+                <span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #6B6256; min-width: 42px; text-align: right;">{{ d.pct }}%</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- next three moves -->
+          <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 16px;">{{ gapsTitle }}</div>
+          <div style="display: grid; gap: 14px; margin-bottom: 36px;">
+            <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="3">
+              <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-left: 3px solid #B5623C; border-radius: 14px; padding: 20px 22px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;">
+                <span style="font-family: 'Newsreader', serif; font-size: 26px; line-height: 1; color: #B5623C;">{{ g.num }}</span>
+                <div>
+                  <div style="font-size: 12px; font-family: 'Spline Sans Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: #9A8F7E; margin-bottom: 7px;">{{ g.area }}</div>
+                  <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(18px,2.1vw,22px); line-height: 1.22; margin: 0 0 8px;">{{ g.head }}</h3>
+                  <p style="font-size: 14.5px; line-height: 1.6; color: #4A443B; margin: 0;">{{ g.rec }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- CTA -->
+          <div style="background: #2B2620; color: #F4EEE3; border-radius: 18px; padding: clamp(26px,3.5vw,40px); display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;" data-stack>
+            <div>
+              <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(21px,2.6vw,28px); line-height: 1.16; margin: 0 0 8px;">Want help closing these gaps?</h3>
+              <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,238,227,.72); margin: 0;">Our advisory team turns this scorecard into a prioritized readiness plan and a funder list matched to your work, so your first applications land.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <a href="index.html#contact" style="text-decoration: none; text-align: center; background: #B5623C; color: #fff; padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+              <a href="{{ mailto }}" style="text-decoration: none; text-align: center; color: #F4EEE3; border: 1px solid rgba(244,238,227,.34); padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 700; white-space: nowrap;">Email my results</a>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 26px;">
+            <button onClick="{{ restart }}" style="border: none; cursor: pointer; font-family: inherit; background: transparent; color: #6B6256; font-size: 14px; font-weight: 700; text-decoration: underline;">Retake the scorecard</button>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+
+    <p style="text-align: center; font-size: 13px; color: #9A8F7E; margin: 26px auto 0; max-width: 54ch; line-height: 1.55;">Looking for our other tools? Explore the full <a href="tools.html" style="font-weight: 700;">free tools suite</a>, including the Workplace mini-360 and our community data dashboard.</p>
+
+  </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="background: #2B2620; color: rgba(244,238,227,.6);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(48px,6vw,68px) 32px 36px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: center; padding-bottom: 30px; border-bottom: 1px solid rgba(244,238,227,.14);">
+        <div style="display: flex; align-items: baseline; gap: 9px;">
+          <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F4EEE3;">NELCRUM</span>
+          <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .26em; color: #D69A78; text-transform: uppercase;">Solutions, LLC</span>
+        </div>
+        <a href="index.html#contact" style="text-decoration: none; background: #B5623C; color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 700;">Book a consultation</a>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 22px; font-size: 13px; color: rgba(244,238,227,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC</span>
+        <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycby6VPp5kEWJupRvJH2xRvs5D14CEGQvxaMR3kDFH43WTTv69_DL3ZesS8NFKdTxvMgFGg/exec";
+
+  DIMS = [
+    { key: "gov",     name: "Governance" },
+    { key: "finance", name: "Financial health" },
+    { key: "impact",  name: "Evidence of impact" },
+    { key: "systems", name: "Systems & infrastructure" },
+    { key: "strategy",name: "Funding strategy" },
+    { key: "story",   name: "Story & case" },
+  ];
+
+  QUESTIONS = [
+    { dim: "gov",      text: "Your board meets regularly and understands its fiduciary role.",
+      head: "Activate your board", rec: "Set a regular meeting cadence and give members a short primer on their fiduciary duties." },
+    { dim: "gov",      text: "You have current bylaws, a conflict-of-interest policy, and up-to-date registrations.",
+      head: "Get your governance documents current", rec: "Pull your bylaws, conflict-of-interest policy, and state and federal registrations into one up-to-date folder." },
+    { dim: "gov",      text: "Roles and decision rights between board and staff are clear.",
+      head: "Clarify who decides what", rec: "Write a one-page delegation of authority so board and staff know where each decision sits." },
+    { dim: "finance",  text: "You can produce clean, current financial statements on request.",
+      head: "Get your books report-ready", rec: "Bring your books to a state where a clean statement of activities and position is one export away." },
+    { dim: "finance",  text: "You hold at least three months of operating reserves.",
+      head: "Build an operating reserve", rec: "Set a reserve target and a simple plan to build toward three months of operating costs." },
+    { dim: "finance",  text: "You track actuals against a board-approved annual budget.",
+      head: "Budget and track monthly", rec: "Adopt a board-approved budget and review actuals against it every month." },
+    { dim: "impact",   text: "You measure outcomes, not just activities and outputs.",
+      head: "Measure outcomes, not just counts", rec: "Define two or three outcome measures that show change, not just how many people you served." },
+    { dim: "impact",   text: "You can back up your results with data a funder would find credible.",
+      head: "Make your results credible", rec: "Start collecting the baseline and follow-up data that make your outcomes believable to a funder." },
+    { dim: "impact",   text: "You gather feedback from the people you serve and act on it.",
+      head: "Close the feedback loop", rec: "Add a light feedback loop with the people you serve and record what you change as a result." },
+    { dim: "systems",  text: "You have a reliable way to track grant deadlines and reporting requirements.",
+      head: "Track deadlines in one place", rec: "Put every grant deadline and report requirement into one shared calendar with a named owner." },
+    { dim: "systems",  text: "Your records are organized enough to pull numbers quickly for a report.",
+      head: "Organize your data", rec: "Structure your program and finance records so a report pulls together in minutes, not days." },
+    { dim: "strategy", text: "You have identified specific funders whose priorities match your work.",
+      head: "Build a matched funder list", rec: "Assemble a short list of funders whose stated priorities line up with your work." },
+    { dim: "strategy", text: "Your revenue comes from more than one or two sources.",
+      head: "Diversify your revenue", rec: "Map your current revenue and identify one new source to reduce concentration risk." },
+    { dim: "story",    text: "You can state the problem you solve and your approach in plain language.",
+      head: "Sharpen your core story", rec: "Write your problem, your approach, and who you serve in one plain-language paragraph." },
+    { dim: "story",    text: "You have a current case for support ready to share with a funder.",
+      head: "Draft your case for support", rec: "Draft a one-page case for support you can hand to any funder on request." },
+  ];
+
+  SCALE = [
+    { num: 0, label: "Not yet", hint: "Not in place today" },
+    { num: 1, label: "Partly", hint: "Started, not finished" },
+    { num: 2, label: "Yes", hint: "Solidly in place" },
+  ];
+
+  DIM_ADVICE = {
+    gov:      { head: "Strengthen governance", rec: "Funders read governance as a proxy for risk. Get your board active and your core documents current before you apply." },
+    finance:  { head: "Shore up financial health", rec: "Clean books and a real reserve tell a funder their money is safe with you. This is often the fastest gap to close on paper." },
+    impact:   { head: "Prove your impact", rec: "Outcomes, not activities, win competitive grants. Build the measurement habit now so your next application can show results." },
+    systems:  { head: "Build the back-office", rec: "Missed deadlines and slow reporting cost renewals. A little infrastructure here protects every grant you win." },
+    strategy: { head: "Focus your funding strategy", rec: "Applying widely wastes scarce time. A matched funder list and diversified revenue make every application count." },
+    story:    { head: "Sharpen your case", rec: "Funders back a clear story before a complex one. Get your problem and approach into plain language you can reuse everywhere." },
+  };
+
+  state = {
+    stage: "intro",      // intro | q | gate | result
+    index: 0,
+    answers: {},         // index -> 0..2
+    gate: { name: "", email: "", org: "" },
+    gateStatus: "idle",  // idle | sending | done | error
+  };
+
+  scoreData() {
+    const qs = this.QUESTIONS;
+    const ans = this.state.answers;
+    const sums = {}, counts = {};
+    this.DIMS.forEach((d) => { sums[d.key] = 0; counts[d.key] = 0; });
+    qs.forEach((q, i) => {
+      const v = ans[i] != null ? ans[i] : 0;
+      sums[q.dim] += v; counts[q.dim] += 1;
+    });
+    const dims = this.DIMS.map((d) => {
+      const avg = counts[d.key] ? sums[d.key] / counts[d.key] : 0; // 0..2
+      const pct = Math.round((avg / 2) * 100);
+      return { key: d.key, name: d.name, pct: Math.max(0, pct), avg };
+    });
+    const totalPct = Math.round(dims.reduce((a, d) => a + d.pct, 0) / (dims.length || 1));
+    return { dims, score: totalPct };
+  }
+
+  // top gaps: lowest-scored questions first (Not yet before Partly), keep original order as tiebreak
+  gapList() {
+    const ans = this.state.answers;
+    const scored = this.QUESTIONS.map((q, i) => ({ q, i, v: ans[i] != null ? ans[i] : 0 }));
+    const gaps = scored.filter((s) => s.v < 2).sort((a, b) => (a.v - b.v) || (a.i - b.i)).slice(0, 3);
+    return gaps.map((s, n) => {
+      const area = (this.DIMS.find((d) => d.key === s.q.dim) || {}).name || "";
+      return { num: n + 1, area, head: s.q.head, rec: s.q.rec };
+    });
+  }
+
+  band(score) {
+    if (score >= 80) return { band: "Grant-ready", color: "#6F7E54", bg: "#EBEFE0",
+      head: "You are ready to pursue grants.",
+      desc: "The fundamentals funders look for are in place. Focus now on matching to the right funders and keeping your evidence and reporting sharp as you scale." };
+    if (score >= 60) return { band: "Nearly ready", color: "#B5623C", bg: "#F3E4DA",
+      head: "Nearly ready, with a few gaps to close.",
+      desc: "The foundation is solid, but a handful of areas are holding you back from competitive applications. Close the gaps below and you will be in strong shape." };
+    if (score >= 40) return { band: "Building the foundation", color: "#C08A2E", bg: "#F5EAD4",
+      head: "You are building the foundation.",
+      desc: "Several areas need real attention before most grants are within reach. The good news is the pattern below shows exactly where focused effort pays off first." };
+    return { band: "Early stage", color: "#B04A3C", bg: "#F4DDD8",
+      head: "You are at an early stage.",
+      desc: "The pieces funders expect are not yet in place across most areas. That is normal for a young or lean organization, and the priorities below are the right place to start." };
+  }
+
+  colorFor(pct) {
+    if (pct >= 67) return "#6F7E54";
+    if (pct >= 40) return "#C08A2E";
+    return "#B04A3C";
+  }
+
+  submitGate = (e) => {
+    e.preventDefault();
+    if (this.state.gateStatus === "sending") return;
+    const g = this.state.gate;
+    const { score, dims } = this.scoreData();
+    const b = this.band(score);
+    const gaps = this.gapList();
+    this.setState({ gateStatus: "sending" });
+    const dimStr = dims.map((d) => d.name + ": " + d.pct + "%").join("; ");
+    const dimsPipe = dims.map((d) => d.name + ": " + d.pct + "%").join("|");
+    const gapsStr = gaps.map((g) => g.num + ". " + g.head + " (" + g.area + ")").join(" | ");
+    const gapsEnc = gaps.map((g) => g.head + "~~" + g.area + "~~" + g.rec).join("||");
+    const body = new URLSearchParams({
+      name: g.name,
+      email: g.email,
+      organization: g.org,
+      message: "Grant Readiness Scorecard: " + score + "/100 (" + b.band + "). " + dimStr + ". Top gaps: " + gapsStr,
+      submittedAt: new Date().toISOString(),
+      source: "Grant Readiness Scorecard",
+      score: String(score),
+      band: b.band,
+      dimensions: dimsPipe,
+      gaps: gapsEnc,
+    });
+    fetch(this.SHEET_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    })
+      .then(() => this.setState({ gateStatus: "done", stage: "result" }))
+      .catch(() => this.setState({ gateStatus: "error" }));
+  };
+
+  answer(v) {
+    const i = this.state.index;
+    const answers = { ...this.state.answers, [i]: v };
+    const last = i >= this.QUESTIONS.length - 1;
+    if (last) {
+      this.setState({ answers, stage: "gate" });
+    } else {
+      this.setState({ answers, index: i + 1 });
+    }
+  }
+
+  renderVals() {
+    const st = this.state;
+    const total = this.QUESTIONS.length;
+    const idx = st.index;
+    const cur = this.QUESTIONS[idx] || this.QUESTIONS[0];
+    const curDimName = (this.DIMS.find((d) => d.key === cur.dim) || {}).name || "";
+
+    const scale = this.SCALE.map((s) => {
+      const chosen = st.answers[idx] === s.num;
+      return {
+        num: s.num,
+        label: s.label,
+        hint: s.hint,
+        bg: chosen ? "#B5623C" : "#FBF7EF",
+        fg: chosen ? "#fff" : "#2B2620",
+        border: chosen ? "#B5623C" : "#E2D7C4",
+        pick: () => this.answer(s.num),
+      };
+    });
+
+    const { score, dims } = this.scoreData();
+    const b = this.band(score);
+    const dimVals = dims.map((d) => ({ name: d.name, pct: d.pct, color: this.colorFor(d.pct) }));
+
+    const gaps = this.gapList();
+    const gapsTitle = gaps.length ? "Your next " + (gaps.length === 1 ? "move" : (gaps.length === 2 ? "two moves" : "three moves")) : "You are in great shape";
+
+    const circ = 2 * Math.PI * 52;
+    const ringOffset = circ - (score / 100) * circ;
+
+    const g = st.gate;
+    const mailBody =
+      "Hi NELCRUM team,%0D%0A%0D%0AHere are my Grant Readiness Scorecard results:%0D%0A%0D%0A" +
+      "Overall score: " + score + "/100 (" + b.band + ")%0D%0A%0D%0AAreas:%0D%0A" +
+      dims.map((d) => "- " + d.name + ": " + d.pct + "%").join("%0D%0A") +
+      (gaps.length ? "%0D%0A%0D%0ATop gaps to close:%0D%0A" + gaps.map((x) => "- " + x.head + " (" + x.area + ")").join("%0D%0A") : "") +
+      "%0D%0A%0D%0AI would like to talk about closing these gaps.";
+    const mailto = "mailto:hello@nelcrum.com?subject=" +
+      encodeURIComponent("My Grant Readiness Scorecard results") + "&body=" + mailBody;
+
+    const gStatus = st.gateStatus;
+
+    return {
+      total,
+      isIntro: st.stage === "intro",
+      isQuestion: st.stage === "q",
+      isGate: st.stage === "gate",
+      isResult: st.stage === "result",
+      start: () => this.setState({ stage: "q", index: 0 }),
+      curDim: curDimName,
+      curText: cur.text,
+      qNum: idx + 1,
+      progressPct: Math.round((idx / total) * 100),
+      scale,
+      atStart: idx === 0,
+      backColor: idx === 0 ? "#C9BFAF" : "#6B6256",
+      back: () => this.setState((s) => ({ index: Math.max(0, s.index - 1) })),
+      gEmail: g.email, gName: g.name, gOrg: g.org,
+      setEmail: (e) => { const v = e.target.value; this.setState((s) => ({ gate: { ...s.gate, email: v } })); },
+      setName: (e) => { const v = e.target.value; this.setState((s) => ({ gate: { ...s.gate, name: v } })); },
+      setOrg: (e) => { const v = e.target.value; this.setState((s) => ({ gate: { ...s.gate, org: v } })); },
+      submitGate: this.submitGate,
+      gateIdle: true,
+      gateSending: gStatus === "sending",
+      gateError: gStatus === "error",
+      gateLabel: gStatus === "sending" ? "Unlocking..." : "Show my results →",
+      gateOpacity: gStatus === "sending" ? 0.6 : 1,
+      score,
+      band: b.band,
+      bandColor: b.color,
+      bandBg: b.bg,
+      bandHead: b.head,
+      bandDesc: b.desc,
+      dims: dimVals,
+      gaps,
+      gapsTitle,
+      ringDash: circ + " " + circ,
+      ringOffset,
+      mailto,
+      restart: () => this.setState({ stage: "intro", index: 0, answers: {}, gate: { name: "", email: "", org: "" }, gateStatus: "idle" }),
+    };
+  }
+}
+</script>
+</body>
+</html>

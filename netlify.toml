@@ -31,3 +31,19 @@
   from = "/capability-statement"
   to = "/capability-statement.html"
   status = 200
+[[redirects]]
+  from = "/tools"
+  to = "/tools.html"
+  status = 200
+[[redirects]]
+  from = "/scorecard"
+  to = "/scorecard.html"
+  status = 200
+[[redirects]]
+  from = "/mobility-dashboard"
+  to = "/mobility-dashboard.html"
+  status = 200
+[[redirects]]
+  from = "/tract-map"
+  to = "/tract-map.html"
+  status = 200

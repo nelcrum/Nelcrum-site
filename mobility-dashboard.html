@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Income Mobility Dashboard · NELCRUM Solutions</title>
+<script>
+(function(){
+  var RO = 'ResizeObserver loop';
+  window.addEventListener('error', function(e){
+    if (e && e.message && e.message.indexOf(RO) !== -1) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
+  var _ce = console.error;
+  console.error = function(){
+    try { if (arguments[0] && String(arguments[0]).indexOf(RO) !== -1) return; } catch(_) {}
+    return _ce.apply(console, arguments);
+  };
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement('script');
+  s.src = './support.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #E9E0D0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #EAD9CC; color: #2B2620; }
+  a { color: #B5623C; }
+  a:hover { color: #8A4225; }
+</style>
+</helmet>
+
+<div style="font-family: 'Hanken Grotesk', system-ui, sans-serif; color: #2B2620; padding: 40px clamp(20px,4vw,56px) 96px;">
+
+  <!-- ===================== DOC HEADER ===================== -->
+  <div style="max-width: 1920px; margin: 0 auto 30px;">
+    <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px;">
+      <span style="font-family: 'Spline Sans Mono', monospace; font-weight: 600; font-size: 18px; letter-spacing: .14em;">NELCRUM</span>
+      <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .28em; color: #B5623C; text-transform: uppercase;">Solutions · Concept</span>
+    </div>
+    <h1 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: clamp(28px,3.4vw,44px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 12px; max-width: 24ch;">Census Tract Income Mobility Dashboard</h1>
+    <p style="font-size: 15.5px; line-height: 1.6; color: #5C5346; margin: 0 0 18px; max-width: 78ch;">Two layout directions below, sharing one live engine running on your merged census-tract file (FFIEC 2020 to 2024 thresholds, 72,542 tracts across 44 states). Change the stakeholder toggle or filters on either one to see everything recompute. Reference a direction by its badge in chat, for example <strong>1a</strong> or <strong>1b</strong>.</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <a href="tract-map.html" target="_blank" style="display: inline-flex; align-items: center; gap: 9px; background: #2B2620; color: #F4EEE3; text-decoration: none; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 700;">
+      <span style="width: 8px; height: 8px; border-radius: 2px; background: #B04A3C; box-shadow: 6px 0 0 #3E7D5A, 12px 0 0 #4E7CA1;"></span>
+      <span style="margin-left: 8px;">Open the tract map &#8594;</span>
+    </a>
+    <div style="display: inline-flex; align-items: center; gap: 10px; background: #FBF7EF; border: 1px solid #E2D7C4; border-radius: 999px; padding: 8px 16px; font-size: 12.5px; color: #6B6256;">
+      <span style="width: 8px; height: 8px; border-radius: 999px; background: #B5623C;"></span>
+      Shown unlocked for review. In production this sits behind an email gate wired to your Google Sheet, like the mini-360.
+    </div>
+    <div style="display: inline-flex; align-items: center; gap: 10px; background: {{ dsBg }}; border: 1px solid {{ dsBorder }}; border-radius: 999px; padding: 8px 16px; font-size: 12.5px; color: {{ dsFg }};">
+      <span style="width: 8px; height: 8px; border-radius: 999px; background: {{ dsDot }};"></span>
+      {{ dsLabel }}
+    </div>
+    </div>
+  </div>
+
+  <!-- ===================== TURN 1: TWO DIRECTIONS ===================== -->
+  <section data-turn="1" style="display: flex; flex-wrap: wrap; gap: 34px; align-items: flex-start; max-width: 1920px; margin: 0 auto;">
+
+    <!-- ============================================================ -->
+    <!-- OPTION 1a — BRIEFING REPORT                                  -->
+    <!-- ============================================================ -->
+    <div id="1a" data-screen-label="1a Briefing Report" style="width: 900px; max-width: 100%; flex: 1 1 900px; background: #F4EEE3; border: 1px solid #DCceb6; border-radius: 22px; box-shadow: 0 30px 70px -46px rgba(60,45,25,.55); overflow: hidden;">
+
+      <!-- badge + toolbar -->
+      <div style="position: sticky; top: 0; z-index: 20; background: rgba(244,238,227,.9); backdrop-filter: blur(10px); border-bottom: 1px solid #E2D7C4; padding: 14px 26px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="background: #2B2620; color: #F4EEE3; font-family: 'Spline Sans Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: .08em; padding: 5px 11px; border-radius: 8px;">1a</span>
+            <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #6B6256;">Briefing report</span>
+          </div>
+          <div style="display: flex; gap: 6px; background: #EDE3D2; padding: 4px; border-radius: 999px;">
+            <sc-for list="{{ skOpts }}" as="o" hint-placeholder-count="3">
+              <button onClick="{{ o.pick }}" style="cursor: pointer; font-family: inherit; border: none; border-radius: 999px; padding: 8px 14px; font-size: 12.5px; font-weight: 700; background: {{ o.bg }}; color: {{ o.fg }};">{{ o.short }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: clamp(24px,3vw,40px);">
+
+        <!-- intro -->
+        <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #B5623C; margin-bottom: 12px;">{{ skTag }}</div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: clamp(24px,3vw,34px); line-height: 1.1; margin: 0 0 12px; max-width: 22ch;">{{ skHeadline }}</h2>
+        <p style="font-size: 15.5px; line-height: 1.62; color: #5C5346; margin: 0 0 26px; max-width: 66ch;">{{ skIntro }}</p>
+
+        <!-- filters -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 14px; margin-bottom: 28px;">
+          <span style="font-size: 12px; font-weight: 700; color: #6B6256;">Region</span>
+          <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <sc-for list="{{ regionOpts }}" as="r" hint-placeholder-count="5">
+              <button onClick="{{ r.pick }}" style="cursor: pointer; font-family: inherit; border: 1px solid {{ r.border }}; border-radius: 999px; padding: 6px 13px; font-size: 12.5px; font-weight: 600; background: {{ r.bg }}; color: {{ r.fg }};">{{ r.label }}</button>
+            </sc-for>
+          </div>
+          <span style="width: 1px; height: 22px; background: #E2D7C4;"></span>
+          <span style="font-size: 12px; font-weight: 700; color: #6B6256;">State</span>
+          <select value="{{ stateValue }}" onChange="{{ onState }}" style="font-family: inherit; font-size: 13px; color: #2B2620; background: #fff; border: 1px solid #E2D7C4; border-radius: 9px; padding: 7px 12px; outline: none;">
+            <sc-for list="{{ stateOpts }}" as="s" hint-placeholder-count="4">
+              <option value="{{ s.v }}">{{ s.label }}</option>
+            </sc-for>
+          </select>
+          <button onClick="{{ reset }}" style="cursor: pointer; font-family: inherit; border: none; background: transparent; color: #B5623C; font-size: 12.5px; font-weight: 700; margin-left: auto;">Reset</button>
+        </div>
+
+        <!-- KPI band -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 34px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+            <div style="background: {{ k.bg }}; border: 1px solid {{ k.border }}; border-radius: 14px; padding: 18px 18px;">
+              <div style="font-family: 'Newsreader', serif; font-size: 34px; line-height: 1; color: {{ k.vColor }};">{{ k.value }}</div>
+              <div style="font-size: 12.5px; line-height: 1.35; color: {{ k.lColor }}; margin-top: 7px;">{{ k.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- MAP -->
+        <div style="margin-bottom: 36px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 22px; line-height: 1.1; margin: 0;">Where mobility is happening</h3>
+            <span style="font-size: 12px; color: #9A8F7E;">Net upward share, 2020 to 2024</span>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.55; color: #6B6256; margin: 0 0 16px;">Click a state to focus. Greener means more tracts moved up an income category; redder means more moved down.</p>
+          <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 16px; padding: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; max-width: 720px; margin: 0 auto;">
+              <sc-for list="{{ mapCells }}" as="c" hint-placeholder-count="17">
+                <button onClick="{{ c.pick }}" title="{{ c.title }}" style="grid-column: {{ c.gc }}; grid-row: {{ c.gr }}; aspect-ratio: 1; cursor: pointer; font-family: 'Spline Sans Mono', monospace; font-size: 11px; font-weight: 600; border: {{ c.brd }}; border-radius: 8px; background: {{ c.bg }}; color: {{ c.fg }}; display: flex; align-items: center; justify-content: center;">{{ c.ab }}</button>
+              </sc-for>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 18px; font-size: 11.5px; color: #6B6256;">
+              <span>More downward</span>
+              <span style="width: 132px; height: 10px; border-radius: 999px; background: linear-gradient(90deg, #B04A3C, #D8CDBA, #3E7D5A);"></span>
+              <span>More upward</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOW MATRIX -->
+        <div style="margin-bottom: 36px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px;">
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 22px; line-height: 1.1; margin: 0;">How tracts moved</h3>
+            <span style="font-size: 12px; color: #9A8F7E;">{{ filteredCount }} tracts</span>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.55; color: #6B6256; margin: 0 0 16px;">Rows are the 2020 income category; columns are 2024. The diagonal held steady, above it moved up, below it moved down.</p>
+          <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 16px; padding: 20px; overflow-x: auto;">
+            <table style="border-collapse: separate; border-spacing: 6px; margin: 0 auto;">
+              <thead>
+                <tr>
+                  <th style="font-size: 10.5px; color: #9A8F7E; font-weight: 600; text-align: right; padding-right: 6px;">2020 &#8595; / 2024 &#8594;</th>
+                  <sc-for list="{{ matrixCols }}" as="col" hint-placeholder-count="4">
+                    <th style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; font-weight: 600; color: #6B6256; padding: 4px 0;">{{ col }}</th>
+                  </sc-for>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ matrixRows }}" as="row" hint-placeholder-count="4">
+                  <tr>
+                    <td style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; font-weight: 600; color: #6B6256; text-align: right; padding-right: 6px; white-space: nowrap;">{{ row.label }}</td>
+                    <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="4">
+                      <td style="width: 74px; height: 54px; border-radius: 10px; background: {{ cell.bg }}; border: {{ cell.brd }}; text-align: center; vertical-align: middle;">
+                        <span style="font-family: 'Newsreader', serif; font-size: 22px; color: {{ cell.fg }};">{{ cell.count }}</span>
+                      </td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <!-- mobility legend -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px 22px; margin-top: 18px;">
+            <sc-for list="{{ buckets }}" as="b" hint-placeholder-count="5">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 12px; height: 12px; border-radius: 4px; background: {{ b.color }}; flex: none;"></span>
+                <span style="font-size: 13px; font-weight: 600; color: #2B2620; flex: 1;">{{ b.name }}</span>
+                <span style="font-family: 'Spline Sans Mono', monospace; font-size: 13px; color: #6B6256;">{{ b.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- RECLASS + DISPLACEMENT (two up) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 36px;">
+          <!-- reclass -->
+          <div style="background: #2B2620; color: #F4EEE3; border-radius: 16px; padding: 24px;">
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #D69A78; margin-bottom: 14px;">Driver of category change</div>
+            <div style="display: grid; gap: 9px; margin-bottom: 14px;">
+              <sc-for list="{{ growthBuckets }}" as="g" hint-placeholder-count="5">
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px;"><span style="font-weight: 600; color: #F4EEE3;">{{ g.name }}</span><span style="font-family: 'Spline Sans Mono', monospace; color: rgba(244,238,227,.6);">{{ g.count }} &middot; {{ g.share }}%</span></div>
+                  <div style="height: 10px; background: rgba(244,238,227,.12); border-radius: 999px; overflow: hidden;"><div style="height: 100%; width: {{ g.pct }}%; background: {{ g.color }}; border-radius: 999px;"></div></div>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size: 12.5px; line-height: 1.55; color: rgba(244,238,227,.72); margin: 0 0 16px;">Only <strong style="color: #F4EEE3;">{{ cleanSignal }}</strong> tracts are clean signal &mdash; real growth or decline with no MSA change. <strong style="color: #F4EEE3;">{{ mixedShare }}%</strong> are mixed: a real swing that coincided with the 2024 MSA redefinition, so the driver cannot be separated without raw-dollar MFI. Just {{ reclassCount }} are pure reclassification artifacts.</p>
+            <button onClick="{{ toggleReclass }}" style="cursor: pointer; font-family: inherit; border: 1px solid rgba(244,238,227,.34); background: {{ reclassBtnBg }}; color: {{ reclassBtnFg }}; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 700;">{{ reclassBtnLabel }}</button>
+          </div>
+          <!-- displacement -->
+          <div style="background: #FBF7EF; border: 1px solid #EFE6D6; border-radius: 16px; padding: 24px;">
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #B5623C; margin-bottom: 12px;">Displacement risk</div>
+            <div style="display: grid; gap: 12px; margin-bottom: 12px;">
+              <sc-for list="{{ dbuckets }}" as="d" hint-placeholder-count="3">
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px;"><span style="font-weight: 600; color: #2B2620;">{{ d.name }}</span><span style="font-family: 'Spline Sans Mono', monospace; color: #6B6256;">{{ d.count }}</span></div>
+                  <div style="height: 10px; background: #EFE6D6; border-radius: 999px; overflow: hidden;"><div style="height: 100%; width: {{ d.pct }}%; background: {{ d.color }}; border-radius: 999px;"></div></div>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size: 12.5px; line-height: 1.5; color: #6B6256; margin: 0;">Median risk index <strong style="color: #2B2620;">{{ medianRisk }}</strong> / 100. {{ riskNote }}</p>
+          </div>
+        </div>
+
+        <!-- TRACT CARDS -->
+        <div>
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 22px; line-height: 1.1; margin: 0;">{{ cardsTitle }}</h3>
+            <button onClick="{{ exportCsv }}" style="cursor: pointer; font-family: inherit; border: none; background: #B5623C; color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 13px; font-weight: 700;">Export profiles (CSV)</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px;">
+            <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
+              <div style="background: #fff; border: 1px solid #E2D7C4; border-left: 3px solid {{ c.color }}; border-radius: 14px; padding: 18px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px;">
+                  <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11.5px; color: #6B6256;">{{ c.geoid }}</span>
+                  <span style="font-size: 11px; font-weight: 700; color: {{ c.color }};">{{ c.bucket }}</span>
+                </div>
+                <div style="font-size: 14px; font-weight: 700; color: #2B2620; margin-bottom: 3px;">{{ c.place }}</div>
+                <div style="font-size: 12px; color: #9A8F7E; margin-bottom: 14px;">{{ c.msa }}</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                  <span style="font-size: 12px; font-weight: 700; color: {{ c.cat20Color }};">{{ c.cat20 }}</span>
+                  <span style="color: #C9BFAF;">&#8594;</span>
+                  <span style="font-size: 12px; font-weight: 700; color: {{ c.cat24Color }};">{{ c.cat24 }}</span>
+                  <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #9A8F7E; margin-left: auto;">{{ c.t20 }}% &#8594; {{ c.t24 }}%</span>
+                </div>
+                <div style="height: 8px; background: #EFE6D6; border-radius: 999px; overflow: hidden; margin-bottom: 6px;"><div style="height: 100%; width: {{ c.risk }}%; background: {{ c.riskColor }}; border-radius: 999px;"></div></div>
+                <div style="font-size: 11px; color: #6B6256; margin-bottom: 12px;">Displacement risk {{ c.risk }}/100</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                  <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="2">
+                    <span style="font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: {{ t.bg }}; color: {{ t.fg }};">{{ t.text }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- OPTION 1b — CONTROL ROOM                                     -->
+    <!-- ============================================================ -->
+    <div id="1b" data-screen-label="1b Control Room" style="width: 900px; max-width: 100%; flex: 1 1 900px; background: #23201B; border: 1px solid #3A342B; border-radius: 22px; box-shadow: 0 30px 70px -46px rgba(20,15,8,.7); overflow: hidden; color: #EDE6D8;">
+
+      <!-- badge bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 22px; border-bottom: 1px solid #3A342B; background: #1C1915;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="background: #B5623C; color: #fff; font-family: 'Spline Sans Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: .08em; padding: 5px 11px; border-radius: 8px;">1b</span>
+          <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9E927E;">Control room</span>
+        </div>
+        <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #9E927E;">FFIEC 2020 → 2024</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 218px 1fr; min-height: 640px;">
+
+        <!-- LEFT RAIL -->
+        <div style="background: #1C1915; border-right: 1px solid #3A342B; padding: 22px 18px; display: flex; flex-direction: column; gap: 22px;">
+          <div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #857A69; margin-bottom: 10px;">Stakeholder</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <sc-for list="{{ skOpts }}" as="o" hint-placeholder-count="3">
+                <button onClick="{{ o.pick }}" style="cursor: pointer; font-family: inherit; text-align: left; border: 1px solid {{ o.dBorder }}; border-radius: 10px; padding: 10px 12px; font-size: 12.5px; font-weight: 700; background: {{ o.dBg }}; color: {{ o.dFg }};">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #857A69; margin-bottom: 10px;">Region</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+              <sc-for list="{{ regionOpts }}" as="r" hint-placeholder-count="5">
+                <button onClick="{{ r.pick }}" style="cursor: pointer; font-family: inherit; border: 1px solid {{ r.dBorder }}; border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; background: {{ r.dBg }}; color: {{ r.dFg }};">{{ r.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #857A69; margin-bottom: 10px;">State</div>
+            <select value="{{ stateValue }}" onChange="{{ onState }}" style="width: 100%; font-family: inherit; font-size: 12.5px; color: #EDE6D8; background: #2B2620; border: 1px solid #3A342B; border-radius: 9px; padding: 8px 10px; outline: none;">
+              <sc-for list="{{ stateOpts }}" as="s" hint-placeholder-count="4">
+                <option value="{{ s.v }}">{{ s.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+
+          <div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #857A69; margin-bottom: 10px;">MSA reclassification</div>
+            <button onClick="{{ toggleReclass }}" style="cursor: pointer; font-family: inherit; width: 100%; text-align: left; border: 1px solid {{ reclassDBorder }}; border-radius: 10px; padding: 10px 12px; font-size: 12.5px; font-weight: 700; background: {{ reclassDBg }}; color: {{ reclassDFg }};">{{ reclassToggleShort }}</button>
+          </div>
+
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <button onClick="{{ exportCsv }}" style="cursor: pointer; font-family: inherit; border: none; background: #B5623C; color: #fff; border-radius: 999px; padding: 11px; font-size: 12.5px; font-weight: 700;">Export profiles (CSV)</button>
+            <button onClick="{{ reset }}" style="cursor: pointer; font-family: inherit; border: 1px solid #3A342B; background: transparent; color: #9E927E; border-radius: 999px; padding: 9px; font-size: 12px; font-weight: 700;">Reset filters</button>
+          </div>
+        </div>
+
+        <!-- MAIN -->
+        <div style="padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+
+          <!-- intro line -->
+          <div>
+            <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 6px;">{{ skTag }}</div>
+            <p style="font-size: 13.5px; line-height: 1.55; color: #C7BCA9; margin: 0; max-width: 70ch;">{{ skIntro }}</p>
+          </div>
+
+          <!-- KPI strip -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px;">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+              <div style="background: {{ k.dBg }}; border: 1px solid {{ k.dBorder }}; border-radius: 12px; padding: 13px 14px;">
+                <div style="font-family: 'Newsreader', serif; font-size: 27px; line-height: 1; color: {{ k.dVColor }};">{{ k.value }}</div>
+                <div style="font-size: 11px; line-height: 1.3; color: #9E927E; margin-top: 6px;">{{ k.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- tabs -->
+          <div style="display: flex; gap: 4px; background: #1C1915; padding: 4px; border-radius: 12px; border: 1px solid #3A342B; align-self: flex-start;">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.pick }}" style="cursor: pointer; font-family: inherit; border: none; border-radius: 9px; padding: 8px 16px; font-size: 12.5px; font-weight: 700; background: {{ t.bg }}; color: {{ t.fg }};">{{ t.label }}</button>
+            </sc-for>
+          </div>
+
+          <!-- TAB: OVERVIEW (map + matrix) -->
+          <sc-if value="{{ tabOverview }}" hint-placeholder-val="{{ true }}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <!-- map -->
+              <div style="background: #1C1915; border: 1px solid #3A342B; border-radius: 14px; padding: 18px;">
+                <div style="font-size: 12.5px; font-weight: 700; color: #EDE6D8; margin-bottom: 3px;">Net upward share</div>
+                <div style="font-size: 11.5px; color: #9E927E; margin-bottom: 14px;">Click a state to focus</div>
+                <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px;">
+                  <sc-for list="{{ mapCells }}" as="c" hint-placeholder-count="17">
+                    <button onClick="{{ c.pick }}" title="{{ c.title }}" style="grid-column: {{ c.gc }}; grid-row: {{ c.gr }}; aspect-ratio: 1; cursor: pointer; font-family: 'Spline Sans Mono', monospace; font-size: 9.5px; font-weight: 600; border: {{ c.dBrd }}; border-radius: 6px; background: {{ c.bg }}; color: {{ c.fg }}; display: flex; align-items: center; justify-content: center;">{{ c.ab }}</button>
+                  </sc-for>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 10.5px; color: #9E927E;">
+                  <span>Down</span>
+                  <span style="flex: 1; height: 8px; border-radius: 999px; background: linear-gradient(90deg, #B04A3C, #6b6256, #3E7D5A);"></span>
+                  <span>Up</span>
+                </div>
+              </div>
+              <!-- matrix -->
+              <div style="background: #1C1915; border: 1px solid #3A342B; border-radius: 14px; padding: 18px;">
+                <div style="font-size: 12.5px; font-weight: 700; color: #EDE6D8; margin-bottom: 3px;">Income category flow</div>
+                <div style="font-size: 11.5px; color: #9E927E; margin-bottom: 14px;">{{ filteredCount }} tracts · rows 2020, cols 2024</div>
+                <table style="border-collapse: separate; border-spacing: 4px; width: 100%;">
+                  <thead><tr>
+                    <th></th>
+                    <sc-for list="{{ matrixCols }}" as="col" hint-placeholder-count="4">
+                      <th style="font-family: 'Spline Sans Mono', monospace; font-size: 9.5px; font-weight: 600; color: #9E927E;">{{ col }}</th>
+                    </sc-for>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ matrixRows }}" as="row" hint-placeholder-count="4">
+                      <tr>
+                        <td style="font-family: 'Spline Sans Mono', monospace; font-size: 9.5px; font-weight: 600; color: #9E927E; text-align: right; padding-right: 4px; white-space: nowrap;">{{ row.short }}</td>
+                        <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="4">
+                          <td style="height: 46px; border-radius: 8px; background: {{ cell.dBg }}; border: {{ cell.dBrd }}; text-align: center;">
+                            <span style="font-family: 'Newsreader', serif; font-size: 18px; color: {{ cell.dFg }};">{{ cell.count }}</span>
+                          </td>
+                        </sc-for>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- mobility legend -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px 18px; margin-top: 14px;">
+              <sc-for list="{{ buckets }}" as="b" hint-placeholder-count="5">
+                <div style="display: flex; align-items: center; gap: 9px;">
+                  <span style="width: 11px; height: 11px; border-radius: 4px; background: {{ b.color }}; flex: none;"></span>
+                  <span style="font-size: 12px; font-weight: 600; color: #DDD3C2; flex: 1;">{{ b.name }}</span>
+                  <span style="font-family: 'Spline Sans Mono', monospace; font-size: 12px; color: #9E927E;">{{ b.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- TAB: SIGNAL (reclass + displacement) -->
+          <sc-if value="{{ tabSignal }}" hint-placeholder-val="{{ false }}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div style="background: #1C1915; border: 1px solid #3A342B; border-radius: 14px; padding: 20px;">
+                <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #D69A78; margin-bottom: 14px;">Driver of category change</div>
+                <div style="display: grid; gap: 9px; margin-bottom: 12px;">
+                  <sc-for list="{{ growthBuckets }}" as="g" hint-placeholder-count="5">
+                    <div>
+                      <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;"><span style="font-weight: 600; color: #DDD3C2;">{{ g.name }}</span><span style="font-family: 'Spline Sans Mono', monospace; color: #9E927E;">{{ g.count }} &middot; {{ g.share }}%</span></div>
+                      <div style="height: 10px; background: #2B2620; border-radius: 999px; overflow: hidden;"><div style="height: 100%; width: {{ g.pct }}%; background: {{ g.color }}; border-radius: 999px;"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="font-size: 12px; line-height: 1.5; color: #9E927E; margin: 0;"><strong style="color: #EDE6D8;">{{ cleanSignal }}</strong> clean-signal tracts; <strong style="color: #EDE6D8;">{{ mixedShare }}%</strong> mixed (verify with raw-dollar MFI); {{ reclassCount }} pure artifacts. <strong style="color: #EDE6D8;">{{ trueDistress }}</strong> qualify as true-distress for OZ 2.0.</p>
+              </div>
+              <div style="background: #1C1915; border: 1px solid #3A342B; border-radius: 14px; padding: 20px;">
+                <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #D69A78; margin-bottom: 14px;">Displacement risk</div>
+                <div style="display: grid; gap: 12px;">
+                  <sc-for list="{{ dbuckets }}" as="d" hint-placeholder-count="3">
+                    <div>
+                      <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;"><span style="font-weight: 600; color: #DDD3C2;">{{ d.name }}</span><span style="font-family: 'Spline Sans Mono', monospace; color: #9E927E;">{{ d.count }}</span></div>
+                      <div style="height: 10px; background: #2B2620; border-radius: 999px; overflow: hidden;"><div style="height: 100%; width: {{ d.pct }}%; background: {{ d.color }}; border-radius: 999px;"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="font-size: 12px; line-height: 1.5; color: #9E927E; margin: 14px 0 0;">Median risk {{ medianRisk }}/100. {{ riskNote }}</p>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- TAB: TRACTS -->
+          <sc-if value="{{ tabTracts }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #EDE6D8; margin-bottom: 14px;">{{ cardsTitle }}</div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; max-height: 520px; overflow-y: auto; padding-right: 4px;">
+                <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
+                  <div style="background: #2B2620; border: 1px solid #3A342B; border-left: 3px solid {{ c.color }}; border-radius: 12px; padding: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;">
+                      <span style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #9E927E;">{{ c.geoid }}</span>
+                      <span style="font-size: 10.5px; font-weight: 700; color: {{ c.color }};">{{ c.bucket }}</span>
+                    </div>
+                    <div style="font-size: 13.5px; font-weight: 700; color: #EDE6D8; margin-bottom: 2px;">{{ c.place }}</div>
+                    <div style="font-size: 11.5px; color: #857A69; margin-bottom: 12px;">{{ c.msa }}</div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                      <span style="font-size: 11.5px; font-weight: 700; color: {{ c.cat20Color }};">{{ c.cat20 }}</span>
+                      <span style="color: #6B6256;">&#8594;</span>
+                      <span style="font-size: 11.5px; font-weight: 700; color: {{ c.cat24Color }};">{{ c.cat24 }}</span>
+                      <span style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; color: #857A69; margin-left: auto;">{{ c.t20 }}&#8594;{{ c.t24 }}%</span>
+                    </div>
+                    <div style="height: 7px; background: #1C1915; border-radius: 999px; overflow: hidden; margin-bottom: 10px;"><div style="height: 100%; width: {{ c.risk }}%; background: {{ c.riskColor }}; border-radius: 999px;"></div></div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                      <sc-for list="{{ c.tags }}" as="t" hint-placeholder-count="2">
+                        <span style="font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: {{ t.dBg }}; color: {{ t.dFg }};">{{ t.text }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.CAT = ["Low", "Moderate", "Middle", "Upper"];
+    this.CAT_SHORT = ["Low", "Mod", "Mid", "Up"];
+    this.CAT_COLOR = ["#B04A3C", "#C08A2E", "#4E7CA1", "#3E7D5A"];
+    this.BUCKETS = {
+      persistLow: { name: "Persistent LMI", color: "#6F7E54" },
+      upward:     { name: "Upward, inclusive", color: "#3E7D5A" },
+      gentrify:   { name: "Gentrification risk", color: "#C08A2E" },
+      distressed: { name: "Newly distressed", color: "#B04A3C" },
+      stableMMI:  { name: "Stable middle/upper", color: "#B7A98F" },
+    };
+    this.BUCKET_ORDER = ["persistLow", "upward", "gentrify", "distressed", "stableMMI"];
+    // growth_type = the methodology's driver-of-change variable (from the merged
+    // file's classification column). Palette follows the thread's semantics,
+    // mapped into this dashboard's warm editorial range for legibility.
+    this.GROWTH = {
+      realDecline: { name: "Real decline",      color: "#B04A3C" },
+      realGrowth:  { name: "Real growth",       color: "#3E7D5A" },
+      stable:      { name: "Stable economy",    color: "#4E7CA1" },
+      reclass:     { name: "Reclassification",  color: "#C08A2E" },
+      mixed:       { name: "Mixed (real + reclass)", color: "#8E8577" },
+    };
+    this.GROWTH_ORDER = ["realDecline", "realGrowth", "stable", "reclass", "mixed"];
+    // Full US tile-grid (NYT / kristw layout, 12 cols x 8 rows). gr=row, gc=col.
+    this.STATES = [
+      { ab:"AL", nm:"Alabama", fips:"01", rg:"S",  gr:7, gc:7 },
+      { ab:"AK", nm:"Alaska", fips:"02", rg:"W",  gr:1, gc:1 },
+      { ab:"AZ", nm:"Arizona", fips:"04", rg:"W",  gr:6, gc:3 },
+      { ab:"AR", nm:"Arkansas", fips:"05", rg:"S",  gr:6, gc:6 },
+      { ab:"CA", nm:"California", fips:"06", rg:"W",  gr:5, gc:1 },
+      { ab:"CO", nm:"Colorado", fips:"08", rg:"W",  gr:5, gc:4 },
+      { ab:"CT", nm:"Connecticut", fips:"09", rg:"NE", gr:3, gc:11 },
+      { ab:"DE", nm:"Delaware", fips:"10", rg:"S",  gr:5, gc:11 },
+      { ab:"DC", nm:"District of Columbia", fips:"11", rg:"S", gr:5, gc:9 },
+      { ab:"FL", nm:"Florida", fips:"12", rg:"S",  gr:8, gc:8 },
+      { ab:"GA", nm:"Georgia", fips:"13", rg:"S",  gr:7, gc:8 },
+      { ab:"HI", nm:"Hawaii", fips:"15", rg:"W",  gr:8, gc:1 },
+      { ab:"ID", nm:"Idaho", fips:"16", rg:"W",  gr:4, gc:3 },
+      { ab:"IL", nm:"Illinois", fips:"17", rg:"MW", gr:4, gc:7 },
+      { ab:"IN", nm:"Indiana", fips:"18", rg:"MW", gr:4, gc:8 },
+      { ab:"IA", nm:"Iowa", fips:"19", rg:"MW", gr:4, gc:6 },
+      { ab:"KS", nm:"Kansas", fips:"20", rg:"MW", gr:5, gc:5 },
+      { ab:"KY", nm:"Kentucky", fips:"21", rg:"S",  gr:5, gc:7 },
+      { ab:"LA", nm:"Louisiana", fips:"22", rg:"S",  gr:7, gc:5 },
+      { ab:"ME", nm:"Maine", fips:"23", rg:"NE", gr:1, gc:12 },
+      { ab:"MD", nm:"Maryland", fips:"24", rg:"S",  gr:5, gc:10 },
+      { ab:"MA", nm:"Massachusetts", fips:"25", rg:"NE", gr:2, gc:12 },
+      { ab:"MI", nm:"Michigan", fips:"26", rg:"MW", gr:3, gc:8 },
+      { ab:"MN", nm:"Minnesota", fips:"27", rg:"MW", gr:3, gc:6 },
+      { ab:"MS", nm:"Mississippi", fips:"28", rg:"S",  gr:7, gc:6 },
+      { ab:"MO", nm:"Missouri", fips:"29", rg:"MW", gr:5, gc:6 },
+      { ab:"MT", nm:"Montana", fips:"30", rg:"W",  gr:3, gc:3 },
+      { ab:"NE", nm:"Nebraska", fips:"31", rg:"MW", gr:4, gc:5 },
+      { ab:"NV", nm:"Nevada", fips:"32", rg:"W",  gr:5, gc:2 },
+      { ab:"NH", nm:"New Hampshire", fips:"33", rg:"NE", gr:2, gc:11 },
+      { ab:"NJ", nm:"New Jersey", fips:"34", rg:"NE", gr:4, gc:11 },
+      { ab:"NM", nm:"New Mexico", fips:"35", rg:"W",  gr:6, gc:4 },
+      { ab:"NY", nm:"New York", fips:"36", rg:"NE", gr:3, gc:10 },
+      { ab:"NC", nm:"North Carolina", fips:"37", rg:"S", gr:6, gc:9 },
+      { ab:"ND", nm:"North Dakota", fips:"38", rg:"MW", gr:3, gc:4 },
+      { ab:"OH", nm:"Ohio", fips:"39", rg:"MW", gr:4, gc:9 },
+      { ab:"OK", nm:"Oklahoma", fips:"40", rg:"S",  gr:6, gc:5 },
+      { ab:"OR", nm:"Oregon", fips:"41", rg:"W",  gr:4, gc:2 },
+      { ab:"PA", nm:"Pennsylvania", fips:"42", rg:"NE", gr:4, gc:10 },
+      { ab:"RI", nm:"Rhode Island", fips:"44", rg:"NE", gr:3, gc:12 },
+      { ab:"SC", nm:"South Carolina", fips:"45", rg:"S", gr:7, gc:9 },
+      { ab:"SD", nm:"South Dakota", fips:"46", rg:"MW", gr:3, gc:5 },
+      { ab:"TN", nm:"Tennessee", fips:"47", rg:"S",  gr:6, gc:7 },
+      { ab:"TX", nm:"Texas", fips:"48", rg:"S",  gr:7, gc:4 },
+      { ab:"UT", nm:"Utah", fips:"49", rg:"W",  gr:5, gc:3 },
+      { ab:"VT", nm:"Vermont", fips:"50", rg:"NE", gr:2, gc:10 },
+      { ab:"VA", nm:"Virginia", fips:"51", rg:"S",  gr:6, gc:8 },
+      { ab:"WA", nm:"Washington", fips:"53", rg:"W",  gr:3, gc:2 },
+      { ab:"WV", nm:"West Virginia", fips:"54", rg:"S", gr:5, gc:8 },
+      { ab:"WI", nm:"Wisconsin", fips:"55", rg:"MW", gr:3, gc:7 },
+      { ab:"WY", nm:"Wyoming", fips:"56", rg:"W",  gr:4, gc:4 },
+    ];
+    this.REGIONS = [
+      { key:"all", label:"All" },
+      { key:"NE",  label:"Northeast" },
+      { key:"MW",  label:"Midwest" },
+      { key:"S",   label:"South" },
+      { key:"W",   label:"West" },
+    ];
+    this.SK = {
+      oz: {
+        short:"OZ 2.0", label:"OZ 2.0 investors", tag:"Opportunity Zone 2.0",
+        headline:"Nominate tracts with inclusive momentum, not displacement.",
+        intro:"Governors may nominate up to 25% of eligible low-income tracts starting July 2026. Target persistent-need and upwardly inclusive tracts, and screen out flips driven by displacement, the storage-unit lesson of OZ 1.0.",
+      },
+      mission: {
+        short:"Mission", label:"Mission investors", tag:"Mission-driven capital",
+        headline:"Put capital where the market will not, and prove additionality.",
+        intro:"For CDFIs, foundations, and impact funds, prioritize additionality: persistently underinvested tracts and newly distressed areas that market-rate capital overlooks, with demographic stability that signals inclusive recovery.",
+      },
+      cra: {
+        short:"CRA", label:"CRA examiners & banks", tag:"CRA examination",
+        headline:"Separate real economic change from statistical reclassification.",
+        intro:"With 2024 MSA redefinitions, many tracts flipped income category overnight. Document true change versus artifact, and capture newly LMI-eligible tracts to defend assessment-area responsiveness.",
+      },
+    };
+    this.FIPS = {}; this.STATES.forEach((s) => { this.FIPS[s.fips] = s; });
+    this.DATA = this.buildData();
+    this.computeStateStats();
+    this.state = { sk: "oz", region: "all", stateAb: "all", showReclass: false, tab: "overview", dataSource: "sample", loadNote: "" };
+  }
+
+  componentDidMount() {
+    // Auto-load the merged tract file. Columns:
+    // geoid, tmfi_2020, tmfi_2024, msa_2020, msa_2024, classification
+    // (The ?t= token is only needed inside the design preview; on a normal
+    // static host the plain relative path resolves and the token is absent.)
+    var m = (location.search || "").match(/[?&]t=([^&]+)/);
+    var url = "./tract-mobility.csv" + (m ? "?t=" + m[1] : "");
+    fetch(url, { cache: "no-store" })
+      .then((r) => (r.ok ? r.text() : Promise.reject()))
+      .then((txt) => {
+        const rows = this.parseCsv(txt);
+        if (rows && rows.length) {
+          this.DATA = rows;
+          this.computeStateStats();
+          this.setState({ dataSource: "real", loadNote: rows.length.toLocaleString() + " tracts" });
+        }
+      })
+      .catch(() => { /* file unavailable, representative sample stays */ });
+  }
+
+  parseCsv(text) {
+    const lines = text.replace(/\r/g, "").split("\n").filter((l) => l.trim());
+    if (lines.length < 2) return null;
+    const head = lines[0].split(",").map((h) => h.trim().toLowerCase());
+    const ix = (name) => head.indexOf(name);
+    const iGeo = ix("geoid"), i20 = ix("tmfi_2020"), i24 = ix("tmfi_2024"),
+          iM20 = ix("msa_2020"), iM24 = ix("msa_2024"), iCls = ix("classification");
+    if (iGeo < 0 || i20 < 0 || i24 < 0) return null;
+    const out = [];
+    for (let li = 1; li < lines.length; li++) {
+      const c = lines[li].split(",");
+      const geoRaw = (c[iGeo] || "").trim();
+      if (!/^\d{11}$/.test(geoRaw)) continue;
+      const stObj = this.FIPS[geoRaw.slice(0, 2)];
+      if (!stObj) continue;
+      const t20 = parseFloat(c[i20]), t24 = parseFloat(c[i24]);
+      if (!isFinite(t20) || !isFinite(t24) || t20 <= 0 || t24 <= 0) continue;
+      const i20c = this.catOf(t20), i24c = this.catOf(t24);
+      const m20 = iM20 >= 0 ? (c[iM20] || "").trim() : "";
+      const m24 = iM24 >= 0 ? (c[iM24] || "").trim() : "";
+      // Corrected growth_type: recomputed here rather than trusting the file's
+      // classification column, whose msa_status_change over-fired (keyed off MSA
+      // *code* inequality, so 87% landed in "Mixed"). Real in/out-MSA status comes
+      // from the codes (blank/99999/0 = non-MSA); stability from the +/-5pp rule
+      // on the already-normalized TMFI%.
+      const isMsa = (v) => v !== "" && v !== "99999" && v !== "0";
+      const inOut = isMsa(m20) !== isMsa(m24);
+      const chg = t24 - t20;
+      const catChanged = i20c !== i24c;
+      let clsKey;
+      if (Math.abs(chg) >= 5 && inOut) clsKey = "mixed";
+      else if (chg >= 5) clsKey = "realGrowth";
+      else if (chg <= -5) clsKey = "realDecline";
+      else if (Math.abs(chg) < 5 && catChanged) clsKey = "reclass";
+      else clsKey = "stable";
+      const reclass = clsKey === "reclass";
+      const mixed = clsKey === "mixed";
+      // Displacement-risk proxy: no demographic feed in this file, so it is modeled
+      // from the strength of upward movement and crossing into middle/upper income.
+      let risk = 20;
+      if (i24c > i20c) risk += 24;
+      if (i20c <= 1 && i24c >= 2) risk += 20;
+      risk += Math.min(28, Math.round(Math.abs(t24 - t20) * 0.4));
+      risk = Math.max(4, Math.min(99, risk));
+      let bucket;
+      if (i24c > i20c) bucket = (i20c <= 1 && i24c >= 2) ? (risk >= 60 ? "gentrify" : "upward") : "upward";
+      else if (i24c < i20c) bucket = "distressed";
+      else bucket = i20c <= 1 ? "persistLow" : "stableMMI";
+      const msaName = m24 && m24 !== "99999" ? "CBSA " + m24 : "Non-MSA";
+      const geoid = geoRaw.slice(0, 2) + "\u00b7" + geoRaw.slice(2, 5) + "\u00b7" + geoRaw.slice(5);
+      out.push({
+        st: stObj.ab, region: stObj.rg, msa: msaName, geoid,
+        t20: Math.round(t20), t24: Math.round(t24), i20: i20c, i24: i24c,
+        bucket, risk, reclass, mixed, cls: clsKey, ozEligible: i20c <= 1,
+      });
+    }
+    return out;
+  }
+
+  computeStateStats() {
+    const st = {};
+    this.STATES.forEach((s) => { st[s.ab] = { up: 0, dn: 0, total: 0 }; });
+    this.DATA.forEach((t) => {
+      const r = st[t.st]; if (!r) return;
+      r.total++;
+      if (t.i24 > t.i20) r.up++; else if (t.i24 < t.i20) r.dn++;
+    });
+    this.stateStats = st;
+    this._fKey = null; // invalidate filter cache when data changes
+  }
+
+  rng(seed) { return function () { let t = seed += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  catOf(p) { return p < 50 ? 0 : p < 80 ? 1 : p < 120 ? 2 : 3; }
+
+  buildData() {
+    const rand = this.rng(20242020);
+    const tracts = [];
+    this.STATES.forEach((st) => {
+      const per = 5;
+      for (let i = 0; i < per; i++) {
+        let t20 = Math.round(28 + rand() * 122);            // 28..150
+        let delta = Math.round((rand() - 0.42) * 46);        // upward bias
+        let t24 = Math.max(14, Math.min(182, t20 + delta));
+        let reclass = rand() < 0.17;
+        if (reclass && this.catOf(t20) === this.catOf(t24)) {
+          // force a boundary crossing for a statistical flip
+          const bounds = [50, 80, 120];
+          let nearest = bounds.reduce((a, b) => Math.abs(b - t24) < Math.abs(a - t24) ? b : a, bounds[0]);
+          t24 = t24 >= nearest ? nearest - 3 : nearest + 3;
+        }
+        const i20 = this.catOf(t20), i24 = this.catOf(t24);
+        let risk = Math.round(18 + rand() * 40);
+        if (i24 > i20) risk += 22;
+        if (i20 <= 1 && i24 >= 2) risk += 18;
+        risk = Math.max(4, Math.min(99, risk));
+        let bucket;
+        if (i24 > i20) bucket = (i20 <= 1 && i24 >= 2) ? (risk >= 60 ? "gentrify" : "upward") : "upward";
+        else if (i24 < i20) bucket = "distressed";
+        else bucket = i20 <= 1 ? "persistLow" : "stableMMI";
+        const msa = rand() < 0.78 ? (st.nm + " metro") : "Non-MSA";
+        const county = 100 + Math.floor(rand() * 800);
+        const tract = (1000 + Math.floor(rand() * 8900)) + "00";
+        const geoid = st.fips + "\u00b7" + county + "\u00b7" + tract;
+        const ozEligible = i20 <= 1;
+        const d = t24 - t20;
+        const cls = Math.abs(d) < 5
+          ? (i20 === i24 ? "stable" : (reclass ? "reclass" : "mixed"))
+          : (reclass ? "mixed" : (d >= 5 ? "realGrowth" : "realDecline"));
+        tracts.push({ st: st.ab, region: st.rg, msa, geoid, t20, t24, i20, i24, bucket, risk, reclass, mixed: cls === "mixed", cls, ozEligible });
+      }
+    });
+    return tracts;
+  }
+
+  filtered() {
+    const s = this.state;
+    const key = s.stateAb + "|" + s.region;
+    if (this._fKey === key && this._fCache) return this._fCache;
+    const F = this.DATA.filter((t) =>
+      (s.stateAb !== "all" ? t.st === s.stateAb : (s.region === "all" || t.region === s.region))
+    );
+    this._fKey = key; this._fCache = F;
+    return F;
+  }
+
+  median(arr) { if (!arr.length) return 0; const a = [...arr].sort((x, y) => x - y); const m = Math.floor(a.length / 2); return a.length % 2 ? a[m] : Math.round((a[m - 1] + a[m]) / 2); }
+  netColor(net) {
+    if (net > 0.28) return "#3E7D5A";
+    if (net > 0.06) return "#8FB08C";
+    if (net >= -0.06) return "#D8CDBA";
+    if (net >= -0.28) return "#CE9A8E";
+    return "#B04A3C";
+  }
+
+  exportCsv = () => {
+    const F = this.filtered();
+    const head = ["GEOID","State","Region","MSA","TMFI_2020_pct","Cat_2020","TMFI_2024_pct","Cat_2024","Mobility","MSA_Reclassified","Displacement_Risk","OZ_Eligible"];
+    const rows = [head].concat(F.map((t) => [
+      t.geoid, t.st, t.region, t.msa, t.t20, this.CAT[t.i20], t.t24, this.CAT[t.i24],
+      this.BUCKETS[t.bucket].name, t.reclass ? "Yes" : "No", t.risk, t.ozEligible ? "Yes" : "No"
+    ]));
+    const csv = rows.map((r) => r.map((c) => '"' + String(c).replace(/"/g, '""') + '"').join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "tract-profiles.csv"; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const sk = this.SK[s.sk];
+    const F = this.filtered();
+    const n = F.length || 1;
+
+    // counts
+    const cnt = { persistLow:0, upward:0, gentrify:0, distressed:0, stableMMI:0 };
+    F.forEach((t) => cnt[t.bucket]++);
+    const ozCount = F.filter((t) => t.ozEligible).length;
+    const reclassCount = F.filter((t) => t.reclass).length;
+    const reclassMixed = F.filter((t) => t.mixed).length;
+    // growth_type driver breakdown
+    const growthCnt = { realDecline: 0, realGrowth: 0, stable: 0, reclass: 0, mixed: 0 };
+    F.forEach((t) => { if (growthCnt[t.cls] !== undefined) growthCnt[t.cls]++; });
+    const gmax = Math.max(1, growthCnt.realDecline, growthCnt.realGrowth, growthCnt.stable, growthCnt.reclass, growthCnt.mixed);
+    const growthBuckets = this.GROWTH_ORDER.map((k) => ({
+      name: this.GROWTH[k].name, color: this.GROWTH[k].color, count: growthCnt[k],
+      pct: Math.round((growthCnt[k] / gmax) * 100), share: Math.round((growthCnt[k] / n) * 100),
+    }));
+    const cleanSignal = growthCnt.realGrowth + growthCnt.realDecline;
+    const mixedShare = Math.round((growthCnt.mixed / n) * 100);
+    // OZ 2.0 true-distress shortlist: Low in 2024 with a stable or genuinely declining economy
+    const trueDistress = F.filter((t) => t.i24 <= 1 && (t.cls === "stable" || t.cls === "realDecline")).length;
+    const upCount = cnt.upward + cnt.gentrify;
+    const downCount = cnt.distressed;
+    const newlyLMI = F.filter((t) => t.i24 <= 1 && (t.i20 >= 2 || t.reclass)).length;
+    const nominationReady = F.filter((t) => t.ozEligible && (t.bucket === "persistLow" || t.bucket === "upward")).length;
+    const additionality = cnt.persistLow + cnt.distressed;
+    const medianRisk = this.median(F.map((t) => t.risk));
+
+    // stakeholder-specific primary metric + risk note + cards title
+    let primary, riskNote, cardsTitle, sortRank;
+    if (s.sk === "oz") {
+      primary = { value: nominationReady, label: "Nomination-ready tracts (inclusive, low displacement)" };
+      riskNote = "Screen higher-risk tracts out of nomination lists.";
+      cardsTitle = "Priority nomination candidates";
+      sortRank = (t) => (t.bucket === "upward" ? 0 : t.bucket === "persistLow" ? 1 : 3) + (t.ozEligible ? 0 : 4);
+    } else if (s.sk === "mission") {
+      primary = { value: additionality, label: "High-additionality tracts (persistent need + recovery)" };
+      riskNote = "Pair capital with stabilization where risk runs high.";
+      cardsTitle = "High-additionality targets";
+      sortRank = (t) => (t.bucket === "distressed" ? 0 : t.bucket === "persistLow" ? 1 : 3);
+    } else {
+      primary = { value: newlyLMI, label: "Newly LMI-eligible tracts for your assessment area" };
+      riskNote = "High-risk upward tracts support displacement and redlining review.";
+      cardsTitle = "Assessment-area documentation";
+      sortRank = (t) => (t.reclass ? 0 : (t.i24 <= 1 && t.i20 >= 2) ? 1 : 3);
+    }
+
+    // KPIs
+    const upPct = Math.round((upCount / n) * 100);
+    const kpiDefs = [
+      { value: primary.value, label: primary.label, accent: true },
+      { value: F.length, label: "tracts in view" },
+      { value: upPct + "%", label: "moved up a category" },
+      { value: cnt.gentrify, label: "gentrification-risk flags" },
+      { value: reclassCount, label: "reclassification-only flips" },
+    ];
+    const kpis = kpiDefs.map((k) => ({
+      value: k.value, label: k.label,
+      bg: k.accent ? "#2B2620" : "#FBF7EF",
+      border: k.accent ? "#2B2620" : "#EFE6D6",
+      vColor: k.accent ? "#F4EEE3" : "#2B2620",
+      lColor: k.accent ? "rgba(244,238,227,.7)" : "#6B6256",
+      dBg: k.accent ? "#B5623C" : "#2B2620",
+      dBorder: k.accent ? "#B5623C" : "#3A342B",
+      dVColor: k.accent ? "#fff" : "#EDE6D8",
+    }));
+
+    // stakeholder toggle
+    const skOpts = Object.keys(this.SK).map((key) => {
+      const active = key === s.sk;
+      return {
+        key, short: this.SK[key].short, label: this.SK[key].label,
+        pick: () => this.setState({ sk: key }),
+        bg: active ? "#2B2620" : "transparent", fg: active ? "#F4EEE3" : "#6B6256",
+        dBg: active ? "#B5623C" : "#2B2620", dFg: active ? "#fff" : "#C7BCA9",
+        dBorder: active ? "#B5623C" : "#3A342B",
+      };
+    });
+
+    // region toggle
+    const regionOpts = this.REGIONS.map((r) => {
+      const active = r.key === s.region && s.stateAb === "all";
+      return {
+        label: r.label,
+        pick: () => this.setState({ region: r.key, stateAb: "all" }),
+        bg: active ? "#B5623C" : "#fff", fg: active ? "#fff" : "#6B6256",
+        border: active ? "#B5623C" : "#E2D7C4",
+        dBg: active ? "#B5623C" : "transparent", dFg: active ? "#fff" : "#9E927E",
+        dBorder: active ? "#B5623C" : "#3A342B",
+      };
+    });
+
+    // state select
+    const inRegion = this.STATES.filter((st) => s.region === "all" || st.rg === s.region);
+    const stateOpts = [{ v: "all", label: "All states" }].concat(
+      inRegion.map((st) => ({ v: st.ab, label: st.nm }))
+    );
+    const onState = (e) => {
+      const v = e.target.value;
+      if (v === "all") { this.setState({ stateAb: "all" }); return; }
+      const st = this.STATES.find((x) => x.ab === v);
+      this.setState({ stateAb: v, region: st ? st.rg : s.region });
+    };
+
+    // map cells
+    const mapCells = this.STATES.map((st) => {
+      const inView = (s.stateAb !== "all") ? st.ab === s.stateAb : (s.region === "all" || st.rg === s.region);
+      const ssx = this.stateStats[st.ab] || { up: 0, dn: 0, total: 0 };
+      const net = ssx.total ? (ssx.up - ssx.dn) / ssx.total : 0;
+      const hasData = ssx.total > 0;
+      const focused = s.stateAb === st.ab;
+      const shade = inView && hasData;
+      const col = this.netColor(net);
+      return {
+        ab: st.ab, gr: st.gr, gc: st.gc,
+        title: hasData ? (st.nm + " · " + ssx.total.toLocaleString() + " tracts · net " + (net >= 0 ? "+" : "") + Math.round(net * 100) + "%") : (st.nm + " · no data"),
+        pick: () => { if (hasData) this.setState({ stateAb: st.ab, region: st.rg }); },
+        bg: shade ? col : "#E7DECB",
+        fg: shade ? (net > 0.06 || net < -0.28 ? "#fff" : "#2B2620") : "#B7AC97",
+        brd: focused ? "2px solid #2B2620" : "1px solid rgba(43,38,32,.12)",
+        dBrd: focused ? "2px solid #EDE6D8" : "1px solid #3A342B",
+      };
+    });
+
+    // matrix
+    const M = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    F.forEach((t) => { M[t.i20][t.i24]++; });
+    let maxCell = 1; M.forEach((r) => r.forEach((v) => { if (v > maxCell) maxCell = v; }));
+    const matrixRows = M.map((row, ri) => ({
+      label: this.CAT[ri], short: this.CAT_SHORT[ri],
+      cells: row.map((v, ci) => {
+        const a = v === 0 ? 0 : 0.14 + 0.7 * (v / maxCell);
+        let rgb = ci === ri ? "122,111,90" : ci > ri ? "62,125,90" : "176,74,60";
+        return {
+          count: v,
+          bg: v === 0 ? "#F1EADB" : "rgba(" + rgb + "," + a.toFixed(2) + ")",
+          fg: (v > 0 && a > 0.5) ? "#fff" : "#2B2620",
+          brd: (ci === ri) ? "1px dashed #C9BFAF" : "1px solid transparent",
+          dBg: v === 0 ? "#221F1A" : "rgba(" + rgb + "," + Math.min(0.9, a + 0.1).toFixed(2) + ")",
+          dFg: (v > 0 && a > 0.4) ? "#fff" : "#C7BCA9",
+          dBrd: (ci === ri) ? "1px dashed #4A4335" : "1px solid transparent",
+        };
+      }),
+    }));
+
+    // buckets legend
+    const buckets = this.BUCKET_ORDER.map((k) => ({ name: this.BUCKETS[k].name, color: this.BUCKETS[k].color, count: cnt[k] }));
+
+    // displacement buckets
+    const low = F.filter((t) => t.risk < 34).length;
+    const med = F.filter((t) => t.risk >= 34 && t.risk <= 66).length;
+    const high = F.filter((t) => t.risk > 66).length;
+    const dmax = Math.max(1, low, med, high);
+    const dbuckets = [
+      { name: "Low (0-33)", count: low, color: "#3E7D5A", pct: Math.round((low / dmax) * 100) },
+      { name: "Moderate (34-66)", count: med, color: "#C08A2E", pct: Math.round((med / dmax) * 100) },
+      { name: "High (67-100)", count: high, color: "#B04A3C", pct: Math.round((high / dmax) * 100) },
+    ];
+
+    // cards
+    const cardTags = (t, dark) => {
+      const tags = [];
+      if (t.ozEligible) tags.push({ text: "OZ eligible", bg: "#EBEFE0", fg: "#4F5B36", dBg: "#2F3A22", dFg: "#B9C79A" });
+      if (t.reclass) tags.push({ text: "MSA reclassified", bg: "#F3E4DA", fg: "#8A4A2C", dBg: "#3A2A20", dFg: "#D69A78" });
+      if (t.msa === "Non-MSA") tags.push({ text: "Non-MSA", bg: "#EDE6D8", fg: "#6B6256", dBg: "#2B2620", dFg: "#9E927E" });
+      return tags;
+    };
+    const cards = [...F].sort((a, b) => sortRank(a) - sortRank(b) || b.risk - a.risk).slice(0, 8).map((t) => ({
+      geoid: t.geoid, place: t.st + " · Tract " + t.geoid.split("\u00b7")[2],
+      msa: t.msa,
+      bucket: this.BUCKETS[t.bucket].name, color: this.BUCKETS[t.bucket].color,
+      cat20: this.CAT[t.i20], cat24: this.CAT[t.i24],
+      cat20Color: this.CAT_COLOR[t.i20], cat24Color: this.CAT_COLOR[t.i24],
+      t20: t.t20, t24: t.t24, risk: t.risk,
+      riskColor: t.risk > 66 ? "#B04A3C" : t.risk >= 34 ? "#C08A2E" : "#3E7D5A",
+      tags: cardTags(t),
+    }));
+
+    // reclass toggle visuals
+    const rOn = s.showReclass;
+    const toggleReclass = () => this.setState({ showReclass: !s.showReclass });
+
+    // tabs (1b)
+    const tabDefs = [ ["overview","Overview"], ["signal","Signal vs. noise"], ["tracts","Tracts"] ];
+    const tabs = tabDefs.map(([key, label]) => ({
+      label, pick: () => this.setState({ tab: key }),
+      bg: s.tab === key ? "#B5623C" : "transparent", fg: s.tab === key ? "#fff" : "#9E927E",
+    }));
+
+    return {
+      // data source badge
+      dsLabel: s.dataSource === "real" ? ("Live FFIEC data · " + s.loadNote) : "Representative sample data · drop tract-mobility.csv to go live",
+      dsBg: s.dataSource === "real" ? "#EBEFE0" : "#F3E4DA",
+      dsBorder: s.dataSource === "real" ? "#CBD9B4" : "#E6CDBC",
+      dsFg: s.dataSource === "real" ? "#4F5B36" : "#8A4A2C",
+      dsDot: s.dataSource === "real" ? "#6F7E54" : "#C08A2E",
+      // stakeholder
+      skOpts, skTag: sk.tag, skHeadline: sk.headline, skIntro: sk.intro,
+      // filters
+      regionOpts, stateOpts, stateValue: s.stateAb, onState,
+      reset: () => this.setState({ region: "all", stateAb: "all" }),
+      exportCsv: this.exportCsv,
+      // kpis
+      kpis, primaryLabel: primary.label, primaryValue: primary.value,
+      filteredCount: F.length,
+      // map
+      mapCells,
+      // matrix
+      matrixCols: this.CAT, matrixRows, buckets,
+      // reclass
+      reclassCount, reclassMixed, reclassPct: Math.round((reclassCount / n) * 100),
+      growthBuckets, cleanSignal, mixedShare, trueDistress,
+      toggleReclass,
+      reclassBtnLabel: rOn ? "Highlighting reclassified tracts" : "Highlight reclassified tracts",
+      reclassBtnBg: rOn ? "#B5623C" : "transparent", reclassBtnFg: rOn ? "#fff" : "#F4EEE3",
+      reclassToggleShort: rOn ? "On · highlighting" : "Off · show flags",
+      reclassDBg: rOn ? "#B5623C" : "#2B2620", reclassDFg: rOn ? "#fff" : "#C7BCA9",
+      reclassDBorder: rOn ? "#B5623C" : "#3A342B",
+      // displacement
+      dbuckets, medianRisk, riskNote,
+      // cards
+      cards, cardsTitle,
+      // tabs
+      tabs, tabOverview: s.tab === "overview", tabSignal: s.tab === "signal", tabTracts: s.tab === "tracts",
+    };
+  }
+}
+</script>
+</body>
+</html>

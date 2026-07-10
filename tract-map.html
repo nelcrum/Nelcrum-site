@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where the tracts are · Income mobility 2020–2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Spline+Sans+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #F4EEE3; color: #2B2620;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+  }
+  a { color: #B5623C; }
+  .mono { font-family: 'Spline Sans Mono', monospace; }
+  .serif { font-family: 'Newsreader', Georgia, serif; }
+  header { padding: 20px 26px 14px; border-bottom: 1px solid #E2D7C4; flex: none; }
+  h1 { font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: 26px; line-height: 1.05; margin: 0 0 5px; letter-spacing: -.01em; }
+  .sub { font-size: 13px; line-height: 1.5; color: #6B6256; max-width: 96ch; margin: 0; }
+  .stage { flex: 1 1 auto; position: relative; min-height: 0; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  /* controls */
+  .panel {
+    position: absolute; z-index: 5; background: rgba(251,247,239,.94);
+    border: 1px solid #E2D7C4; border-radius: 14px; padding: 14px 16px;
+    backdrop-filter: blur(6px); box-shadow: 0 8px 26px rgba(43,38,32,.09);
+  }
+  .legend { top: 16px; left: 16px; width: 236px; }
+  .filters { top: 16px; right: 16px; width: 232px; }
+  .kicker { font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #B5623C; margin-bottom: 11px; }
+  .legrow { display: flex; align-items: center; gap: 10px; width: 100%; border: none; background: none; padding: 6px 0; cursor: pointer; font: inherit; text-align: left; color: #2B2620; }
+  .legrow:hover .legname { color: #B5623C; }
+  .sw { width: 12px; height: 12px; border-radius: 4px; flex: none; }
+  .legname { font-size: 12.5px; font-weight: 600; flex: 1; }
+  .legcount { font-family: 'Spline Sans Mono', monospace; font-size: 11px; color: #6B6256; }
+  .legrow.off { opacity: .32; }
+  .legrow.off .sw { background: #C9BFAF !important; }
+  label.fl { display: block; font-size: 11px; font-weight: 600; color: #6B6256; margin: 12px 0 5px; }
+  label.fl:first-of-type { margin-top: 0; }
+  select {
+    width: 100%; font: inherit; font-size: 13px; padding: 8px 10px; color: #2B2620;
+    background: #fff; border: 1px solid #E2D7C4; border-radius: 9px; cursor: pointer;
+  }
+  .count { margin-top: 13px; font-size: 12px; color: #6B6256; line-height: 1.45; }
+  .count b { font-family: 'Spline Sans Mono', monospace; color: #2B2620; font-weight: 600; }
+  .note { position: absolute; bottom: 14px; left: 16px; z-index: 5; font-size: 11px; color: #9A8F7E; max-width: 60ch; line-height: 1.45; }
+  #tip {
+    position: absolute; z-index: 8; pointer-events: none; opacity: 0; transition: opacity .1s;
+    background: #2B2620; color: #F4EEE3; padding: 7px 11px; border-radius: 8px; font-size: 12px;
+    transform: translate(-50%, -140%); white-space: nowrap; box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  }
+  #tip .mono { color: #E7C6B4; }
+  .loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9; color: #6B6256; font-size: 14px; background: #F4EEE3; }
+  .spin { width: 22px; height: 22px; border: 2.5px solid #E2D7C4; border-top-color: #B5623C; border-radius: 50%; animation: sp .8s linear infinite; margin-right: 12px; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Where the tracts are</h1>
+  <p class="sub">Every census tract in the merged 2020&ndash;2024 file, colored by the <strong>driver of its income-category change</strong>. Dots are positioned within each tract&rsquo;s county &mdash; tract-precise coordinates weren&rsquo;t in the source, so dense metros read as tight clusters and rural counties as isolated points. Click a legend swatch to isolate a driver; filter by state to zoom in.</p>
+</header>
+<div class="stage">
+  <canvas id="map"></canvas>
+
+  <div class="panel legend" id="legend">
+    <div class="kicker">Driver of change</div>
+    <!-- rows injected -->
+  </div>
+
+  <div class="panel filters">
+    <div class="kicker">Filter</div>
+    <label class="fl" for="stateSel">State</label>
+    <select id="stateSel"><option value="all">All 44 states with data</option></select>
+    <label class="fl" for="regionSel">Region</label>
+    <select id="regionSel">
+      <option value="all">All regions</option>
+      <option value="NE">Northeast</option>
+      <option value="MW">Midwest</option>
+      <option value="S">South</option>
+      <option value="W">West</option>
+    </select>
+    <div class="count" id="count">&nbsp;</div>
+  </div>
+
+  <div class="note">Source: merged FFIEC 2020 &amp; 2024 census-tract flat files. Driver recomputed with true in/out-MSA status and the &plusmn;5&thinsp;pp TMFI% stability rule. County internal points: btskinner/spatial. Base map: US Census via us-atlas.</div>
+  <div id="tip"></div>
+  <div class="loading" id="loading"><span class="spin"></span> Loading 72,000 census tracts&hellip;</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(async function () {
+  // ---- config ----
+  var DRIVERS = [
+    { key: 0, name: "Real decline",  color: "#B04A3C" },
+    { key: 1, name: "Real growth",   color: "#3E7D5A" },
+    { key: 2, name: "Stable economy",color: "#4E7CA1" },
+    { key: 3, name: "Reclassification", color: "#C08A2E" },
+    { key: 4, name: "Mixed (real + reclass)", color: "#8E8577" },
+  ];
+  var STATE_NAMES = {AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",DC:"District of Columbia",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming"};
+  var STATE_REGION = {WA:"W",OR:"W",CA:"W",NV:"W",ID:"W",MT:"W",WY:"W",UT:"W",CO:"W",AZ:"W",NM:"W",AK:"W",HI:"W",ND:"MW",SD:"MW",NE:"MW",KS:"MW",MN:"MW",IA:"MW",MO:"MW",WI:"MW",IL:"MW",IN:"MW",MI:"MW",OH:"MW",TX:"S",OK:"S",AR:"S",LA:"S",MS:"S",AL:"S",TN:"S",KY:"S",GA:"S",FL:"S",SC:"S",NC:"S",VA:"S",WV:"S",MD:"S",DE:"S",DC:"S",ME:"NE",NH:"NE",VT:"NE",MA:"NE",RI:"NE",CT:"NE",NY:"NE",NJ:"NE",PA:"NE"};
+
+  var canvas = document.getElementById("map");
+  var ctx = canvas.getContext("2d");
+  var tip = document.getElementById("tip");
+
+  var hidden = {};                 // driver key -> hidden?
+  var fState = "all", fRegion = "all";
+  var points = [];                 // {lon,lat,d,st}
+  var projected = [];              // {x,y,d,st} for current view
+  var statesGeo = null, path = null, projection = null, dpr = Math.min(2, window.devicePixelRatio || 1);
+  var W = 0, H = 0;
+
+  // ---- load base map + data ----
+  function tokenName(f) {
+    var m = (location.search || "").match(/[?&]t=([^&]+)/);
+    return f + (m ? "?t=" + m[1] : "");
+  }
+  var us = await fetch("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json").then(function (r) { return r.json(); });
+  statesGeo = topojson.feature(us, us.objects.states);
+  var statesMesh = topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; });
+
+  var raw = await fetch(tokenName("./data/tract-points.csv")).then(function (r) { return r.text(); });
+  (function () {
+    var lines = raw.split("\n");
+    for (var i = 1; i < lines.length; i++) {
+      if (!lines[i]) continue;
+      var c = lines[i].split(",");
+      var lon = +c[0], lat = +c[1];
+      if (!isFinite(lon) || !isFinite(lat)) continue;
+      points.push({ lon: lon, lat: lat, d: +c[2], st: c[3] });
+    }
+  })();
+  document.getElementById("loading").style.display = "none";
+
+  // ---- legend ----
+  var legend = document.getElementById("legend");
+  DRIVERS.forEach(function (dr) {
+    var b = document.createElement("button");
+    b.className = "legrow"; b.dataset.k = dr.key;
+    b.innerHTML = '<span class="sw" style="background:' + dr.color + '"></span>' +
+                  '<span class="legname">' + dr.name + '</span>' +
+                  '<span class="legcount" id="lc' + dr.key + '"></span>';
+    b.onclick = function () {
+      hidden[dr.key] = !hidden[dr.key];
+      b.classList.toggle("off", !!hidden[dr.key]);
+      draw();
+    };
+    legend.appendChild(b);
+  });
+
+  // ---- state dropdown ----
+  var stateSel = document.getElementById("stateSel");
+  Object.keys(STATE_NAMES).sort(function (a, b) { return STATE_NAMES[a] < STATE_NAMES[b] ? -1 : 1; }).forEach(function (ab) {
+    var o = document.createElement("option"); o.value = ab; o.textContent = STATE_NAMES[ab]; stateSel.appendChild(o);
+  });
+  stateSel.onchange = function () { fState = stateSel.value; if (fState !== "all") { document.getElementById("regionSel").value = "all"; fRegion = "all"; } setProjection(); draw(); };
+  document.getElementById("regionSel").onchange = function () { fRegion = this.value; if (fRegion !== "all") { stateSel.value = "all"; fState = "all"; } setProjection(); draw(); };
+
+  // ---- projection ----
+  var STATE_FIPS = {AL:"01",AK:"02",AZ:"04",AR:"05",CA:"06",CO:"08",CT:"09",DE:"10",DC:"11",FL:"12",GA:"13",HI:"15",ID:"16",IL:"17",IN:"18",IA:"19",KS:"20",KY:"21",LA:"22",ME:"23",MD:"24",MA:"25",MI:"26",MN:"27",MS:"28",MO:"29",MT:"30",NE:"31",NV:"32",NH:"33",NJ:"34",NM:"35",NY:"36",NC:"37",ND:"38",OH:"39",OK:"40",OR:"41",PA:"42",RI:"44",SC:"45",SD:"46",TN:"47",TX:"48",UT:"49",VT:"50",VA:"51",WA:"53",WV:"54",WI:"55",WY:"56"};
+  function fitGeo() {
+    if (fState !== "all") {
+      var fp = STATE_FIPS[fState];
+      var f = statesGeo.features.filter(function (x) { return x.id === fp; });
+      if (f.length) return { type: "FeatureCollection", features: f };
+    }
+    return statesGeo;
+  }
+  function setProjection() {
+    projection = d3.geoAlbersUsa().fitExtent([[24, 12], [W - 24, H - 12]], fitGeo());
+    path = d3.geoPath(projection, ctx);
+    reproject();
+  }
+  function inView(p) {
+    if (hidden[p.d]) return false;
+    if (fState !== "all") return p.st === fState;
+    if (fRegion !== "all") return STATE_REGION[p.st] === fRegion;
+    return true;
+  }
+  function reproject() {
+    projected = [];
+    for (var i = 0; i < points.length; i++) {
+      var p = points[i];
+      if (fState !== "all" && p.st !== fState) continue;
+      if (fRegion !== "all" && STATE_REGION[p.st] !== fRegion) continue;
+      var xy = projection([p.lon, p.lat]);
+      if (!xy) continue;
+      projected.push({ x: xy[0], y: xy[1], d: p.d, st: p.st });
+    }
+  }
+
+  // ---- draw ----
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    setProjection(); draw();
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // land
+    ctx.beginPath(); path(fitGeo());
+    ctx.fillStyle = "#EDE4D3"; ctx.fill();
+    // state borders
+    ctx.beginPath(); path(statesMesh);
+    ctx.lineWidth = 0.6; ctx.strokeStyle = "rgba(43,38,32,.22)"; ctx.stroke();
+
+    // points, batched by driver (draw hidden-excluded)
+    var counts = [0, 0, 0, 0, 0], shown = 0;
+    var rad = fState !== "all" ? 2.4 : 1.5;
+    for (var di = 0; di < DRIVERS.length; di++) {
+      var key = DRIVERS[di].key;
+      counts[key] = 0;
+    }
+    // count all (for legend totals, respecting state/region filter but not hide)
+    for (var j = 0; j < projected.length; j++) counts[projected[j].d]++;
+
+    ctx.globalAlpha = 0.72;
+    for (var d2 = 0; d2 < DRIVERS.length; d2++) {
+      var k = DRIVERS[d2].key;
+      if (hidden[k]) continue;
+      ctx.fillStyle = DRIVERS[d2].color;
+      ctx.beginPath();
+      for (var i2 = 0; i2 < projected.length; i2++) {
+        var p = projected[i2];
+        if (p.d !== k) continue;
+        ctx.moveTo(p.x + rad, p.y);
+        ctx.arc(p.x, p.y, rad, 0, 6.283185);
+        shown++;
+      }
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // legend counts + total readout
+    var total = 0;
+    DRIVERS.forEach(function (dr) {
+      document.getElementById("lc" + dr.key).textContent = counts[dr.key].toLocaleString();
+      if (!hidden[dr.key]) total += counts[dr.key];
+    });
+    var scope = fState !== "all" ? STATE_NAMES[fState]
+      : fRegion !== "all" ? ({ NE: "the Northeast", MW: "the Midwest", S: "the South", W: "the West" }[fRegion]) : "44 states";
+    document.getElementById("count").innerHTML = "<b>" + total.toLocaleString() + "</b> tracts shown across " + scope + ".";
+  }
+
+  // ---- hover ----
+  var grid = null, GCELL = 14;
+  function buildGrid() {
+    grid = new Map();
+    for (var i = 0; i < projected.length; i++) {
+      var p = projected[i];
+      var gx = Math.floor(p.x / GCELL), gy = Math.floor(p.y / GCELL);
+      var key = gx + "," + gy;
+      if (!grid.has(key)) grid.set(key, []);
+      grid.get(key).push(p);
+    }
+  }
+  var _drawWrap = draw;
+  draw = function () { _drawWrap(); buildGrid(); };
+
+  canvas.addEventListener("mousemove", function (e) {
+    if (!grid) return;
+    var r = canvas.getBoundingClientRect();
+    var mx = e.clientX - r.left, my = e.clientY - r.top;
+    var gx = Math.floor(mx / GCELL), gy = Math.floor(my / GCELL);
+    var best = null, bd = 49;
+    for (var ox = -1; ox <= 1; ox++) for (var oy = -1; oy <= 1; oy++) {
+      var cell = grid.get((gx + ox) + "," + (gy + oy));
+      if (!cell) continue;
+      for (var i = 0; i < cell.length; i++) {
+        if (hidden[cell[i].d]) continue;
+        var dx = cell[i].x - mx, dy = cell[i].y - my, dist = dx * dx + dy * dy;
+        if (dist < bd) { bd = dist; best = cell[i]; }
+      }
+    }
+    if (best) {
+      var dr = DRIVERS[best.d];
+      tip.innerHTML = '<span class="mono">' + best.st + '</span> &nbsp; ' + dr.name;
+      tip.style.left = mx + "px"; tip.style.top = my + "px"; tip.style.opacity = 1;
+      canvas.style.cursor = "crosshair";
+    } else { tip.style.opacity = 0; canvas.style.cursor = "default"; }
+  });
+  canvas.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+
+  window.addEventListener("resize", resize);
+  resize();
+})();
+</script>
+</body>
+</html>
