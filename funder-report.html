@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Funder Intelligence Report · NELCRUM Solutions</title>
+<script>
+(function(){
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement("script");
+  s.src = "./support.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(s);
+  var se = document.createElement("script");
+  se.src = "./enhance.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(se);
+  var fr = document.createElement("script");
+  fr.src = "./funder-report.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(fr);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #E4EDE1; color: #17140F; }
+  a { color: #14432F; }
+  a:hover { color: #0E3322; }
+  @keyframes frspin { to { transform: rotate(360deg); } }
+  @media (max-width: 860px){ [data-stack]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 680px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+    #fr-form{ flex-direction: column !important; }
+    #fr-form input, #fr-form button { width: 100% !important; }
+  }
+</style>
+</helmet>
+<div style="font-family: 'Archivo', system-ui, sans-serif; color: #17140F; background: #F5F4F0; overflow-x: hidden;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(245,244,240,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #DDDBD2;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #17140F; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #17140F; font-size: 14px; font-weight: 700;">Free tools</a>
+        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
+        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
+        <a href="contact.html" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO + SEARCH -->
+  <section style="background: #17140F; color: #F5F4F0;">
+    <div style="max-width: 1000px; margin: 0 auto; padding: clamp(52px,8vw,104px) 32px clamp(40px,5vw,64px);">
+      <div style="font-family: 'Archivo', sans-serif; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: #C98A2B; margin-bottom: 22px;">Funder Intelligence · Free tool</div>
+      <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(36px,5vw,68px); line-height: 1.03; letter-spacing: -.02em; margin: 0; max-width: 16ch;">See what a funder actually <span style="color: #C98A2B;">funds</span>.</h1>
+      <p style="font-size: clamp(16px,1.5vw,19px); line-height: 1.6; color: rgba(245,244,240,.74); max-width: 60ch; margin: 24px 0 30px;">Enter a foundation's name or 9-digit EIN. We pull its public IRS Form 990 filings and summarize giving, assets, and multi-year trend, so you know whether you fit before you spend time applying.</p>
+      <form id="fr-form" style="display: flex; gap: 12px; max-width: 620px;">
+        <input id="fr-q" type="text" autocomplete="off" placeholder="Foundation name or EIN (e.g. 13-1837418)" style="flex: 1; font-family: inherit; font-size: 16px; color: #17140F; background: #F5F4F0; border: 1px solid rgba(245,244,240,.3); border-radius: 4px; padding: 15px 17px; outline: none;">
+        <button id="fr-go" type="submit" style="font-family: inherit; font-weight: 700; font-size: 16px; color: #17140F; background: #C98A2B; border: none; border-radius: 4px; padding: 15px 24px; cursor: pointer; white-space: nowrap;">Analyze funder</button>
+      </form>
+      <div id="fr-msg" style="font-size: 13.5px; color: rgba(245,244,240,.6); margin-top: 14px; min-height: 18px;"></div>
+      <div style="font-size: 13px; color: rgba(245,244,240,.5); margin-top: 6px;">No account needed. Try a <a id="fr-sample" href="#" style="color: #C98A2B; font-weight: 600;">sample report</a>.</div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <div id="fr-results" style="display: none; background: #F5F4F0; border-top: 1px solid #DDDBD2;">
+    <div style="max-width: 1000px; margin: 0 auto; padding: clamp(40px,6vw,72px) 32px;">
+      <div id="fr-picker"></div>
+      <div id="fr-teaser"></div>
+      <div id="fr-gate" style="margin-bottom: 16px;"></div>
+      <div id="fr-full" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- SOURCES & LIMITS -->
+  <section style="background: #FCFCFA; border-top: 1px solid #DDDBD2;">
+    <div style="max-width: 1000px; margin: 0 auto; padding: clamp(56px,7vw,96px) 32px;">
+      <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 20px;">How it works</div>
+      <div data-stack style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+        <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 26px;"><div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #C98A2B; margin-bottom: 12px;">01</div><h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 8px;">Public 990 data</h3><p style="font-size: 13.5px; line-height: 1.55; color: #57534A; margin: 0;">Every figure comes from IRS Form 990 filings, the same public returns funders are required to file.</p></div>
+        <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 26px;"><div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #C98A2B; margin-bottom: 12px;">02</div><h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 8px;">Read the trend</h3><p style="font-size: 13.5px; line-height: 1.55; color: #57534A; margin: 0;">Giving, assets, and expenses across years show scale and direction, and whether your ask is in range.</p></div>
+        <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 26px;"><div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #C98A2B; margin-bottom: 12px;">03</div><h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 8px;">Verify at the source</h3><p style="font-size: 13.5px; line-height: 1.55; color: #57534A; margin: 0;">The full report links to every original 990 PDF, so you can confirm the exact grants-paid line yourself.</p></div>
+      </div>
+      <p style="font-size: 12.5px; line-height: 1.6; color: #8A857B; margin: 22px 0 0; max-width: 80ch;">Data via public IRS filings (through ProPublica's Nonprofit Explorer). Filings typically lag one to two years, and grant-level detail is most complete for private foundations that file Form 990-PF. Figures are a research starting point, not verified financial advice.</p>
+    </div>
+  </section>
+
+  <footer style="background: #17140F; color: rgba(245,244,240,.6);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,80px) 32px 40px;">
+      <div data-stack style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px 32px; padding-bottom: 44px; border-bottom: 1px solid rgba(245,244,240,.14);">
+        <div>
+          <div style="display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px;">
+            <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F5F4F0;">NELCRUM</span>
+            <span style="font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .26em; color: #C98A2B; text-transform: uppercase;">Solutions, LLC</span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, CDFIs, and community institutions.</p>
+          <a href="contact.html" style="text-decoration: none; background: #14432F; color: #fff; padding: 12px 20px; border-radius: 4px; font-size: 14px; font-weight: 700; display: inline-block;">Book a consultation</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Explore</div>
+          <a href="advisory.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Advisory</a>
+          <a href="applications.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Applications</a>
+          <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free tools</a>
+          <a href="work.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Work</a>
+          <a href="insights.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Insights</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Resources</div>
+          <a href="resources.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Policy checklist</a>
+          <a href="index.html#assessments" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free assessments</a>
+          <a href="about.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">About</a>
+          <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 14px; height: 12px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#E3E8EC"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Contact</div>
+          <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">hello@nelcrum.com</a>
+          <a href="tel:7706762824" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">770-676-2824</a>
+          <span style="color: rgba(245,244,240,.6); font-size: 14px;">Kennesaw, GA</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 13px; color: rgba(245,244,240,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC</span>
+        <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

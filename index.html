@@ -23,6 +23,7 @@
   document.head.appendChild(s2);
   var se = document.createElement('script');
   se.src = './enhance.js' + (m ? '?t=' + m[1] : '');
+  window.NC_JUMP = [['What we do','#model'],['Impact','#impact'],['Work','#work'],['Services','#advisory'],['Tools','#assessments'],['Contact','#contact']];
   document.head.appendChild(se);
 })();
 </script>
@@ -301,31 +302,6 @@
           </div>
         </div>
 
-        <!-- How we measure explainer -->
-        <div style="grid-column: 1 / -1; background: #17140F; color: #F5F4F0; border-radius: 4px; padding: clamp(30px,3.5vw,48px);">
-          <div data-stack style="display: grid; grid-template-columns: 0.95fr 1.05fr; gap: clamp(28px,4vw,56px); align-items: start;">
-            <div>
-              <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; color: #C98A2B; margin-bottom: 18px;">How we measure</div>
-              <h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(24px,3vw,34px); line-height: 1.1; margin: 0 0 18px;">Numbers that mean something to your board and your funders.</h3>
-              <p style="font-size: 15.5px; line-height: 1.62; color: rgba(245,244,240,.74); margin: 0;">Most consultants hand you a plan and move on. We start by measuring where you stand across the areas funders actually scrutinize, then we build alongside you, and we measure again. The result is not a feeling that things improved, but evidence you can put in a board packet or a grant report.</p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 14px;">
-              <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(245,244,240,.055); border: 1px solid rgba(245,244,240,.14); border-radius: 4px; padding: 20px 22px;">
-                <span style="font-family: 'Archivo', sans-serif; font-size: 13px; color: #C98A2B; flex: none; padding-top: 2px;">01</span>
-                <div><div style="font-family: 'Archivo', sans-serif; font-size: 20px; margin-bottom: 5px;">Baseline</div><div style="font-size: 14px; line-height: 1.55; color: rgba(245,244,240,.7);">We score your organization across governance, finance, compliance, and impact, and document where the gaps are.</div></div>
-              </div>
-              <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(245,244,240,.055); border: 1px solid rgba(245,244,240,.14); border-radius: 4px; padding: 20px 22px;">
-                <span style="font-family: 'Archivo', sans-serif; font-size: 13px; color: #C98A2B; flex: none; padding-top: 2px;">02</span>
-                <div><div style="font-family: 'Archivo', sans-serif; font-size: 20px; margin-bottom: 5px;">Plan &amp; build</div><div style="font-size: 14px; line-height: 1.55; color: rgba(245,244,240,.7);">We prioritize the few changes that matter most and work alongside your team to put them in place.</div></div>
-              </div>
-              <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(245,244,240,.055); border: 1px solid rgba(245,244,240,.14); border-radius: 4px; padding: 20px 22px;">
-                <span style="font-family: 'Archivo', sans-serif; font-size: 13px; color: #C98A2B; flex: none; padding-top: 2px;">03</span>
-                <div><div style="font-family: 'Archivo', sans-serif; font-size: 20px; margin-bottom: 5px;">Re-measure</div><div style="font-size: 14px; line-height: 1.55; color: rgba(245,244,240,.7);">We score again against the same baseline, so the progress is concrete and reportable.</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
       <div style="font-family: 'Archivo', sans-serif; font-size: 11px; color: #8A857B; margin-top: 18px;">Figures are illustrative of typical engagements.</div>
     </div>
@@ -555,121 +531,22 @@
     </div>
   </section>
 
-  <!-- ===================== RESOURCES ===================== -->
+  <!-- ===================== RESOURCES TEASER ===================== -->
   <section id="resources" data-screen-label="Resources" style="scroll-margin-top: 90px; background: #FCFCFA; border-top: 1px solid #DDDBD2; border-bottom: 1px solid #DDDBD2;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(72px,9vw,120px) 32px;">
-      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px;">
-        <div style="max-width: 60ch;">
-          <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 20px;">Resources for nonprofits</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(30px,4.2vw,50px); line-height: 1.08; letter-spacing: -.015em; margin: 0;">The policies every nonprofit should have on the shelf.</h2>
-        </div>
-        <a href="#contact" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px; white-space: nowrap;">Get the full templates →</a>
-      </div>
-      <p style="font-size: 16.5px; line-height: 1.62; color: #57534A; margin: 0 0 44px; max-width: 70ch;">Funders, auditors, and the IRS expect a baseline set of governance and financial policies, no matter your size or focus area. Use these as a checklist of best practices. Expand each to see what a strong version should cover.</p>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 16px;">
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">01</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Conflict of Interest Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Keeps decisions in the organization's interest, not personal gain.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Annual written disclosures from board and key staff</li><li>Clear definition of an "interested person" and "financial interest"</li><li>Recusal and documentation procedure for conflicts</li><li>Review process for related-party transactions</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">02</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Spending &amp; Financial Controls Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Defines who can authorize, approve, and handle money.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Approval thresholds and authorization levels by role</li><li>Segregation of duties between approving, paying, and recording</li><li>Credit-card, reimbursement, and check-signing limits</li><li>Monthly reconciliation and board financial review</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">03</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Procurement &amp; Competitive Bidding Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Ensures fair, documented purchasing, and protects grant funds.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Dollar thresholds that trigger multiple quotes or formal bids</li><li>Sole-source justification and approval rules</li><li>Vendor conflict-of-interest checks and documentation</li><li>Alignment with federal grant rules (2 CFR 200) where applicable</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">04</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Whistleblower Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Lets staff report concerns without fear of retaliation.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A confidential channel for reporting misconduct</li><li>Explicit non-retaliation protection</li><li>Investigation procedure and designated contact</li><li>Recordkeeping of reports and resolutions</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">05</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Document Retention &amp; Destruction Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Defines how long records are kept, and when they're destroyed.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A retention schedule by record type</li><li>Secure destruction methods</li><li>Legal-hold suspension during litigation or audit</li><li>Handling of electronic records and backups</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">06</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Gift Acceptance Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Clarifies which gifts you'll accept, and how you'll handle them.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Acceptable gift types (cash, in-kind, stock, planned)</li><li>Review process for restricted or complex gifts</li><li>Donor acknowledgment and IRS substantiation</li><li>Gift agreements for major or restricted gifts</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">07</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Board Governance &amp; Bylaws</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Sets the rules for how the board operates and decides.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Board roles, terms, and term limits</li><li>Quorum, voting, and committee structure</li><li>Officer duties and succession</li><li>Annual review and documented meeting minutes</li></ul>
-          </div>
-        </details>
-
-        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
-          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
-            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">08</span>
-            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Investment &amp; Operating Reserve Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Guides stewardship of cash and reserves over time.</span></span>
-            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
-          </summary>
-          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
-            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
-            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A target operating reserve (often 3 to 6 months)</li><li>Allowed investment types and risk tolerance</li><li>Who is responsible for oversight</li><li>A schedule for periodic review</li></ul>
-          </div>
-        </details>
-
-      </div>
-
-      <div style="margin-top: 22px; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 22px 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px;">
-        <div style="font-size: 14.5px; color: #57534A; line-height: 1.55; flex: 1; min-width: 280px;">These summaries are a starting point, not legal advice. During an engagement we tailor full, board-ready policy templates to your size, sector, and funders.</div>
-        <a href="#contact" style="text-decoration: none; background: #17140F; color: #fff; padding: 13px 22px; border-radius: 4px; font-size: 14.5px; font-weight: 700; white-space: nowrap;">Request tailored templates →</a>
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,92px) 32px;">
+      <div data-stack style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <a href="resources.html" style="text-decoration: none; color: inherit; background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 36px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 14px;">Resources for nonprofits</div>
+          <h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 26px; line-height: 1.12; margin: 0 0 10px;">The policies every nonprofit should have on the shelf.</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #57534A; margin: 0 0 18px; flex: 1;">Eight governance and financial policies funders, auditors, and the IRS expect, with what a strong version of each should cover.</p>
+          <span style="font-size: 14px; font-weight: 700; color: #14432F;">Open the checklist &rarr;</span>
+        </a>
+        <a href="tools.html" style="text-decoration: none; color: inherit; background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 36px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 14px;">Free tools</div>
+          <h3 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 26px; line-height: 1.12; margin: 0 0 10px;">Score your readiness in minutes.</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #57534A; margin: 0 0 18px; flex: 1;">Free diagnostics and builders for grant seekers and their teams. The best way to start a conversation with us.</p>
+          <span style="font-size: 14px; font-weight: 700; color: #14432F;">Open the tools &rarr;</span>
+        </a>
       </div>
     </div>
   </section>

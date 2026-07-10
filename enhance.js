@@ -237,8 +237,156 @@
     }
   }
 
+  /* ---------------- 3. Nav dropdowns ---------------- */
+  var mega = { openWrap: null, closeAll: null, docBound: false };
+  function setupMegaMenu() {
+    var nav = document.querySelector('nav[data-nav]');
+    if (!nav) return;
+    var header = nav.closest('header'); if (header) header.style.overflow = 'visible';
+
+    var INK = '#17140F', MUT = '#8A857B', LINE = '#DDDBD2', PAPER = '#F5F4F0';
+    var SANS = "'Archivo', system-ui, sans-serif";
+    var MENU = {
+      'Advisory': [
+        ['Strategic Advisory', 'Strategy, governance, and program design', 'advisory.html'],
+        ['Research & Evaluation', 'Program evaluation, theory of change, impact', 'advisory.html#evaluation'],
+        ['Grant services', 'Research, proposal writing, compliance review', 'advisory.html'],
+        ['Free Grant-Readiness Assessment', 'A detailed action plan, at no cost', 'index.html#assessments']
+      ],
+      'Applications': [
+        ['Cairn workplace 360', 'Multi-source team assessment you can act on', 'applications.html'],
+        ['Custom dashboards', 'Grant, impact, and portfolio views', 'applications.html'],
+        ['Impact & grant reporting', 'Reporting shaped to how you work', 'applications.html'],
+        ['Wenbee', 'Our companion product', 'https://wenbee.nelcrum.com']
+      ],
+      'Free tools': [
+        ['Grant Readiness Scorecard', 'Score your org, get your top fixes', 'scorecard.html'],
+        ['Funder Intelligence Report', 'Pull a funder\'s IRS 990 giving trends', 'funder-report.html'],
+        ['Workplace mini-360', 'A quick read on team health', 'assessment.html'],
+        ['Community / CRA dashboard', 'Census-tract mobility and investment data', 'mobility-dashboard.html'],
+        ['See all free tools', 'The full roadmap', 'tools.html']
+      ]
+    };
+
+    var openWrap = mega.openWrap;
+    function closeAll() {
+      var o = mega.openWrap;
+      if (!o) return;
+      o.__panel.style.opacity = '0';
+      o.__panel.style.visibility = 'hidden';
+      o.__panel.style.transform = 'translateY(6px)';
+      o.__caret.style.transform = 'rotate(0deg)';
+      mega.openWrap = null;
+    }
+    function open(w) {
+      if (mega.openWrap && mega.openWrap !== w) closeAll();
+      w.__panel.style.opacity = '1';
+      w.__panel.style.visibility = 'visible';
+      w.__panel.style.transform = 'none';
+      w.__caret.style.transform = 'rotate(180deg)';
+      mega.openWrap = w;
+    }
+    mega.closeAll = closeAll;
+    var canHover = !window.matchMedia || window.matchMedia('(hover:hover)').matches;
+
+    Object.keys(MENU).forEach(function (key) {
+      var link = null, as = nav.querySelectorAll('a');
+      for (var i = 0; i < as.length; i++) { if (as[i].textContent.trim() === key) { link = as[i]; break; } }
+      if (!link || link.__megaDone) return;
+      link.__megaDone = true;
+      var items = MENU[key];
+
+      var wrap = document.createElement('span');
+      wrap.style.cssText = 'position:relative; display:inline-flex; align-items:center; gap:5px;';
+      link.parentNode.insertBefore(wrap, link);
+      wrap.appendChild(link);
+
+      var caret = document.createElement('span');
+      caret.innerHTML = '<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2.5 4.5 L6 8 L9.5 4.5"/></svg>';
+      caret.style.cssText = 'display:inline-flex; color:' + MUT + '; transition:transform .2s ease; pointer-events:none;';
+      wrap.appendChild(caret);
+      wrap.__caret = caret;
+
+      var panel = document.createElement('div');
+      panel.style.cssText = 'position:absolute; top:100%; left:0; margin-top:12px; min-width:300px; max-width:92vw; background:#fff; border:1px solid ' + LINE + '; border-radius:4px; box-shadow:0 24px 50px -24px rgba(20,25,20,.45); padding:8px; opacity:0; visibility:hidden; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease; z-index:100;';
+      items.forEach(function (it) {
+        var row = document.createElement('a');
+        row.href = it[2];
+        if (it[2].indexOf('http') === 0) { row.target = '_blank'; row.rel = 'noopener'; }
+        row.style.cssText = 'display:block; text-decoration:none; padding:11px 13px; border-radius:4px; transition:background .14s ease;';
+        row.innerHTML = '<span style="display:block; font-family:' + SANS + '; font-weight:700; font-size:13.5px; color:' + INK + '; margin-bottom:2px;">' + it[0] + '</span><span style="display:block; font-size:12px; line-height:1.4; color:' + MUT + ';">' + it[1] + '</span>';
+        row.addEventListener('mouseenter', function () { row.style.background = PAPER; });
+        row.addEventListener('mouseleave', function () { row.style.background = 'transparent'; });
+        panel.appendChild(row);
+      });
+      wrap.appendChild(panel);
+      wrap.__panel = panel;
+
+      wrap.addEventListener('mouseenter', function () { if (canHover) open(wrap); });
+      wrap.addEventListener('mouseleave', function () { if (canHover) closeAll(); });
+      link.addEventListener('click', function (e) {
+        if (!canHover) { if (mega.openWrap !== wrap) { e.preventDefault(); open(wrap); } }
+      });
+      link.addEventListener('focus', function () { open(wrap); });
+      wrap.addEventListener('focusout', function (e) { if (!wrap.contains(e.relatedTarget)) closeAll(); });
+    });
+    if (!mega.docBound) {
+      mega.docBound = true;
+      document.addEventListener('click', function (e) { if (mega.openWrap && !mega.openWrap.contains(e.target)) mega.closeAll(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && mega.closeAll) mega.closeAll(); });
+    }
+  }
+
+  /* ---------------- 4. On-this-page jump bar ---------------- */
+  var jump = { done: false };
+  function setupJumpNav() {
+    if (!window.NC_JUMP || !window.NC_JUMP.length || jump.done) return;
+    var header = document.querySelector('header');
+    var hh = header ? Math.round(header.getBoundingClientRect().height) : 62;
+    var list = window.NC_JUMP;
+    var bar = document.createElement('div');
+    bar.setAttribute('data-nc-jump', '');
+    bar.style.cssText = 'position:fixed; left:0; right:0; top:' + hh + 'px; z-index:45; background:rgba(245,244,240,.94); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid #DDDBD2; transform:translateY(-140%); transition:transform .3s ease;';
+    var inner = document.createElement('div');
+    inner.style.cssText = 'max-width:1200px; margin:0 auto; padding:10px 32px; display:flex; align-items:center; gap:6px 20px; overflow-x:auto;';
+    var lbl = document.createElement('span');
+    lbl.textContent = 'On this page';
+    lbl.style.cssText = "font-family:'Archivo',sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; white-space:nowrap; margin-right:2px;";
+    inner.appendChild(lbl);
+    var links = [];
+    list.forEach(function (it) {
+      var a = document.createElement('a');
+      a.href = it[1]; a.textContent = it[0];
+      a.style.cssText = "font-family:'Archivo',sans-serif; font-size:13px; font-weight:600; color:#57534A; text-decoration:none; white-space:nowrap; padding:5px 1px; border-bottom:2px solid transparent; transition:color .15s ease, border-color .15s ease;";
+      a.addEventListener('click', function (e) {
+        var t = document.querySelector(it[1]);
+        if (t) { e.preventDefault(); var y = t.getBoundingClientRect().top + window.scrollY - (hh + bar.offsetHeight + 14); window.scrollTo({ top: y, behavior: 'smooth' }); }
+      });
+      inner.appendChild(a); links.push([a, it[1]]);
+    });
+    bar.appendChild(inner);
+    document.body.appendChild(bar);
+    jump.done = true;
+    function onScroll() {
+      bar.style.transform = (window.scrollY > 460) ? 'none' : 'translateY(-140%)';
+      var act = null;
+      for (var i = 0; i < links.length; i++) { var t = document.querySelector(links[i][1]); if (t && t.getBoundingClientRect().top <= hh + 90) act = links[i]; }
+      links.forEach(function (l) { var on = (l === act); l[0].style.color = on ? '#14432F' : '#57534A'; l[0].style.borderColor = on ? '#C98A2B' : 'transparent'; });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { var h2 = header ? Math.round(header.getBoundingClientRect().height) : 62; bar.style.top = h2 + 'px'; });
+    onScroll();
+  }
+
   whenContent(function () {
     setupReveal();
+    setupMegaMenu();
+    setupJumpNav();
     setupPopup();
+    // support.js may remount the <x-dc> template after we first run, which
+    // discards the injected menu. Rebuild whenever a fresh nav appears.
+    var mo = new MutationObserver(function () { setupMegaMenu(); });
+    if (document.body) mo.observe(document.body, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 12000);
   });
 })();

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement('script');
+  s.src = './support.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(s);
+  window.NC_POPUP = true;
+  var se = document.createElement('script');
+  se.src = './enhance.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(se);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #E4EDE1; color: #17140F; }
+  @media (max-width: 860px){ [data-stack]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 680px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family: 'Archivo', system-ui, sans-serif; color: #17140F; background: #F5F4F0; overflow-x: hidden;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(245,244,240,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #DDDBD2;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #17140F; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
+        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
+        <a href="contact.html" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CHECKLIST -->
+  <!-- ===================== RESOURCES ===================== -->
+  <section id="resources" data-screen-label="Resources" style="scroll-margin-top: 90px; background: #FCFCFA; border-top: 1px solid #DDDBD2; border-bottom: 1px solid #DDDBD2;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(72px,9vw,120px) 32px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px;">
+        <div style="max-width: 60ch;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 20px;">Resources for nonprofits</div>
+          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(30px,4.2vw,50px); line-height: 1.08; letter-spacing: -.015em; margin: 0;">The policies every nonprofit should have on the shelf.</h2>
+        </div>
+        <a href="contact.html" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px; white-space: nowrap;">Get the full templates →</a>
+      </div>
+      <p style="font-size: 16.5px; line-height: 1.62; color: #57534A; margin: 0 0 44px; max-width: 70ch;">Funders, auditors, and the IRS expect a baseline set of governance and financial policies, no matter your size or focus area. Use these as a checklist of best practices. Expand each to see what a strong version should cover.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 16px;">
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">01</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Conflict of Interest Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Keeps decisions in the organization's interest, not personal gain.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Annual written disclosures from board and key staff</li><li>Clear definition of an "interested person" and "financial interest"</li><li>Recusal and documentation procedure for conflicts</li><li>Review process for related-party transactions</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">02</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Spending &amp; Financial Controls Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Defines who can authorize, approve, and handle money.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Approval thresholds and authorization levels by role</li><li>Segregation of duties between approving, paying, and recording</li><li>Credit-card, reimbursement, and check-signing limits</li><li>Monthly reconciliation and board financial review</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">03</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Procurement &amp; Competitive Bidding Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Ensures fair, documented purchasing, and protects grant funds.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Dollar thresholds that trigger multiple quotes or formal bids</li><li>Sole-source justification and approval rules</li><li>Vendor conflict-of-interest checks and documentation</li><li>Alignment with federal grant rules (2 CFR 200) where applicable</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">04</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Whistleblower Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Lets staff report concerns without fear of retaliation.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A confidential channel for reporting misconduct</li><li>Explicit non-retaliation protection</li><li>Investigation procedure and designated contact</li><li>Recordkeeping of reports and resolutions</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">05</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Document Retention &amp; Destruction Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Defines how long records are kept, and when they're destroyed.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A retention schedule by record type</li><li>Secure destruction methods</li><li>Legal-hold suspension during litigation or audit</li><li>Handling of electronic records and backups</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">06</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Gift Acceptance Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Clarifies which gifts you'll accept, and how you'll handle them.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Acceptable gift types (cash, in-kind, stock, planned)</li><li>Review process for restricted or complex gifts</li><li>Donor acknowledgment and IRS substantiation</li><li>Gift agreements for major or restricted gifts</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">07</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Board Governance &amp; Bylaws</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Sets the rules for how the board operates and decides.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>Board roles, terms, and term limits</li><li>Quorum, voting, and committee structure</li><li>Officer duties and succession</li><li>Annual review and documented meeting minutes</li></ul>
+          </div>
+        </details>
+
+        <details style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; overflow: hidden;">
+          <summary style="display: flex; align-items: flex-start; gap: 14px; padding: 22px 24px;">
+            <span style="font-family: 'Archivo', sans-serif; font-size: 12px; color: #14432F; padding-top: 4px;">08</span>
+            <span style="flex: 1;"><span style="display: block; font-family: 'Archivo', sans-serif; font-size: 21px; margin-bottom: 3px;">Investment &amp; Operating Reserve Policy</span><span style="display: block; font-size: 13.5px; color: #8A857B;">Guides stewardship of cash and reserves over time.</span></span>
+            <span class="chev" style="font-size: 22px; color: #14432F; line-height: 1;">+</span>
+          </summary>
+          <div style="padding: 0 24px 24px 60px; font-size: 14.5px; line-height: 1.6; color: #57534A;">
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Should cover</div>
+            <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px;"><li>A target operating reserve (often 3 to 6 months)</li><li>Allowed investment types and risk tolerance</li><li>Who is responsible for oversight</li><li>A schedule for periodic review</li></ul>
+          </div>
+        </details>
+
+      </div>
+
+      <div style="margin-top: 22px; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 22px 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px;">
+        <div style="font-size: 14.5px; color: #57534A; line-height: 1.55; flex: 1; min-width: 280px;">These summaries are a starting point, not legal advice. During an engagement we tailor full, board-ready policy templates to your size, sector, and funders.</div>
+        <a href="contact.html" style="text-decoration: none; background: #17140F; color: #fff; padding: 13px 22px; border-radius: 4px; font-size: 14.5px; font-weight: 700; white-space: nowrap;">Request tailored templates →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background: #FCFCFA;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(64px,8vw,104px) 32px;">
+      <div style="background: #17140F; color: #F5F4F0; border-radius: 4px; padding: clamp(40px,6vw,72px); text-align: center;">
+        <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(28px,4vw,48px); line-height: 1.08; margin: 0 auto 16px; max-width: 24ch;">Ready to make these real?</h2>
+        <p style="font-size: 17px; line-height: 1.6; color: rgba(245,244,240,.74); max-width: 52ch; margin: 0 auto 30px;">During an engagement we tailor full, board-ready versions of every policy to your size, sector, and funders.</p>
+        <a href="contact.html" style="text-decoration: none; background: #14432F; color: #fff; padding: 16px 30px; border-radius: 4px; font-size: 16.5px; font-weight: 700; display: inline-block;">Book a consultation &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #17140F; color: rgba(245,244,240,.6);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,80px) 32px 40px;">
+      <div data-stack style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px 32px; padding-bottom: 44px; border-bottom: 1px solid rgba(245,244,240,.14);">
+        <div>
+          <div style="display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px;">
+            <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F5F4F0;">NELCRUM</span>
+            <span style="font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .26em; color: #C98A2B; text-transform: uppercase;">Solutions, LLC</span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, CDFIs, and community institutions.</p>
+          <a href="contact.html" style="text-decoration: none; background: #14432F; color: #fff; padding: 12px 20px; border-radius: 4px; font-size: 14px; font-weight: 700; display: inline-block;">Book a consultation</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Explore</div>
+          <a href="advisory.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Advisory</a>
+          <a href="applications.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Applications</a>
+          <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free tools</a>
+          <a href="work.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Work</a>
+          <a href="insights.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Insights</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Resources</div>
+          <a href="resources.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Policy checklist</a>
+          <a href="index.html#assessments" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free assessments</a>
+          <a href="about.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">About</a>
+          <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 14px; height: 12px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#E3E8EC"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Contact</div>
+          <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">hello@nelcrum.com</a>
+          <a href="tel:7706762824" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">770-676-2824</a>
+          <span style="color: rgba(245,244,240,.6); font-size: 14px;">Kennesaw, GA</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 13px; color: rgba(245,244,240,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC</span>
+        <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>
