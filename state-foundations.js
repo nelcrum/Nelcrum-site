@@ -202,8 +202,23 @@
     fetch(ENDPOINT + '?action=cfstate&state=' + abbr).then(function (r) { return r.json(); }).then(function (d) {
       if (settled) return;
       if (!d || d.error || !d.years || !d.years.length) throw new Error('empty');
+      d.years = trimIncomplete(d.years);
       settled = true; clearTimeout(timer); d.__sample = false; CFCACHE[abbr] = d; cb(d, false);
     }).catch(function () { if (settled) return; settled = true; clearTimeout(timer); var s = cfSample(abbr); CFCACHE[abbr] = s; cb(s, true); });
+  }
+
+  // 990 data lags: the most recent filing year(s) are incomplete because most
+  // organizations have not filed yet, which shows up as a sharp cliff in the
+  // foundation count. Drop trailing years whose count falls below 55% of the
+  // prior year so a half-reported year is never presented as a real decline.
+  function trimIncomplete(years) {
+    var y = (years || []).slice().sort(function (a, b) { return a.y - b.y; });
+    while (y.length >= 2) {
+      var last = y[y.length - 1], prev = y[y.length - 2];
+      if ((last.count || 0) < 0.55 * (prev.count || 0)) y.pop();
+      else break;
+    }
+    return y;
   }
 
   // Labeled demo used only when the live proxy is unreachable (e.g. before the
