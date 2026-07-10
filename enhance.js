@@ -264,7 +264,7 @@
         ['Funder Intelligence Report', 'Pull a funder\'s IRS 990 giving trends', 'funder-report.html'],
         ['State Foundation Overview', 'Foundation landscape by state, over time', 'state-foundations.html'],
         ['Workplace mini-360', 'A quick read on team health', 'assessment.html'],
-        ['Community / CRA dashboard', 'Census-tract mobility and investment data', 'mobility-dashboard.html'],
+        ['Community Mobility Dashboard', 'Census-tract mobility and investment data', 'mobility-dashboard.html'],
         ['See all free tools', 'The full roadmap', 'tools.html']
       ]
     };
