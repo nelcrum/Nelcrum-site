@@ -280,13 +280,24 @@
     }
     function open(w) {
       if (mega.openWrap && mega.openWrap !== w) closeAll();
-      w.__panel.style.opacity = '1';
-      w.__panel.style.visibility = 'visible';
-      w.__panel.style.transform = 'none';
+      var p = w.__panel;
+      if (window.innerWidth <= 680 && header) {
+        var b = Math.round(header.getBoundingClientRect().bottom);
+        p.style.position = 'fixed'; p.style.left = '14px'; p.style.right = '14px'; p.style.top = b + 'px';
+        p.style.minWidth = '0'; p.style.maxWidth = 'none'; p.style.paddingTop = '0';
+      } else {
+        p.style.position = 'absolute'; p.style.left = '0'; p.style.right = 'auto'; p.style.top = '100%';
+        p.style.minWidth = '300px'; p.style.maxWidth = '92vw'; p.style.paddingTop = '12px';
+      }
+      p.style.opacity = '1';
+      p.style.visibility = 'visible';
+      p.style.transform = 'none';
       w.__caret.style.transform = 'rotate(180deg)';
       mega.openWrap = w;
     }
     mega.closeAll = closeAll;
+    function cancelClose() { if (mega.timer) { clearTimeout(mega.timer); mega.timer = null; } }
+    function scheduleClose() { cancelClose(); mega.timer = setTimeout(closeAll, 220); }
     var canHover = !window.matchMedia || window.matchMedia('(hover:hover)').matches;
 
     Object.keys(MENU).forEach(function (key) {
@@ -308,22 +319,27 @@
       wrap.__caret = caret;
 
       var panel = document.createElement('div');
-      panel.style.cssText = 'position:absolute; top:100%; left:0; margin-top:12px; min-width:300px; max-width:92vw; background:#fff; border:1px solid ' + LINE + '; border-radius:4px; box-shadow:0 24px 50px -24px rgba(20,25,20,.45); padding:8px; opacity:0; visibility:hidden; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease; z-index:100;';
+      panel.style.cssText = 'position:absolute; top:100%; left:0; padding-top:12px; min-width:300px; max-width:92vw; opacity:0; visibility:hidden; transform:translateY(6px); transition:opacity .18s ease, transform .18s ease; z-index:100;';
+      var pcard = document.createElement('div');
+      pcard.style.cssText = 'background:#fff; border:1px solid ' + LINE + '; border-radius:4px; box-shadow:0 24px 50px -24px rgba(20,25,20,.45); padding:8px;';
       items.forEach(function (it) {
         var row = document.createElement('a');
         row.href = it[2];
         if (it[2].indexOf('http') === 0) { row.target = '_blank'; row.rel = 'noopener'; }
-        row.style.cssText = 'display:block; text-decoration:none; padding:11px 13px; border-radius:4px; transition:background .14s ease;';
+        row.style.cssText = 'display:block; text-decoration:none; cursor:pointer; padding:11px 13px; border-radius:4px; border-left:3px solid transparent; transition:background .14s ease, border-color .14s ease;';
         row.innerHTML = '<span style="display:block; font-family:' + SANS + '; font-weight:700; font-size:13.5px; color:' + INK + '; margin-bottom:2px;">' + it[0] + '</span><span style="display:block; font-size:12px; line-height:1.4; color:' + MUT + ';">' + it[1] + '</span>';
-        row.addEventListener('mouseenter', function () { row.style.background = PAPER; });
-        row.addEventListener('mouseleave', function () { row.style.background = 'transparent'; });
-        panel.appendChild(row);
+        row.addEventListener('mouseenter', function () { row.style.background = PAPER; row.style.borderLeftColor = '#C98A2B'; });
+        row.addEventListener('mouseleave', function () { row.style.background = 'transparent'; row.style.borderLeftColor = 'transparent'; });
+        pcard.appendChild(row);
       });
+      panel.appendChild(pcard);
       wrap.appendChild(panel);
       wrap.__panel = panel;
 
-      wrap.addEventListener('mouseenter', function () { if (canHover) open(wrap); });
-      wrap.addEventListener('mouseleave', function () { if (canHover) closeAll(); });
+      wrap.addEventListener('mouseenter', function () { if (canHover) { cancelClose(); open(wrap); } });
+      wrap.addEventListener('mouseleave', function () { if (canHover) scheduleClose(); });
+      panel.addEventListener('mouseenter', function () { if (canHover) cancelClose(); });
+      panel.addEventListener('mouseleave', function () { if (canHover) scheduleClose(); });
       link.addEventListener('click', function (e) {
         if (!canHover) { if (mega.openWrap !== wrap) { e.preventDefault(); open(wrap); } }
       });
