@@ -42,9 +42,11 @@
   a { color: #14432F; }
   a:hover { color: #8A4225; }
   @media (max-width: 820px){ [data-stack]{ grid-template-columns: 1fr !important; } }
-  @media (max-width: 680px){
+  @media (max-width: 1040px){
     [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
     [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+  }
+  @media (max-width: 680px){
     [data-likert]{ grid-template-columns: 1fr !important; }
   }
 </style>
@@ -63,6 +65,8 @@
         <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
         <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
         <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
+        <a href="shop.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Shop</a>
         <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
         <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
         <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
@@ -173,7 +177,7 @@
                   <input type="text" value="{{ gOrg }}" onChange="{{ setOrg }}" placeholder="Organization name" style="font-family: inherit; font-size: 15px; color: #17140F; background: #FCFCFA; border: 1.5px solid #DDDBD2; border-radius: 3px; padding: 12px 14px; outline: none;" style-focus="border-color: #14432F;" />
                 </label>
                 <sc-if value="{{ gateError }}" hint-placeholder-val="{{ false }}">
-                  <div style="font-size: 13.5px; color: #14432F; margin-bottom: 16px;">Something went wrong. You can still view your results below, or email hello@nelcrum.com.</div>
+                  <div style="font-size: 13.5px; color: #14432F; margin-bottom: 16px;">Something went wrong. You can still view your results below, or email contact@nelcrum.com.</div>
                 </sc-if>
                 <button type="submit" disabled="{{ gateSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #14432F; color: #fff; padding: 15px 26px; border-radius: 4px; font-size: 16px; font-weight: 700; opacity: {{ gateOpacity }};">{{ gateLabel }}</button>
                 <p style="font-size: 12px; color: #8A857B; margin: 14px 0 0; line-height: 1.5;">We will send your results and occasional insights for mission-driven leaders. Unsubscribe anytime. We never share your details.</p>
@@ -448,7 +452,7 @@ class Component extends DCLogic {
       "Overall score: " + score + "/100 (" + b.band + ")%0D%0A" +
       dims.map((d) => "- " + d.name + ": " + d.pct + "%").join("%0D%0A") +
       "%0D%0A%0D%0AI would like to talk about a full team assessment.";
-    const mailto = "mailto:hello@nelcrum.com?subject=" +
+    const mailto = "mailto:contact@nelcrum.com?subject=" +
       encodeURIComponent("My Workplace mini-360 results") + "&body=" + mailBody;
 
     const gStatus = st.gateStatus;

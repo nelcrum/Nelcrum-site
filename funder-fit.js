@@ -128,7 +128,11 @@
       h += '</div>';
     });
     h += '</div>';
-    h += '<div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; background:#14432F; color:#F5F4F0; border-radius:4px; padding:26px 30px; margin-top:20px;"><div style="flex:1; min-width:260px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:19px; margin-bottom:5px;">Want a named prospect list?</div><div style="font-size:14px; line-height:1.55; color:rgba(245,244,240,.72);">We turn this profile into specific funders to approach, with the case for support to win them.</div></div><a href="contact.html" style="text-decoration:none; background:#C98A2B; color:#17140F; padding:13px 22px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:14.5px; white-space:nowrap;">Book a consultation &#8594;</a></div>';
+    h += (window.ncUpsell ? window.ncUpsell({
+      headline: 'Turn this profile into named funders',
+      body: 'You now know which funder type fits. The briefing turns that into up to eight named funders matched to your mission \u2014 verified giving from IRS filings, deadlines, and how to approach each one.',
+      pkg: { name: 'Funder Intelligence Briefing', price: '$950', meta: 'flat \u00b7 2\u20133 weeks', deliverable: 'Up to 8 analyst-verified funder profiles + a 12-month deadline calendar.', href: 'packages.html#briefing' }
+    }) : '<div style="margin-top:20px;"><a href="packages.html#briefing" style="color:#14432F; font-weight:700;">See the Funder Intelligence Briefing \u2192</a></div>');
     return h;
   }
 

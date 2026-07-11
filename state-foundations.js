@@ -1008,10 +1008,19 @@
     teaser.insertAdjacentHTML('afterbegin', h);
   }
 
+  function sfUpsell(name) {
+    if (!window.ncUpsell) return '';
+    return window.ncUpsell({
+      headline: 'Need this analysis for ' + name + ' at board depth?',
+      body: 'Figures on this page are population-anchored estimates. A custom brief gives you verified, citable analysis for your exact geography \u2014 counties, metros, or tracts \u2014 with methodology and full sources.',
+      pkg: { name: 'Custom Data & Research Brief', price: 'from $1,200', meta: 'scoped on a free call', deliverable: 'Written brief + charts + underlying data as CSV.', href: 'packages.html#brief' }
+    });
+  }
+
   function buildGate(name, isCF) {
     var done = false; try { done = localStorage.getItem('nc_states_unlock') === '1'; } catch (e) {}
     var gate = $('sf-gate');
-    if (done) { gate.innerHTML = ''; return; }
+    if (done) { gate.innerHTML = sfUpsell(name); return; }
     gate.innerHTML = '<div style="background:#EEF3E9; border:1px solid #DDDBD2; border-radius:4px; padding:24px 26px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:20px; margin-bottom:6px;">See every state, and compare</div><div style="font-size:14px; line-height:1.55; color:#57534A; margin-bottom:16px; max-width:60ch;">Enter your email to unlock the full multi-year dashboard: live community-foundation data, metric toggles, and up to five states side by side.</div><form id="sf-gateform" style="display:flex; gap:10px; flex-wrap:wrap;"><input id="sf-email" type="email" required placeholder="you@org.com" style="flex:1; min-width:220px; font-family:inherit; font-size:15px; padding:13px 15px; border:1.5px solid #DDDBD2; border-radius:4px; background:#fff;"><button type="submit" style="font-family:inherit; font-weight:700; font-size:15px; color:#fff; background:#14432F; border:none; border-radius:4px; padding:13px 22px; cursor:pointer;">Unlock dashboard</button></form></div>';
     var chart = $('sf-chart');
     var el = chart ? (chart.closest('[data-yearsgrid]') || chart) : null; while (el) { el.style.filter = 'blur(6px)'; el.style.pointerEvents = 'none'; el = el.nextElementSibling; }
@@ -1028,7 +1037,7 @@
           fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
         } catch (err) {}
         try { localStorage.setItem('nc_states_unlock', '1'); } catch (e2) {}
-        gate.innerHTML = '';
+        gate.innerHTML = sfUpsell(name);
         var x = $('sf-chart'); if (x) x = x.closest('[data-yearsgrid]') || x; while (x) { x.style.filter = ''; x.style.pointerEvents = ''; x = x.nextElementSibling; }
       });
     }, 30);

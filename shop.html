@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop · NELCRUM Solutions</title>
+<script>
+(function(){
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  var s = document.createElement("script");
+  s.src = "./support.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(s);
+  var se = document.createElement("script");
+  se.src = "./enhance.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(se);
+  var sh = document.createElement("script");
+  sh.src = "./shop.js" + (m ? "?t=" + m[1] : "");
+  document.head.appendChild(sh);
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #E4EDE1; color: #17140F; }
+  a { color: #14432F; }
+  a:hover { color: #0E3322; }
+  @media (max-width: 980px){ [data-shopgrid]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 860px){ [data-stack]{ grid-template-columns: 1fr !important; } [data-soongrid]{ grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 620px){ [data-soongrid]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 1040px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+  }
+</style>
+</helmet>
+<div style="font-family: 'Archivo', system-ui, sans-serif; color: #17140F; background: #F5F4F0; overflow-x: clip;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(245,244,240,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #DDDBD2;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #17140F; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
+        <a href="shop.html" style="text-decoration: none; color: #17140F; font-size: 14px; font-weight: 700;">Shop</a>
+        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
+        <a href="contact.html" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MASTHEAD -->
+  <section style="background: #FCFCFA; border-bottom: 1px solid #DDDBD2;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px,5vw,64px) 32px clamp(32px,4vw,48px);">
+      <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 26px;">
+        <span style="font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #14432F;">Shop</span>
+        <span style="width: 40px; height: 1px; background: #C98A2B; align-self: center;"></span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #8A857B;">Workbooks · Templates · Data</span>
+      </div>
+      <h1 style="font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: clamp(34px,4.4vw,58px); line-height: 1.06; letter-spacing: -.015em; margin: 0 0 18px; max-width: 22ch; color: #17140F;">The do-it-yourself shelf.</h1>
+      <p style="font-family: 'Source Serif 4', Georgia, serif; font-size: clamp(16px,1.5vw,19px); line-height: 1.55; color: #57534A; max-width: 60ch; margin: 0;">The same frameworks and documents we use in client work, as downloads. Buy once, use forever. Files are delivered to your email within one business day of purchase.</p>
+    </div>
+  </section>
+
+  <!-- AVAILABLE NOW -->
+  <section style="background: #F5F4F0;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px,5vw,56px) 32px;">
+      <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 24px;">Available now</div>
+      <div data-shopgrid style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+        <!-- Grant Readiness Workbook -->
+        <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 30px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 14px;">Workbook · PDF</div>
+          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 23px; line-height: 1.15; margin: 0 0 10px;">Grant Readiness Workbook</h2>
+          <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px;">
+            <span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -.02em;">$29</span>
+            <span style="font-size: 13px; color: #8A857B;">one-time · yours forever</span>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #57534A; margin: 0 0 16px;">The six areas funders scrutinize — governance, finances, impact evidence, systems, strategy, and program design — as a fillable workbook. Work through it with your team and leave with a written readiness plan.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 9px;">
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Self-scoring worksheets for all six readiness areas</li>
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Action-plan template with priority ordering</li>
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Funder-ready document checklist</li>
+          </ul>
+          <div style="font-size: 12.5px; color: #8A857B; margin-bottom: 20px; padding-top: 14px; border-top: 1px solid #EEEDE8;">Try free first: <a href="scorecard.html" style="color: #14432F; font-weight: 600;">Grant Readiness Scorecard</a></div>
+          <a data-nc-buy="grant-readiness-workbook" href="contact.html?buy=grant-readiness-workbook" style="margin-top: auto; text-decoration: none; text-align: center; background: #17140F; color: #fff; padding: 14px 24px; border-radius: 4px; font-size: 15px; font-weight: 700;">Buy the workbook — $29</a>
+        </div>
+
+        <!-- PhD to Industry ebook -->
+        <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 30px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 14px;">Ebook · PDF</div>
+          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 23px; line-height: 1.15; margin: 0 0 10px;">From PhD to Industry</h2>
+          <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px;">
+            <span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -.02em;">$19</span>
+            <span style="font-size: 13px; color: #8A857B;">one-time · yours forever</span>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: #57534A; margin: 0 0 16px;">Translating social science skills into industry roles — written by a PhD who made the move. How to reframe your research, evaluation, and analysis experience for employers who don't speak academia.</p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 9px;">
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Skill-translation frameworks with before/after examples</li>
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Resume and interview language that lands outside the academy</li>
+            <li style="display: flex; gap: 10px; font-size: 14px; line-height: 1.5; color: #4A443B;"><span style="color: #4E6B43; font-weight: 800; flex: none;">✓</span> Where social scientists are hired, and what those roles pay</li>
+          </ul>
+          <div style="font-size: 12.5px; color: #8A857B; margin-bottom: 20px; padding-top: 14px; border-top: 1px solid #EEEDE8;">For academics, evaluators, and researchers planning a move</div>
+          <a data-nc-buy="phd-industry-ebook" href="contact.html?buy=phd-industry-ebook" style="margin-top: auto; text-decoration: none; text-align: center; background: #17140F; color: #fff; padding: 14px 24px; border-radius: 4px; font-size: 15px; font-weight: 700;">Buy the ebook — $19</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMING SOON -->
+  <section style="background: #FCFCFA; border-top: 1px solid #DDDBD2;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px,5vw,56px) 32px;">
+      <div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;">
+        <span style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F;">Coming soon</span>
+        <span style="font-size: 13px; color: #8A857B;">Join a waitlist and we will email you at launch — with an early price.</span>
+      </div>
+      <div data-soongrid style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;">
+
+        <div style="background: #fff; border: 1px dashed #C9C5BA; border-radius: 4px; padding: 24px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Templates · Bundle</div>
+          <div style="font-weight: 700; font-size: 17px; margin-bottom: 4px;">The Consultant's Toolkit</div>
+          <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 8px;">$39</div>
+          <p style="font-size: 13px; line-height: 1.55; color: #57534A; margin: 0 0 16px;">Consulting agreement, NDA, and invoice templates — the documents we run our own practice on.</p>
+          <form data-nc-wait="Consultant's Toolkit" style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <input type="email" required placeholder="you@org.com" style="font-family: inherit; font-size: 13.5px; padding: 10px 12px; border: 1.5px solid #DDDBD2; border-radius: 4px; background: #FCFCFA; width: 100%;">
+            <button type="submit" style="font-family: inherit; font-weight: 700; font-size: 13.5px; color: #14432F; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 10px 14px; cursor: pointer;">Notify me</button>
+          </form>
+        </div>
+
+        <div style="background: #fff; border: 1px dashed #C9C5BA; border-radius: 4px; padding: 24px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Guide · PDF</div>
+          <div style="font-weight: 700; font-size: 17px; margin-bottom: 4px;">First Grant: What Funders Actually Check</div>
+          <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 8px;">$19</div>
+          <p style="font-size: 13px; line-height: 1.55; color: #57534A; margin: 0 0 16px;">A plain-language guide to your first grant cycle, built from the questions clients ask us most.</p>
+          <form data-nc-wait="First Grant guide" style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <input type="email" required placeholder="you@org.com" style="font-family: inherit; font-size: 13.5px; padding: 10px 12px; border: 1.5px solid #DDDBD2; border-radius: 4px; background: #FCFCFA; width: 100%;">
+            <button type="submit" style="font-family: inherit; font-weight: 700; font-size: 13.5px; color: #14432F; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 10px 14px; cursor: pointer;">Notify me</button>
+          </form>
+        </div>
+
+        <div style="background: #fff; border: 1px dashed #C9C5BA; border-radius: 4px; padding: 24px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Data · CSV + brief</div>
+          <div style="font-weight: 700; font-size: 17px; margin-bottom: 4px;">State Data Packs</div>
+          <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 8px;">$49–$99 <span style="font-size: 12px; font-weight: 600; color: #8A857B;">per state</span></div>
+          <p style="font-size: 13px; line-height: 1.55; color: #57534A; margin: 0 0 16px;">County and metro detail, program-area splits, and a formatted brief for any state — beyond the free CSV.</p>
+          <form data-nc-wait="State Data Packs" style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <input type="email" required placeholder="you@org.com" style="font-family: inherit; font-size: 13.5px; padding: 10px 12px; border: 1.5px solid #DDDBD2; border-radius: 4px; background: #FCFCFA; width: 100%;">
+            <button type="submit" style="font-family: inherit; font-weight: 700; font-size: 13.5px; color: #14432F; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 10px 14px; cursor: pointer;">Notify me</button>
+          </form>
+        </div>
+
+        <div style="background: #fff; border: 1px dashed #C9C5BA; border-radius: 4px; padding: 24px; display: flex; flex-direction: column;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 10px;">Subscription · Email</div>
+          <div style="font-weight: 700; font-size: 17px; margin-bottom: 4px;">Grants Calendar Alerts</div>
+          <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; margin-bottom: 8px;">$19<span style="font-size: 12px; font-weight: 600; color: #8A857B;">/mo per state</span></div>
+          <p style="font-size: 13px; line-height: 1.55; color: #57534A; margin: 0 0 16px;">Monthly deadlines and newly registered funders for your state, straight to your inbox.</p>
+          <form data-nc-wait="Grants Calendar Alerts" style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+            <input type="email" required placeholder="you@org.com" style="font-family: inherit; font-size: 13.5px; padding: 10px 12px; border: 1.5px solid #DDDBD2; border-radius: 4px; background: #FCFCFA; width: 100%;">
+            <button type="submit" style="font-family: inherit; font-weight: 700; font-size: 13.5px; color: #14432F; background: #EEF3E9; border: 1px solid #DDDBD2; border-radius: 4px; padding: 10px 14px; cursor: pointer;">Notify me</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONE-FOR-YOU CROSS-LINK -->
+  <section style="background: #17140F; color: #F5F4F0;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px,6vw,72px) 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px 40px;">
+      <div style="flex: 1; min-width: 300px;">
+        <h2 style="font-family: 'Source Serif 4', Georgia, serif; font-weight: 600; font-size: clamp(26px,3vw,38px); line-height: 1.15; margin: 0 0 10px;">Rather have it done for you?</h2>
+        <p style="font-size: 15.5px; line-height: 1.6; color: rgba(245,244,240,.72); margin: 0; max-width: 52ch;">The fixed-price packages cover the same ground with our analysts doing the work — from a $550 readiness audit to custom research.</p>
+      </div>
+      <a href="packages.html" style="text-decoration: none; background: #C98A2B; color: #17140F; padding: 16px 28px; border-radius: 4px; font-size: 16px; font-weight: 700; white-space: nowrap;">See the packages →</a>
+    </div>
+  </section>
+
+  <footer style="background: #17140F; color: rgba(245,244,240,.6); border-top: 1px solid rgba(245,244,240,.12);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,80px) 32px 40px;">
+      <div data-stack style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px 32px; padding-bottom: 44px; border-bottom: 1px solid rgba(245,244,240,.14);">
+        <div>
+          <div style="display: flex; align-items: baseline; gap: 9px; margin-bottom: 16px;">
+            <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F5F4F0;">NELCRUM</span>
+            <span style="font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .26em; color: #C98A2B; text-transform: uppercase;">Solutions, LLC</span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, CDFIs, and community institutions.</p>
+          <a href="contact.html" style="text-decoration: none; background: #14432F; color: #fff; padding: 12px 20px; border-radius: 4px; font-size: 14px; font-weight: 700; display: inline-block;">Book a consultation</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Explore</div>
+          <a href="advisory.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Advisory</a>
+          <a href="applications.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Applications</a>
+          <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free tools</a>
+          <a href="packages.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Packages</a>
+          <a href="shop.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Shop</a>
+          <a href="work.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Work</a>
+          <a href="insights.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Insights</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Resources</div>
+          <a href="resources.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Policy checklist</a>
+          <a href="index.html#assessments" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free assessments</a>
+          <a href="about.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">About</a>
+          <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 14px; height: 12px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#E3E8EC"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Contact</div>
+          <a href="mailto:contact@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">contact@nelcrum.com</a>
+          <a href="tel:7706762824" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">770-676-2824</a>
+          <span style="color: rgba(245,244,240,.6); font-size: 14px;">Kennesaw, GA</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 13px; color: rgba(245,244,240,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC</span>
+        <span>Evidence-led advisory &amp; software · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

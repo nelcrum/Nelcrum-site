@@ -46,7 +46,7 @@
   details[open] .chev { transform: rotate(45deg); }
   .chev { transition: transform .2s ease; }
   @media (max-width: 820px){ [data-stack]{ grid-template-columns: 1fr !important; } }
-  @media (max-width: 680px){
+  @media (max-width: 1040px){
     [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
     [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
   }
@@ -66,6 +66,8 @@
         <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
         <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
         <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
+        <a href="shop.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Shop</a>
         <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
         <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
         <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
@@ -650,7 +652,7 @@
           <div style="display: flex; flex-direction: column; gap: 22px; padding: 26px 0; border-top: 1px solid #DDDBD2;">
             <div>
               <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 7px;">Email</div>
-              <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: #17140F; font-size: 16.5px; font-weight: 600;">hello@nelcrum.com</a>
+              <a href="mailto:contact@nelcrum.com" style="text-decoration: none; color: #17140F; font-size: 16.5px; font-weight: 600;">contact@nelcrum.com</a>
             </div>
             <div>
               <div style="font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8A857B; margin-bottom: 7px;">Phone</div>
@@ -691,7 +693,7 @@
               </label>
 
               <sc-if value="{{ contactError }}" hint-placeholder-val="{{ false }}">
-                <div style="font-size: 13.5px; color: #14432F; margin-bottom: 16px;">Something went wrong sending your message. Please email us directly at hello@nelcrum.com.</div>
+                <div style="font-size: 13.5px; color: #14432F; margin-bottom: 16px;">Something went wrong sending your message. Please email us directly at contact@nelcrum.com.</div>
               </sc-if>
 
               <button type="submit" disabled="{{ contactSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #17140F; color: #fff; padding: 16px 26px; border-radius: 4px; font-size: 16px; font-weight: 700; opacity: {{ submitOpacity }};">{{ submitLabel }}</button>
@@ -758,13 +760,15 @@
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Resources</div>
           <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free tools</a>
+        <a href="packages.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Packages</a>
+        <a href="shop.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Shop</a>
           <a href="#assessments" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free assessments</a>
           <a href="about.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">About</a>
           <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px; display: inline-flex; align-items: center; gap: 7px;"><svg viewBox="0 0 68 60" style="width: 14px; height: 12px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#E3E8EC"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee ↗</a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Contact</div>
-          <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">hello@nelcrum.com</a>
+          <a href="mailto:contact@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">contact@nelcrum.com</a>
           <a href="tel:7706762824" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">770-676-2824</a>
           <span style="color: rgba(245,244,240,.6); font-size: 14px; line-height: 1.5;">Kennesaw, GA</span>
         </div>
@@ -868,7 +872,7 @@
               <div style="font-family: 'Archivo', sans-serif; font-size: clamp(20px,2.6vw,26px); line-height: 1.2; margin-bottom: 10px;">Turn this score into an action plan.</div>
               <p style="font-size: 14.5px; line-height: 1.55; color: rgba(245,244,240,.74); margin: 0 0 20px;">Book a free consultation and we'll turn your results into a detailed, prioritized roadmap to close every gap and start responding to funding opportunities with confidence.</p>
               <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <a href="mailto:hello@nelcrum.com?subject=Grant%20Readiness%20Assessment" onClick="{{ closeAssessment }}" style="text-decoration: none; background: #14432F; color: #fff; padding: 14px 24px; border-radius: 4px; font-size: 15px; font-weight: 700;">Book a free consultation →</a>
+                <a href="mailto:contact@nelcrum.com?subject=Grant%20Readiness%20Assessment" onClick="{{ closeAssessment }}" style="text-decoration: none; background: #14432F; color: #fff; padding: 14px 24px; border-radius: 4px; font-size: 15px; font-weight: 700;">Book a free consultation →</a>
                 <button onClick="{{ restart }}" style="border: 1px solid rgba(245,244,240,.34); cursor: pointer; font-family: inherit; background: transparent; color: #F5F4F0; padding: 14px 24px; border-radius: 4px; font-size: 15px; font-weight: 700;">Retake</button>
               </div>
             </div>
@@ -1072,7 +1076,7 @@ class Component extends DCLogic {
       qrRec = "Send us this brief to start. Our Grant Research engagement ($2,000) delivers up to 20 funders matched to your profile, a tailored grants calendar, and two strategy sessions.";
     }
     const qrBody = "Here's our funding-research brief:\n\n" + qrSummary.map((r) => r.label + ": " + r.value).join("\n") + "\n\nWe'd like to discuss next steps.";
-    const qrMailto = "mailto:hello@nelcrum.com?subject=" + encodeURIComponent("Grant Research: funding brief") + "&body=" + encodeURIComponent(qrBody);
+    const qrMailto = "mailto:contact@nelcrum.com?subject=" + encodeURIComponent("Grant Research: funding brief") + "&body=" + encodeURIComponent(qrBody);
 
     const cf = this.state.contact;
     const cStatus = this.state.contactStatus;

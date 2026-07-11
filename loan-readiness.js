@@ -115,7 +115,11 @@
       });
       h += '</div>';
     }
-    h += '<div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; background:#14432F; color:#F5F4F0; border-radius:4px; padding:26px 30px; margin-top:22px;"><div style="flex:1; min-width:260px;"><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:19px; margin-bottom:5px;">Ready to build a lender-ready package?</div><div style="font-size:14px; line-height:1.55; color:rgba(245,244,240,.72);">We assemble the financials, use-of-funds, and narrative that CDFIs and mission lenders want to see.</div></div><a href="contact.html" style="text-decoration:none; background:#C98A2B; color:#17140F; padding:13px 22px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:14.5px; white-space:nowrap;">Book a consultation &#8594;</a></div>';
+    h += (window.ncUpsell ? window.ncUpsell({
+      headline: 'Ready to build a lender-ready package?',
+      body: 'We assemble the financials, use-of-funds, and narrative that CDFIs and mission lenders want to see. Start with the audit: a full capacity review with a written action plan \u2014 the same fundamentals lenders underwrite.',
+      pkg: { name: 'Grant Readiness Audit', price: '$550', meta: 'flat \u00b7 ~2 weeks', deliverable: 'Six-area capacity assessment + prioritized action plan + debrief call.', href: 'packages.html#audit' }
+    }) : '<div style="margin-top:22px;"><a href="packages.html#audit" style="color:#14432F; font-weight:700;">See the Grant Readiness Audit \u2192</a></div>');
     return h;
   }
 

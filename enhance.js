@@ -14,6 +14,44 @@
 
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycby6VPp5kEWJupRvJH2xRvs5D14CEGQvxaMR3kDFH43WTTv69_DL3ZesS8NFKdTxvMgFGg/exec';
   var OFFER_CODE = 'NELCRUM10';
+
+  /* ---------------- Stripe payment links ----------------
+   * One place to configure checkout. Paste each product's Stripe Payment
+   * Link URL here; anywhere a buy button renders with an empty link it
+   * falls back to contact.html?buy=<sku> (email-to-purchase). */
+  window.NC_STRIPE = window.NC_STRIPE || {
+    'grant-readiness-workbook': '',
+    'phd-industry-ebook': '',
+    'funder-report-pdf': ''
+  };
+  window.ncBuyLink = function (sku) {
+    var u = (window.NC_STRIPE || {})[sku];
+    return u || ('contact.html?buy=' + sku);
+  };
+
+  /* ---------------- Shared upsell card ----------------
+   * Tool scripts call window.ncUpsell({headline, body, pkg}) at the end of a
+   * result render. Returns an HTML string: a "Recommended next step" card
+   * pointing at a fixed-price package on packages.html.
+   * pkg: { name, price, meta, deliverable, href, cta } */
+  window.ncUpsell = function (o) {
+    var pkg = o.pkg || {};
+    return '<div style="background:#14432F; color:#F5F4F0; border-radius:4px; padding:26px 30px; margin-top:22px;">'
+      + '<div style="font-family:Archivo,sans-serif; font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#C98A2B; margin-bottom:12px;">Recommended next step</div>'
+      + '<div style="display:flex; flex-wrap:wrap; align-items:center; gap:18px 28px;">'
+      + '<div style="flex:1; min-width:260px;">'
+      + '<div style="font-family:Archivo,sans-serif; font-weight:700; font-size:20px; line-height:1.2; margin-bottom:7px;">' + o.headline + '</div>'
+      + '<div style="font-size:14px; line-height:1.55; color:rgba(245,244,240,.72);">' + o.body + '</div>'
+      + '</div>'
+      + '<div style="background:rgba(245,244,240,.06); border:1px solid rgba(245,244,240,.16); border-radius:4px; padding:18px 22px; flex:0 1 280px; min-width:250px;">'
+      + '<div style="font-family:Archivo,sans-serif; font-weight:700; font-size:15.5px; margin-bottom:2px;">' + (pkg.name || '') + '</div>'
+      + '<div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; letter-spacing:-.02em; margin-bottom:4px;">' + (pkg.price || '') + ' <span style="font-size:12px; font-weight:600; color:rgba(245,244,240,.55);">' + (pkg.meta || 'fixed price') + '</span></div>'
+      + (pkg.deliverable ? '<div style="font-size:12.5px; line-height:1.5; color:rgba(245,244,240,.6); margin-bottom:14px;">' + pkg.deliverable + '</div>' : '<div style="margin-bottom:14px;"></div>')
+      + '<div style="display:flex; flex-direction:column; gap:8px;">'
+      + '<a href="' + (pkg.href || 'packages.html') + '" style="text-decoration:none; text-align:center; background:#C98A2B; color:#17140F; padding:12px 20px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:14px;">' + (pkg.cta || 'See the package \u2192') + '</a>'
+      + '<a href="contact.html" style="text-decoration:none; text-align:center; color:#F5F4F0; border:1px solid rgba(245,244,240,.3); padding:11px 20px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:13.5px;">Book a free scoping call</a>'
+      + '</div></div></div></div>';
+  };
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Wait until the DC content has actually rendered (support.js mounts the
