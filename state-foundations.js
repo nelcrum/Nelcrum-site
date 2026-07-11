@@ -50,7 +50,7 @@
     if ($('sf-print-css')) return;
     var st = document.createElement('style');
     st.id = 'sf-print-css';
-    st.textContent = '@media print { header, footer, #sf-form, #sf-gate, #sf-map, [data-sf-hero], [data-nav], [data-navrow] { display: none !important; } body { background: #fff !important; } #sf-results { display: block !important; } button[data-sf-share], button[data-sf-print], button[data-sf-layer], button[data-sf-pc], span[data-grp] { display: none !important; } [data-yearsgrid] { grid-template-columns: 1fr !important; } }';
+    st.textContent = '@media print { header, footer, #sf-form, #sf-gate, #sf-map, #sf-side, [data-sf-hero], [data-nav], [data-navrow] { display: none !important; } [data-toolgrid] { display: block !important; } body { background: #fff !important; } #sf-results { display: block !important; } button[data-sf-share], button[data-sf-print], button[data-sf-layer], button[data-sf-pc], span[data-grp] { display: none !important; } [data-yearsgrid] { grid-template-columns: 1fr !important; } }';
     document.head.appendChild(st);
   }
 
@@ -104,6 +104,7 @@
     loadDataset(function () {
       fillStates();
       renderMap();
+      renderSide();
       // Deep link: ?state=GA&layer=rec opens that view directly.
       var qs = location.search.match(/[?&]state=([A-Za-z]{2})/);
       var ql = location.search.match(/[?&]layer=(pf|cf|estimate|rec)/);
@@ -129,7 +130,7 @@
   var REGION = { Northeast: ['CT','ME','MA','NH','RI','VT','NJ','NY','PA'], Midwest: ['IL','IN','MI','OH','WI','IA','KS','MN','MO','NE','ND','SD'], South: ['DE','FL','GA','MD','NC','SC','VA','DC','WV','AL','KY','MS','TN','AR','LA','OK','TX'], West: ['AZ','CO','ID','MT','NV','NM','UT','WY','AK','CA','HI','OR','WA'] };
   var REGION_COLOR = { Northeast: '#2A6FDB', Midwest: '#4E6B43', South: '#C98A2B', West: '#B04A3C' };
   function regionOf(ab) { for (var r in REGION) if (REGION[r].indexOf(ab) >= 0) return r; return ''; }
-  var mapMetric = 'giving', mapRegion = '';
+  var mapMetric = 'giving', mapRegion = '', mapView = 'rank', trendSel = ['CA', 'NY', 'TX', 'FL', 'IL'];
 
   function mapVal(ab) {
     var st = DATA.states[ab]; if (!st) return 0;
@@ -150,6 +151,8 @@
   function mapFmt(v) { if (mapMetric === 'count') return perCapita ? (Math.round(v * 10) / 10) : Math.round(v).toLocaleString(); var a = Math.abs(v); if (a >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B'; if (a >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M'; if (a >= 1e3) return '$' + Math.round(v / 1e3) + 'K'; return '$' + Math.round(v); }
   function mapLabel() { var base = mapMetric === 'giving' ? 'Total giving' : mapMetric === 'assets' ? 'Total assets' : mapMetric === 'count' ? 'Foundations' : 'Avg grant size'; if (perCapita && mapMetric !== 'avgGrant') base += mapMetric === 'count' ? ' per 100k' : ' per resident'; return base; }
 
+  function dataYear() { try { var ks = Object.keys(DATA.states); var ys = DATA.states[ks[0]].years; return ys[ys.length - 1].y; } catch (e) { return ''; } }
+
   function renderMap() {
     var box = $('sf-map'); if (!box || !DATA) return;
     box.__drawn = true;
@@ -159,15 +162,8 @@
     h += '<h2 style="font-family:Archivo,sans-serif; font-weight:700; font-size:clamp(24px,3.2vw,38px); letter-spacing:-.02em; margin:0 0 8px;">' + esc(mapLabel()) + ' by state</h2>';
     h += '<p style="font-size:14px; line-height:1.55; color:#57534A; margin:0 0 20px; max-width:60ch;">Every state shaded by the measure you choose. Click a state to open its full detail below, with the live IRS layers.</p>';
 
-    // metric tabs
-    h += '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px; margin-bottom:8px; border-bottom:1px solid #DDDBD2; padding-bottom:10px;">' + grpLabel('Measure');
-    [['giving','Giving'],['assets','Assets'],['count','Foundations'],['avgGrant','Avg grant']].forEach(function (m) { var on = m[0] === mapMetric; h += '<button data-sfmap-metric="' + m[0] + '" style="' + tabStyle(on) + '">' + m[1] + '</button>'; });
-    h += '</div>';
-    // region filter + per capita
-    h += '<div style="display:flex; flex-wrap:wrap; gap:2px 18px; margin-bottom:22px; align-items:baseline;">' + grpLabel('Region');
-    ['', 'Northeast', 'Midwest', 'South', 'West'].forEach(function (r) { var on = r === mapRegion; var lbl = r || 'All'; h += '<button data-sfmap-region="' + r + '" style="' + tabStyle(on, r ? REGION_COLOR[r] : '#C98A2B') + '">' + lbl + '</button>'; });
-    h += '<span style="flex:1;"></span>';
-    h += '<button data-sfmap-pc="1" style="' + tabStyle(perCapita, '#14432F') + '">Per capita ' + (perCapita ? 'on' : 'off') + '</button>';
+    var h = '';
+    var dy0 = dataYear();;
     h += '</div>';
 
     // national figures for the current filter
@@ -178,11 +174,12 @@
       sums.giving += y2.giving || 0; sums.assets += y2.assets || 0; sums.count += y2.count || 0; sums.pop += (popOf(ab2) || 0); sums.n++;
     });
     var scope = mapRegion ? 'across the ' + mapRegion : 'across ' + sums.n + ' states';
+    var dy = dataYear();
     h += '<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:20px 26px; margin-bottom:24px; max-width:860px;">'
-      + card('Foundations', num(sums.count), scope)
-      + card('Total giving', money(sums.giving), 'latest year, ' + scope)
-      + card('Total assets', money(sums.assets), 'latest year, ' + scope)
-      + card('Giving per resident', money(sums.giving / (sums.pop || 1)), num(sums.pop) + ' residents')
+      + card('Foundations', num(sums.count), dy + ' \u00b7 ' + scope)
+      + card('Total giving', money(sums.giving), dy + ' \u00b7 ' + scope)
+      + card('Total assets', money(sums.assets), dy + ' \u00b7 ' + scope)
+      + card('Giving per resident', money(sums.giving / (sums.pop || 1)), dy + ' \u00b7 ' + num(sums.pop) + ' residents')
       + '</div>';
 
     // the map
@@ -191,13 +188,63 @@
     // legend
     h += '<div id="sf-uslegend" style="margin-top:18px; max-width:860px;"></div>';
 
-    // national benchmark ranking
+    // what opens when you click a state
+    h += '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px; margin-top:16px; max-width:860px;">'
+      + '<span style="font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#8A857B; margin-right:2px;">Inside each state</span>';
+    [['Private foundations', 'live IRS BMF'], ['Community foundations', 'live IRS 990'], ['2015-' + dataYear() + ' history', 'year by year'], ['County + metro maps', 'crosswalk'], ['Recipient grants', 'where dollars land']].forEach(function (p) {
+      h += '<span style="font-size:12px; color:#57534A; background:#fff; border:1px solid #DDDBD2; border-radius:999px; padding:5px 12px;"><strong style="font-weight:700; color:#17140F;">' + p[0] + '</strong> \u00b7 ' + p[1] + '</span>';
+    });
+    h += '</div>';
+
+    // national benchmark ranking / trend panels
     var ranked = Object.keys(DATA.states).filter(function (a2) { return !mapRegion || regionOf(a2) === mapRegion; }).map(function (a2) {
       var st3 = DATA.states[a2]; var y3 = st3.years[st3.years.length - 1]; var p3 = popOf(a2) || 1;
-      return { ab: a2, name: st3.name, giving: y3.giving, perRes: y3.giving / p3, count: y3.count };
+      return { ab: a2, name: st3.name, giving: y3.giving, perRes: y3.giving / p3, count: y3.count, years: st3.years };
     }).sort(function (a2, b2) { return (perCapita ? b2.perRes - a2.perRes : b2.giving - a2.giving); });
     h += '<div style="max-width:860px; margin-top:22px; background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:20px 22px;">';
-    h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px;"><span style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B;">State benchmark \u00b7 ' + (perCapita ? 'giving per resident' : 'total giving') + '</span><span style="font-size:11.5px; color:#8A857B;">' + ranked.length + ' states \u00b7 click any row to open</span></div>';
+    h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px;">'
+      + '<span style="display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;">'
+      + '<button data-sfmap-view="rank" style="' + tabStyle(mapView === 'rank') + '">Ranking</button>'
+      + '<button data-sfmap-view="trend" style="' + tabStyle(mapView === 'trend') + '">Trend panels</button>'
+      + '<span style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B;">' + (mapView === 'trend' ? 'Compare up to 5 states \u00b7 2015-' + dataYear() + ' giving' : (perCapita ? 'giving per resident' : 'total giving') + ' \u00b7 ' + dataYear()) + '</span></span>'
+      + '<span style="font-size:11.5px; color:#8A857B;">' + (mapView === 'trend' ? 'panels scale to each state' : ranked.length + ' states \u00b7 click any to open') + '</span></div>';
+    if (mapView === 'trend') {
+      var selStates = trendSel.filter(function (a4) { return DATA.states[a4]; });
+      // picker
+      h += '<div style="display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center; margin-bottom:16px;">';
+      selStates.forEach(function (a4) {
+        h += '<span style="display:inline-flex; align-items:center; gap:7px; font-size:13px; color:#17140F; background:#F5F4F0; border:1px solid #DDDBD2; border-radius:4px; padding:6px 10px;"><span style="width:10px; height:10px; border-radius:2px; background:' + PALETTE[selStates.indexOf(a4) % PALETTE.length] + '; flex:none;"></span><strong style="font-weight:700;">' + esc(DATA.states[a4].name) + '</strong><button data-sftrend-rm="' + a4 + '" title="Remove" style="border:none; background:none; cursor:pointer; color:#8A857B; font-size:15px; line-height:1; padding:0;">&times;</button></span>';
+      });
+      if (selStates.length < 5) {
+        var opts2 = Object.keys(DATA.states).filter(function (k4) { return selStates.indexOf(k4) < 0; }).sort(function (a4, b4) { return DATA.states[a4].name.localeCompare(DATA.states[b4].name); }).map(function (k4) { return '<option value="' + k4 + '">' + esc(DATA.states[k4].name) + '</option>'; }).join('');
+        h += '<select data-sftrend-add style="font-family:inherit; font-size:13px; padding:7px 10px; border:1.5px solid #DDDBD2; border-radius:4px; background:#fff; min-width:180px;"><option value="">Add a state (' + selStates.length + '/5)\u2026</option>' + opts2 + '</select>';
+      } else {
+        h += '<span style="font-size:12px; color:#8A857B;">Maximum of 5. Remove one to add another.</span>';
+      }
+      h += '</div>';
+      // panels
+      h += '<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;">';
+      selStates.forEach(function (a4) {
+        var st4 = DATA.states[a4], ys = st4.years, n2 = ys.length;
+        var color = PALETTE[selStates.indexOf(a4) % PALETTE.length];
+        var gmin = Infinity, gmax = -Infinity;
+        ys.forEach(function (yy) { if (yy.giving < gmin) gmin = yy.giving; if (yy.giving > gmax) gmax = yy.giving; });
+        var span = (gmax - gmin) || 1;
+        var pts = ys.map(function (yy, i3) { return (10 + i3 / (n2 - 1) * 200).toFixed(1) + ',' + (54 - (yy.giving - gmin) / span * 42).toFixed(1); }).join(' ');
+        var lastPt = pts.split(' ').pop().split(',');
+        var chg = ys[0].giving ? (ys[n2 - 1].giving - ys[0].giving) / ys[0].giving * 100 : 0;
+        var up = chg >= 0;
+        var p4 = popOf(a4) || 1;
+        h += '<button data-sfmap-state="' + a4 + '" style="border:1px solid #EDEBE4; border-radius:4px; background:#FDFCFA; cursor:pointer; padding:14px 14px 11px; text-align:left; font-family:inherit;">'
+          + '<div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px;"><span style="font-family:Archivo,sans-serif; font-weight:800; font-size:14px; color:#17140F;">' + esc(st4.name) + '</span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:' + (up ? '#3F7A55' : '#B04A3C') + ';">' + (up ? '\u25b2' : '\u25bc') + Math.abs(Math.round(chg)) + '% since ' + ys[0].y + '</span></div>'
+          + '<svg viewBox="0 0 220 60" style="width:100%; height:auto; display:block;"><polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></polyline><circle cx="' + lastPt[0] + '" cy="' + lastPt[1] + '" r="3" fill="#17140F"></circle></svg>'
+          + '<div style="display:flex; justify-content:space-between; gap:6px; font-size:11.5px; color:#8A857B; margin-top:5px;"><span>' + ys[0].y + ' ' + money(ys[0].giving) + '</span><span style="font-family:Archivo,sans-serif; font-weight:700; color:#14432F;">' + ys[n2 - 1].y + ' ' + money(ys[n2 - 1].giving) + ' \u00b7 ' + money(ys[n2 - 1].giving / p4) + '/res</span></div>'
+          + '</button>';
+      });
+      h += '</div>';
+      h += '<div style="font-size:11.5px; color:#8A857B; margin-top:12px;">Each panel is scaled to its own range to show the shape of the trend. Click a panel to open the state\u2019s full detail.</div>';
+      h += figCap('Figure 2', 'Total giving by year, selected states, 2015-' + dataYear(), SRC_EST);
+    } else {
     h += '<div style="display:grid; grid-template-columns:auto 1fr auto auto auto; gap:4px 16px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding-bottom:7px; border-bottom:1px solid #DDDBD2;"><span>#</span><span>State</span><span style="text-align:right;">Giving</span><span style="text-align:right;">Per resident</span><span style="text-align:right;">Foundations</span></div>';
     h += '<div style="max-height:340px; overflow-y:auto;">';
     ranked.forEach(function (r2, i2) {
@@ -209,7 +256,10 @@
         + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + num(r2.count) + '</span>'
         + '</button>';
     });
-    h += '</div></div>';
+    h += '</div>';
+    h += figCap('Figure 2', 'States ranked by ' + (perCapita ? 'giving per resident' : 'total giving') + ', ' + dataYear(), SRC_EST);
+    }
+    h += '</div>';
     h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:80ch;">Map shading uses the representative estimate dataset so the whole country renders instantly. Click any state for its detail: the community-foundation and private-foundation layers pull live IRS data, and the geographic view opens county and metro (CBSA) shading built on the ZIP→county→CBSA crosswalk.</div>';
 
     box.innerHTML = h;
@@ -235,8 +285,10 @@
     var abbrs = [];
     feats.forEach(function (f) { var ab = GEO.stateFips[String(f.id)]; if (ab && DATA.states[ab] && (!mapRegion || regionOf(ab) === mapRegion)) abbrs.push(ab); });
     var vals = abbrs.map(mapVal);
-    var max = Math.max.apply(null, vals.concat([1])), min = Math.min.apply(null, vals.concat([0]));
-    function norm(v) { if (max <= 0) return 0; var lm = Math.log(1 + max - min) || 1; return Math.log(1 + v - min) / lm; }
+    var max = Math.max.apply(null, vals.concat([1])), min = Math.min.apply(null, vals.filter(function (v) { return v > 0; }).concat([max]));
+    // Log scale anchored at the smallest state, so the full ramp is used instead of
+    // everything compressing into the dark end.
+    function norm(v) { if (max <= 0 || v <= 0) return 0; if (max === min) return 1; return Math.max(0, Math.min(1, Math.log(v / min) / Math.log(max / min))); }
     var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%; height:auto; display:block;">';
     var labels = '';
     feats.forEach(function (f) {
@@ -267,9 +319,10 @@
     var lg = $('sf-uslegend');
     if (lg) lg.innerHTML = '<div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">'
       + '<div style="display:flex; align-items:center; gap:8px;"><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A; font-variant-numeric:tabular-nums;">' + mapFmt(min) + '</span><span style="display:inline-block; width:160px; height:12px; border-radius:3px; background:linear-gradient(90deg,' + ramp(0) + ',' + ramp(.25) + ',' + ramp(.5) + ',' + ramp(.75) + ',' + ramp(1) + ');"></span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A; font-variant-numeric:tabular-nums;">' + mapFmt(max) + '</span></div>'
-      + '<span style="font-size:12px; color:#8A857B;">' + mapLabel() + ', log scale</span>'
+      + '<span style="font-size:12px; color:#8A857B;">' + mapLabel() + ', ' + dataYear() + ', log scale</span>'
       + '<span style="font-size:12px; color:#8A857B; margin-left:auto;">Hover any state for its value · click to open its detail</span>'
-      + '</div>';
+      + '</div>'
+      + figCap('Figure 1', mapLabel() + ' by state, ' + dataYear() + (mapRegion ? ', ' + mapRegion + ' region' : ''), SRC_EST);
   }
 
   document.addEventListener('submit', function (e) {
@@ -281,15 +334,25 @@
       addToCompare(sel.value);
     }
   });
+  document.addEventListener('change', function (e) {
+    var ta = e.target && e.target.closest ? e.target.closest('[data-sftrend-add]') : null;
+    if (ta && ta.value && trendSel.length < 5 && trendSel.indexOf(ta.value) < 0) { trendSel.push(ta.value); renderMap(); }
+  });
   document.addEventListener('click', function (e) {
+    var nvb = e.target && e.target.closest ? e.target.closest('[data-sf-nav]') : null;
+    if (nvb) { var tgt = $(nvb.getAttribute('data-sf-nav')); if (tgt) { try { var yy2 = tgt.getBoundingClientRect().top + window.scrollY - 128; window.scrollTo({ top: yy2, behavior: 'smooth' }); } catch (e4) {} } return; }
+    var mvb = e.target && e.target.closest ? e.target.closest('[data-sfmap-view]') : null;
+    if (mvb) { mapView = mvb.getAttribute('data-sfmap-view'); renderMap(); return; }
+    var trb = e.target && e.target.closest ? e.target.closest('[data-sftrend-rm]') : null;
+    if (trb) { var rmAb = trb.getAttribute('data-sftrend-rm'); trendSel = trendSel.filter(function (x4) { return x4 !== rmAb; }); renderMap(); return; }
     var mps = e.target && e.target.closest ? e.target.closest('[data-sfmap-state]') : null;
     if (mps) { var ab = mps.getAttribute('data-sfmap-state'); var sel = $('sf-state'); if (sel) sel.value = ab; run(ab); return; }
     var mpm = e.target && e.target.closest ? e.target.closest('[data-sfmap-metric]') : null;
-    if (mpm) { mapMetric = mpm.getAttribute('data-sfmap-metric'); renderMap(); return; }
+    if (mpm) { mapMetric = mpm.getAttribute('data-sfmap-metric'); renderMap(); renderSide(); return; }
     var mpr = e.target && e.target.closest ? e.target.closest('[data-sfmap-region]') : null;
-    if (mpr) { mapRegion = mpr.getAttribute('data-sfmap-region'); renderMap(); return; }
+    if (mpr) { mapRegion = mpr.getAttribute('data-sfmap-region'); renderMap(); renderSide(); return; }
     var mpc = e.target && e.target.closest ? e.target.closest('[data-sfmap-pc]') : null;
-    if (mpc) { perCapita = !perCapita; renderMap(); if (current) run(current); return; }
+    if (mpc) { perCapita = !perCapita; renderMap(); renderSide(); if (current) run(current); return; }
     var gt = e.target && e.target.closest ? e.target.closest('[data-geo-tab]') : null;
     if (gt) { geoTab = gt.getAttribute('data-geo-tab'); drawGeo(); return; }
     var gm = e.target && e.target.closest ? e.target.closest('[data-geo-metric]') : null;
@@ -299,9 +362,9 @@
     var rcb = e.target && e.target.closest ? e.target.closest('[data-rec-county]') : null;
     if (rcb) { var rv = rcb.getAttribute('data-rec-county'); recFips = (!rv || recFips === rv) ? null : rv; renderRecSide(); renderRecTable(); drawRecMap(); return; }
     var lb = e.target && e.target.closest ? e.target.closest('[data-sf-layer]') : null;
-    if (lb) { var nl = lb.getAttribute('data-sf-layer'); if (nl !== layer) { layer = nl; metric = 'giving'; if (current) run(current); } return; }
+    if (lb) { var nl = lb.getAttribute('data-sf-layer'); if (nl !== layer) { layer = nl; metric = 'giving'; if (current) run(current); renderSide(); } return; }
     var pcb = e.target && e.target.closest ? e.target.closest('[data-sf-pc]') : null;
-    if (pcb) { perCapita = !perCapita; if (current) run(current); return; }
+    if (pcb) { perCapita = !perCapita; renderMap(); renderSide(); if (current) run(current); return; }
     var yb = e.target && e.target.closest ? e.target.closest('[data-sf-year]') : null;
     if (yb) { selYear = +yb.getAttribute('data-sf-year'); if (lastBodyD) renderBody(lastBodyD, lastBodyCF, lastBodySample); return; }
     var shb = e.target && e.target.closest ? e.target.closest('[data-sf-share]') : null;
@@ -314,6 +377,22 @@
     }
     var prb = e.target && e.target.closest ? e.target.closest('[data-sf-print]') : null;
     if (prb) { preparePrint(); window.print(); return; }
+    var csvb = e.target && e.target.closest ? e.target.closest('[data-sf-csv]') : null;
+    if (csvb && DATA) {
+      var rows = ['state,abbr,year,foundations,giving_usd,assets_usd,avg_grant_usd,basis'];
+      Object.keys(DATA.states).sort().forEach(function (ab5) {
+        var st5 = DATA.states[ab5];
+        st5.years.forEach(function (y5) { rows.push('"' + st5.name + '",' + ab5 + ',' + y5.y + ',' + y5.count + ',' + y5.giving + ',' + y5.assets + ',' + (y5.avgGrant || '') + ',representative_estimate'); });
+      });
+      try {
+        var blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+        var a5 = document.createElement('a');
+        a5.href = URL.createObjectURL(blob);
+        a5.download = 'nelcrum-state-foundations-2015-' + dataYear() + '.csv';
+        document.body.appendChild(a5); a5.click(); a5.remove();
+      } catch (e5) {}
+      return;
+    }
     var rmb2 = e.target && e.target.closest ? e.target.closest('[data-rec-mode]') : null;
     if (rmb2) { recMapMode = rmb2.getAttribute('data-rec-mode'); renderRecControls(); drawRecMap(); return; }
     var rnb = e.target && e.target.closest ? e.target.closest('[data-rec-ntee]') : null;
@@ -321,12 +400,12 @@
     var mb = e.target && e.target.closest ? e.target.closest('[data-sf-metric]') : null;
     if (mb) { metric = mb.getAttribute('data-sf-metric'); renderChart(); return; }
     var rdb = e.target && e.target.closest ? e.target.closest('[data-sf-real]') : null;
-    if (rdb) { realDollars = !realDollars; renderChart(); return; }
+    if (rdb) { realDollars = !realDollars; renderChart(); renderSide(); return; }
     var rm = e.target && e.target.closest ? e.target.closest('[data-sf-rm]') : null;
     if (rm) { e.preventDefault(); var i = +rm.getAttribute('data-sf-rm'); if (i > 0 && i < compare.length) { compare.splice(i, 1); renderChart(); } }
   });
 
-  function msg(t, err) { var m = $('sf-msg'); if (m) { m.textContent = t || ''; m.style.color = err ? '#F2B8A2' : 'rgba(245,244,240,.6)'; } }
+  function msg(t, err) { var m = $('sf-msg'); if (m) { m.textContent = t || ''; m.style.color = err ? '#B04A3C' : '#8A857B'; } }
 
   function run(abbr) {
     selYear = null;
@@ -343,6 +422,7 @@
         if (tr[tr.length - 1] !== entry) { tr.push(entry); sessionStorage.setItem('nc_sf_trail', JSON.stringify(tr.slice(-40))); }
       } catch (e2) {}
       if (layer === 'cf') runCF(abbr); else if (layer === 'pf') runPF(abbr); else if (layer === 'rec') runRec(abbr); else runEstimate(abbr);
+      renderSide();
     });
   }
 
@@ -400,7 +480,7 @@
     var letters = Object.keys(d.ntee || {}).map(function (k) { return { k: k, n: d.ntee[k].n, a: d.ntee[k].a }; }).sort(function (a, b) { return b.a - a.a; }).slice(0, 10);
     var maxA = letters.reduce(function (m, x) { return Math.max(m, x.a); }, 1);
     h += '<div id="sf-chart" style="display:none;"></div>';
-    h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:16px;">';
+    h += '<div id="sf-ntee" style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:16px;">';
     h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:16px;"><span style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B;">Assets by program area</span><span style="font-size:11.5px; color:#8A857B;">' + money(d.assets) + ' total</span></div>';
     letters.forEach(function (x) {
       h += '<div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;"><div style="width:170px; font-size:13px; color:#17140F; flex:none;">' + esc(NTEE_LABELS[x.k] || x.k) + '</div><div style="flex:1; background:#F0EEE7; border-radius:3px; height:16px; overflow:hidden;"><div style="height:100%; width:' + Math.round(x.a / maxA * 100) + '%; background:#C98A2B;"></div></div><div style="width:70px; text-align:right; font-family:Archivo,sans-serif; font-weight:700; font-size:13px; color:#14432F; flex:none;">' + money(x.a) + '</div><div style="width:60px; text-align:right; font-size:12px; color:#8A857B; flex:none;">' + num(x.n) + '</div></div>';
@@ -411,6 +491,7 @@
 
     $('sf-teaser').innerHTML = h;
     renderGeo(abbr);
+    injectToolNav();
     buildGate(stName(abbr), false);
   }
 
@@ -508,6 +589,7 @@
       : 'Records parsed from 990-PF Schedule I filings and geocoded to the recipient\u2019s county. Amounts are as filed; verify any single organization in the Funder Intelligence Report.') + '</div>';
     $('sf-teaser').innerHTML = h;
     renderRecControls(); renderRecSide(); renderRecTable(); drawRecMap();
+    injectToolNav();
     buildGate(stName(abbr), false);
   }
 
@@ -610,11 +692,12 @@
     svg += '</svg>';
     var legend2;
     if (isGap) {
-      legend2 = '<div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;"><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#B04A3C;">under-funded</span><span style="display:inline-block; width:140px; height:10px; border-radius:3px; background:linear-gradient(90deg,' + gapColor(0) + ',' + gapColor(1) + ',' + gapColor(2) + ');"></span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F;">over-funded</span><span style="font-size:11.5px; color:#8A857B; margin-left:auto;">state avg ' + money(avgPerRes) + ' per resident' + (recNtee ? ' \u00b7 ' + esc(recNtee) : '') + '</span></div>';
+      legend2 = '<div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;"><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#B04A3C;">under-funded</span><span style="display:inline-block; width:140px; height:10px; border-radius:3px; background:linear-gradient(90deg,' + gapColor(0) + ',' + gapColor(1) + ',' + gapColor(2) + ');"></span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F;">over-funded</span><span style="font-size:11.5px; color:#8A857B; margin-left:auto;">state avg ' + money(avgPerRes) + ' per resident' + (recNtee ? ' \u00b7 ' + esc(recNtee) : '') + '</span></div>'
+        + '<div style="font-size:11.5px; color:#8A857B; margin-top:8px; line-height:1.5;">Gap = a county\u2019s mapped grant dollars per resident, compared with the average across all mapped counties (' + money(avgPerRes) + '/resident). A county at \u221250% receives half the state\u2019s per-resident rate.</div>';
     } else {
       legend2 = '<div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;"><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A;">$0</span><span style="display:inline-block; width:140px; height:10px; border-radius:3px; background:linear-gradient(90deg,' + ramp(0) + ',' + ramp(.25) + ',' + ramp(.5) + ',' + ramp(.75) + ',' + ramp(1) + ');"></span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A; font-variant-numeric:tabular-nums;">' + money(max) + '</span><span style="font-size:11.5px; color:#8A857B; margin-left:auto;">' + money(mappedTotal) + ' mapped' + (recNtee ? ' \u00b7 ' + esc(recNtee) : ' statewide') + '</span></div>';
     }
-    el.innerHTML = svg + legend2;
+    el.innerHTML = svg + legend2 + figCap('Figure 4', (isGap ? 'Giving gap: grant dollars received per resident vs state average' : 'Grant dollars received by county') + ', ' + stName(abbr) + (recNtee ? ', ' + esc(recNtee) + ' grants' : ''), (recData.__sample ? 'Illustrative records pending the IRS 990-PF Schedule I ingest; ' : 'IRS 990-PF Schedule I; ') + SRC_XWALK);
   }
 
   // ---------- COMMUNITY FOUNDATION LAYER (LIVE) ----------
@@ -732,7 +815,7 @@
 
     if (!isCF) {
       var totalGiving = latest.giving || 0;
-      h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:16px;">';
+      h += '<div id="sf-ntee" style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:16px;">';
       h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:16px;"><span style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B;">Allocation by program area (' + (latest.y || '') + ')</span><span style="font-size:11.5px; color:#8A857B;">' + money(totalGiving) + ' total</span></div>';
       (d.ntee || []).forEach(function (n) {
         var dollars = totalGiving * n.pct / 100;
@@ -744,7 +827,7 @@
 
     var notable = d.notable || [];
     if (notable.length) {
-      h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:4px;">';
+      h += '<div id="sf-notable" style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:4px;">';
       h += '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:14px;">' + (isCF ? 'Community foundations in this state' : 'Notable foundations headquartered here') + '</div>';
       h += '<div style="display:flex; flex-wrap:wrap; gap:8px;">';
       notable.forEach(function (f) {
@@ -758,13 +841,13 @@
     $('sf-teaser').innerHTML = h;
     renderChart();
     renderGeo(abbr);
+    injectToolNav();
     buildGate(stName(abbr), isCF);
   }
 
   function layerToggle() {
     function seg(id, label, on) { return '<button data-sf-layer="' + id + '" style="' + tabStyle(on) + '">' + label + '</button>'; }
-    var pc = '<button data-sf-pc="1" title="Show figures per resident" style="' + tabStyle(perCapita, '#14432F') + '">Per capita ' + (perCapita ? 'on' : 'off') + '</button>';
-    return '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px; margin-bottom:26px; border-bottom:1px solid #DDDBD2; padding-bottom:12px;">' + grpLabel('Data layer') + seg('pf', 'All private foundations', layer === 'pf') + seg('cf', 'Community foundations', layer === 'cf') + seg('estimate', 'All foundations estimate', layer === 'estimate') + seg('rec', 'Recipient grants', layer === 'rec') + '<span style="flex:1;"></span>' + pc + '<button data-sf-share="1" title="Copy a direct link to this view" style="' + tabStyle(false, '#14432F') + '">Copy link</button><button data-sf-print="1" title="Print or save this state as a PDF one-pager" style="' + tabStyle(false, '#14432F') + '">Print / PDF</button></div>';
+    return '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px; margin-bottom:26px; border-bottom:1px solid #DDDBD2; padding-bottom:12px;">' + grpLabel('Data layer') + seg('pf', 'All private foundations', layer === 'pf') + seg('cf', 'Community foundations', layer === 'cf') + seg('estimate', 'All foundations estimate', layer === 'estimate') + seg('rec', 'Recipient grants', layer === 'rec') + '</div>';
   }
 
   function card(label, val, sub) {
@@ -828,7 +911,75 @@
       adder = '<div style="font-size:12.5px; color:#8A857B; margin-top:14px;">Comparing the maximum of 5 states. Remove one to add another.</div>';
     }
 
-    box.innerHTML = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:26px;"><div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:16px;">' + metricLabel() + ' over time' + (realDollars && metric !== 'count' ? ' \u00b7 inflation-adjusted (2023 dollars)' : '') + '</div>' + toggle + svg + legend + adder + '</div>';
+    box.innerHTML = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:22px 24px; margin-bottom:26px;"><div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:16px;">' + metricLabel() + ' over time' + (realDollars && metric !== 'count' ? ' \u00b7 inflation-adjusted (2023 dollars)' : '') + '</div>' + toggle + svg + legend + adder + figCap('Figure 3', metricLabel() + ' over time, ' + compare.map(function (c5) { return c5.name; }).join('; ') + (realDollars && metric !== 'count' ? ', 2023 dollars (CPI-U)' : ''), (layer === 'cf' ? 'IRS Form 990 e-file aggregates (live); ' : '') + SRC_EST) + '</div>';
+  }
+
+  // ---------- LEFT NAV (all filters + features, one place) ----------
+  function sideBtn(attr, val, label, on, dim) {
+    return '<button ' + attr + '="' + val + '" style="display:block; width:100%; text-align:left; border:none; background:' + (on ? '#EDE9DE' : 'none') + '; cursor:pointer; font-family:Archivo,sans-serif; font-weight:' + (on ? '800' : '600') + '; font-size:13px; color:' + (dim ? '#B5B0A4' : on ? '#17140F' : '#57534A') + '; padding:7px 10px 7px 12px; border-left:3px solid ' + (on ? '#C98A2B' : 'transparent') + '; border-radius:0 3px 3px 0; margin-bottom:1px;">' + label + '</button>';
+  }
+  function sideGroup(label) { return '<div style="font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#8A857B; margin:20px 0 8px 12px;">' + label + '</div>'; }
+  // Think-tank figure discipline: numbered captions with a source line under every chart.
+  function figCap(no, title, source) {
+    return '<div style="margin-top:14px; padding-top:10px; border-top:1px solid #EDEBE4;"><div style="font-size:12.5px; color:#17140F;"><strong style="font-family:Archivo,sans-serif; font-weight:800;">' + no + '.</strong> <span style="font-family:\'Source Serif 4\', Georgia, serif;">' + title + '</span></div><div style="font-size:11.5px; color:#8A857B; margin-top:3px; line-height:1.5;">Source: ' + source + '</div></div>';
+  }
+  var SRC_EST = 'NELCRUM representative estimates anchored to IRS 990-PF magnitudes; U.S. Census population.';
+  var SRC_XWALK = 'State totals allocated by 2020 Census resident-population share via the ZIP\u2192county\u2192CBSA crosswalk.';
+  function renderSide() {
+    var box = $('sf-side'); if (!box || !DATA) return;
+    var h = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:16px 12px 18px;">';
+    h += '<div style="font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#14432F; margin:0 0 4px 12px;">State Foundation Overview</div>';
+    h += '<div style="font-family:Archivo,sans-serif; font-weight:800; font-size:17px; color:#17140F; margin:0 0 2px 12px;">' + (current ? esc(stName(current)) : 'National view') + '</div>';
+    if (current) h += '<button data-sf-nav="sf-map" style="border:none; background:none; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F; padding:2px 0 0 12px; border-bottom:none; text-decoration:underline;">\u2191 back to national map</button>';
+
+    h += sideGroup('Data layer' + (current ? '' : ' \u00b7 pick a state'));
+    [['pf', 'Private foundations'], ['cf', 'Community foundations'], ['estimate', 'All foundations estimate'], ['rec', 'Recipient grants']].forEach(function (l2) {
+      h += sideBtn('data-sf-layer', l2[0], l2[1], current && layer === l2[0], !current);
+    });
+
+    h += sideGroup('Measure');
+    [['giving', 'Giving'], ['assets', 'Assets'], ['count', 'Foundations'], ['avgGrant', 'Avg grant size']].forEach(function (m2) {
+      h += sideBtn('data-sfmap-metric', m2[0], m2[1], mapMetric === m2[0]);
+    });
+
+    h += sideGroup('Region');
+    [['', 'All regions'], ['Northeast', 'Northeast'], ['Midwest', 'Midwest'], ['South', 'South'], ['West', 'West']].forEach(function (r3) {
+      h += sideBtn('data-sfmap-region', r3[0], r3[1], mapRegion === r3[0]);
+    });
+
+    h += sideGroup('Options');
+    h += sideBtn('data-sf-pc', '1', 'Per capita ' + (perCapita ? 'on' : 'off'), perCapita);
+    h += sideBtn('data-sf-real', '1', '2023 dollars ' + (realDollars ? 'on' : 'off'), realDollars);
+
+    if (current && $('sf-teaser') && $('sf-teaser').innerHTML) {
+      var items = [];
+      [['sf-teaser', 'Overview'], ['sf-chart', 'Trend'], ['sf-recmap', 'Recipient map'], ['sf-rectable', 'Grant records'], ['sf-geo', 'County + metro maps'], ['sf-ntee', 'Program areas'], ['sf-notable', 'Foundations']].forEach(function (it) { var el2 = $(it[0]); if (el2 && el2.style.display !== 'none') items.push(it); });
+      if (items.length) {
+        h += sideGroup('On this page');
+        items.forEach(function (it) { h += sideBtn('data-sf-nav', it[0], it[1], false); });
+      }
+    }
+
+    h += sideGroup('Actions');
+    h += sideBtn('data-sf-share', '1', 'Copy link to this view', false);
+    h += sideBtn('data-sf-print', '1', 'Print / save PDF', false);
+    h += sideBtn('data-sf-csv', '1', 'Download data (CSV)', false);
+    h += '</div>';
+    box.innerHTML = h;
+  }
+
+  // Sticky in-tool section nav, injected after each state render. Targets are
+  // whichever section ids the active layer actually produced.
+  function injectToolNav() { renderSide(); }
+  function injectToolNavOld() {
+    var teaser = $('sf-teaser'); if (!teaser || $('sf-toolnav')) return;
+    var items = [['sf-map', 'National map']];
+    [['sf-teaser', 'Overview'], ['sf-chart', 'Trend'], ['sf-recmap', 'Recipient map'], ['sf-rectable', 'Grant records'], ['sf-geo', 'County + metro maps'], ['sf-ntee', 'Program areas'], ['sf-notable', 'Foundations']].forEach(function (it) { var el2 = $(it[0]); if (el2 && el2.style.display !== 'none') items.push(it); });
+    if (items.length < 3) return;
+    var h = '<div id="sf-toolnav" style="position:sticky; top:70px; z-index:40; background:rgba(245,244,240,.94); backdrop-filter:blur(8px); border-bottom:1px solid #DDDBD2; margin:0 0 20px; padding:10px 2px; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px;">' + grpLabel(stName(current || '') || 'Sections');
+    items.forEach(function (it) { h += '<button data-sf-nav="' + it[0] + '" style="' + tabStyle(false) + '">' + it[1] + '</button>'; });
+    h += '</div>';
+    teaser.insertAdjacentHTML('afterbegin', h);
   }
 
   function buildGate(name, isCF) {
@@ -868,7 +1019,7 @@
   function countyVal(fips, base, statePop) { var ci = GEO.countyIndex[fips]; if (!ci) return null; var share = ci.pop / statePop; return { name: ci.name, pop: ci.pop, cbsa: ci.cbsa, share: share, count: base.count * share, assets: base.assets * share, giving: base.giving * share }; }
   function mergeCbsa(memberFips) { var geoms = USTOPO.objects.counties.geometries.filter(function (g) { return memberFips.indexOf(pad5(g.id)) >= 0; }); if (!geoms.length) return null; try { return topojson.merge(USTOPO, geoms); } catch (e) { return null; } }
   function geoLegend(max) { var isC = geoMetric === 'count'; var hi = max == null ? 'Higher' : (isC ? num(max) : money(max)); return '<div style="display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;"><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A;">' + (isC ? '0' : '$0') + '</span><span style="display:inline-block; width:170px; height:11px; border-radius:3px; background:linear-gradient(90deg,' + ramp(0) + ',' + ramp(.25) + ',' + ramp(.5) + ',' + ramp(.75) + ',' + ramp(1) + ');"></span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#57534A; font-variant-numeric:tabular-nums;">' + hi + '</span><span style="font-size:11.5px; color:#8A857B;">' + geoMetricLabel().toLowerCase() + '</span></div>'; }
-  function geoCard(svg, aside, max) { return '<div data-stack style="display:grid; grid-template-columns:1.35fr 1fr; gap:20px; align-items:start; background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:20px 22px;"><div>' + svg + geoLegend(max) + '</div><div>' + aside + '</div></div>'; }
+  function geoCard(svg, aside, max) { return '<div data-stack style="display:grid; grid-template-columns:1.35fr 1fr; gap:20px; align-items:start; background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:20px 22px;"><div>' + svg + geoLegend(max) + figCap('Figure 4', geoMetricLabel() + ' by ' + (geoTab === 'cbsa' ? 'metro area (CBSA)' : 'county') + ', ' + stName(geoAbbr) + (perCapita ? ', per capita' : ''), SRC_XWALK) + '</div><div>' + aside + '</div></div>'; }
 
   function geoCounty(abbr, base, statePop) {
     var W = 560, H = 430, f2 = fips2(abbr);
