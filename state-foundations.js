@@ -9,7 +9,7 @@
 (function () {
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycby6VPp5kEWJupRvJH2xRvs5D14CEGQvxaMR3kDFH43WTTv69_DL3ZesS8NFKdTxvMgFGg/exec';
   var PALETTE = ['#C98A2B', '#14432F', '#4E6B43', '#B04A3C', '#2A6FDB'];
-  var DATA = null, compare = [], metric = 'giving', layer = 'cf', current = null, perCapita = false, realDollars = false;
+  var DATA = null, compare = [], metric = 'giving', layer = 'rec', current = null, perCapita = false, realDollars = true;
   var CFCACHE = {};
   // CPI-U annual averages, rebased so factor * nominal = 2023 dollars.
   var CPI23 = { 2015: 1.2856, 2016: 1.2696, 2017: 1.2431, 2018: 1.2135, 2019: 1.1919, 2020: 1.1773, 2021: 1.1245, 2022: 1.0412, 2023: 1 };
@@ -54,7 +54,7 @@
     document.head.appendChild(st);
   }
 
-  function ready(cb) { var t = 0; (function p() { if ($('sf-form')) return cb(); if (t++ > 600) return; requestAnimationFrame(p); })(); }
+  function ready(cb) { var t = 0; (function p() { if ($('sf-map')) return cb(); if (t++ > 600) return; requestAnimationFrame(p); })(); }
   function stName(abbr) { return (DATA && DATA.states[abbr]) ? DATA.states[abbr].name : abbr; }
   function isAvgMetric() { return metric === 'avgGrant' || metric === 'avgPer'; }
   function valFor(yr) { return yr[metric]; }
@@ -134,8 +134,9 @@
 
   function mapVal(ab) {
     var st = DATA.states[ab]; if (!st) return 0;
-    var yr = st.years[st.years.length - 1];
+    var yr = yearOf(st);
     var v = mapMetric === 'giving' ? yr.giving : mapMetric === 'assets' ? yr.assets : mapMetric === 'count' ? yr.count : yr.avgGrant;
+    if (mapMetric !== 'count') v = cpiAdj(v, yr.y);
     if (perCapita && mapMetric !== 'avgGrant') { var p = popOf(ab); if (p) v = mapMetric === 'count' ? v / p * 100000 : v / p; }
     return v || 0;
   }
@@ -151,7 +152,8 @@
   function mapFmt(v) { if (mapMetric === 'count') return perCapita ? (Math.round(v * 10) / 10) : Math.round(v).toLocaleString(); var a = Math.abs(v); if (a >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B'; if (a >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M'; if (a >= 1e3) return '$' + Math.round(v / 1e3) + 'K'; return '$' + Math.round(v); }
   function mapLabel() { var base = mapMetric === 'giving' ? 'Total giving' : mapMetric === 'assets' ? 'Total assets' : mapMetric === 'count' ? 'Foundations' : 'Avg grant size'; if (perCapita && mapMetric !== 'avgGrant') base += mapMetric === 'count' ? ' per 100k' : ' per resident'; return base; }
 
-  function dataYear() { try { var ks = Object.keys(DATA.states); var ys = DATA.states[ks[0]].years; return ys[ys.length - 1].y; } catch (e) { return ''; } }
+  function dataYear() { if (selYear != null) return selYear; try { var ks = Object.keys(DATA.states); var ys = DATA.states[ks[0]].years; return ys[ys.length - 1].y; } catch (e) { return ''; } }
+  function yearOf(st) { var ys = st.years || []; if (selYear != null) for (var i = 0; i < ys.length; i++) if (ys[i].y === selYear) return ys[i]; return ys[ys.length - 1] || {}; }
 
   function renderMap() {
     var box = $('sf-map'); if (!box || !DATA) return;
@@ -170,8 +172,8 @@
     var sums = { giving: 0, assets: 0, count: 0, pop: 0, n: 0 };
     Object.keys(DATA.states).forEach(function (ab2) {
       if (mapRegion && regionOf(ab2) !== mapRegion) return;
-      var st2 = DATA.states[ab2]; var y2 = st2.years[st2.years.length - 1];
-      sums.giving += y2.giving || 0; sums.assets += y2.assets || 0; sums.count += y2.count || 0; sums.pop += (popOf(ab2) || 0); sums.n++;
+      var st2 = DATA.states[ab2]; var y2 = yearOf(st2);
+      sums.giving += cpiAdj(y2.giving, y2.y) || 0; sums.assets += cpiAdj(y2.assets, y2.y) || 0; sums.count += y2.count || 0; sums.pop += (popOf(ab2) || 0); sums.n++;
     });
     var scope = mapRegion ? 'across the ' + mapRegion : 'across ' + sums.n + ' states';
     var dy = dataYear();
@@ -188,18 +190,20 @@
     // legend
     h += '<div id="sf-uslegend" style="margin-top:18px; max-width:860px;"></div>';
 
-    // what opens when you click a state
-    h += '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px; margin-top:16px; max-width:860px;">'
-      + '<span style="font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#8A857B; margin-right:2px;">Inside each state</span>';
-    [['Private foundations', 'live IRS BMF'], ['Community foundations', 'live IRS 990'], ['2015-' + dataYear() + ' history', 'year by year'], ['County + metro maps', 'crosswalk'], ['Recipient grants', 'where dollars land']].forEach(function (p) {
-      h += '<span style="font-size:12px; color:#57534A; background:#fff; border:1px solid #DDDBD2; border-radius:999px; padding:5px 12px;"><strong style="font-weight:700; color:#17140F;">' + p[0] + '</strong> \u00b7 ' + p[1] + '</span>';
-    });
-    h += '</div>';
+    // primary function: where dollars land
+    var top5 = Object.keys(DATA.states).map(function (a8) { var y8 = yearOf(DATA.states[a8]); return { ab: a8, g: y8.giving || 0 }; }).sort(function (a8, b8) { return b8.g - a8.g; }).slice(0, 5);
+    h += '<div style="margin-top:22px; max-width:860px; background:#17140F; color:#F5F4F0; border-radius:4px; padding:24px 26px;">'
+      + '<div style="font-family:Archivo,sans-serif; font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#C98A2B; margin-bottom:8px;">The core question</div>'
+      + '<div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; letter-spacing:-.01em; line-height:1.15;">Where do foundation dollars land?</div>'
+      + '<div style="font-size:13.5px; color:rgba(245,244,240,.68); margin:10px 0 16px; line-height:1.55; max-width:64ch;">Every state opens on the recipient map: grant dollars received by county, under- and over-funded areas, and purpose filters. Funder-side views (private foundations, community foundations, multi-year estimates) are one click away in the left pane.</div>'
+      + '<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;"><span style="font-family:Archivo,sans-serif; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(245,244,240,.5); margin-right:4px;">Start with</span>';
+    top5.forEach(function (t5) { h += '<button data-sfmap-state="' + t5.ab + '" style="font-family:Archivo,sans-serif; font-weight:700; font-size:13px; color:#17140F; background:#C98A2B; border:none; border-radius:4px; padding:9px 16px; cursor:pointer;">' + esc(stName(t5.ab)) + '</button>'; });
+    h += '<span style="font-size:12.5px; color:rgba(245,244,240,.55); margin-left:4px;">or click any state on the map</span></div></div>';
 
     // national benchmark ranking / trend panels
     var ranked = Object.keys(DATA.states).filter(function (a2) { return !mapRegion || regionOf(a2) === mapRegion; }).map(function (a2) {
-      var st3 = DATA.states[a2]; var y3 = st3.years[st3.years.length - 1]; var p3 = popOf(a2) || 1;
-      return { ab: a2, name: st3.name, giving: y3.giving, perRes: y3.giving / p3, count: y3.count, years: st3.years };
+      var st3 = DATA.states[a2]; var y3 = yearOf(st3); var p3 = popOf(a2) || 1;
+      return { ab: a2, name: st3.name, giving: cpiAdj(y3.giving, y3.y), perRes: cpiAdj(y3.giving, y3.y) / p3, count: y3.count, years: st3.years };
     }).sort(function (a2, b2) { return (perCapita ? b2.perRes - a2.perRes : b2.giving - a2.giving); });
     h += '<div style="max-width:860px; margin-top:22px; background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:20px 22px;">';
     h += '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px;">'
@@ -227,28 +231,29 @@
       selStates.forEach(function (a4) {
         var st4 = DATA.states[a4], ys = st4.years, n2 = ys.length;
         var color = PALETTE[selStates.indexOf(a4) % PALETTE.length];
+        var vals5 = ys.map(function (yy) { return cpiAdj(yy.giving, yy.y); });
         var gmin = Infinity, gmax = -Infinity;
-        ys.forEach(function (yy) { if (yy.giving < gmin) gmin = yy.giving; if (yy.giving > gmax) gmax = yy.giving; });
+        vals5.forEach(function (v5) { if (v5 < gmin) gmin = v5; if (v5 > gmax) gmax = v5; });
         var span = (gmax - gmin) || 1;
-        var pts = ys.map(function (yy, i3) { return (10 + i3 / (n2 - 1) * 200).toFixed(1) + ',' + (54 - (yy.giving - gmin) / span * 42).toFixed(1); }).join(' ');
+        var pts = vals5.map(function (v5, i3) { return (10 + i3 / (n2 - 1) * 200).toFixed(1) + ',' + (54 - (v5 - gmin) / span * 42).toFixed(1); }).join(' ');
         var lastPt = pts.split(' ').pop().split(',');
-        var chg = ys[0].giving ? (ys[n2 - 1].giving - ys[0].giving) / ys[0].giving * 100 : 0;
+        var chg = vals5[0] ? (vals5[n2 - 1] - vals5[0]) / vals5[0] * 100 : 0;
         var up = chg >= 0;
         var p4 = popOf(a4) || 1;
         h += '<button data-sfmap-state="' + a4 + '" style="border:1px solid #EDEBE4; border-radius:4px; background:#FDFCFA; cursor:pointer; padding:14px 14px 11px; text-align:left; font-family:inherit;">'
           + '<div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px;"><span style="font-family:Archivo,sans-serif; font-weight:800; font-size:14px; color:#17140F;">' + esc(st4.name) + '</span><span style="font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:' + (up ? '#3F7A55' : '#B04A3C') + ';">' + (up ? '\u25b2' : '\u25bc') + Math.abs(Math.round(chg)) + '% since ' + ys[0].y + '</span></div>'
           + '<svg viewBox="0 0 220 60" style="width:100%; height:auto; display:block;"><polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></polyline><circle cx="' + lastPt[0] + '" cy="' + lastPt[1] + '" r="3" fill="#17140F"></circle></svg>'
-          + '<div style="display:flex; justify-content:space-between; gap:6px; font-size:11.5px; color:#8A857B; margin-top:5px;"><span>' + ys[0].y + ' ' + money(ys[0].giving) + '</span><span style="font-family:Archivo,sans-serif; font-weight:700; color:#14432F;">' + ys[n2 - 1].y + ' ' + money(ys[n2 - 1].giving) + ' \u00b7 ' + money(ys[n2 - 1].giving / p4) + '/res</span></div>'
+          + '<div style="display:flex; justify-content:space-between; gap:6px; font-size:11.5px; color:#8A857B; margin-top:5px;"><span>' + ys[0].y + ' ' + money(vals5[0]) + '</span><span style="font-family:Archivo,sans-serif; font-weight:700; color:#14432F;">' + ys[n2 - 1].y + ' ' + money(vals5[n2 - 1]) + ' \u00b7 ' + money(vals5[n2 - 1] / p4) + '/res</span></div>'
           + '</button>';
       });
       h += '</div>';
       h += '<div style="font-size:11.5px; color:#8A857B; margin-top:12px;">Each panel is scaled to its own range to show the shape of the trend. Click a panel to open the state\u2019s full detail.</div>';
-      h += figCap('Figure 2', 'Total giving by year, selected states, 2015-' + dataYear(), SRC_EST);
+      h += figCap('Figure 2', 'Total giving by year, selected states, 2015-' + dataYear() + (realDollars ? ', 2023 dollars (CPI-U)' : ', nominal dollars'), SRC_EST);
     } else {
-    h += '<div style="display:grid; grid-template-columns:auto 1fr auto auto auto; gap:4px 16px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding-bottom:7px; border-bottom:1px solid #DDDBD2;"><span>#</span><span>State</span><span style="text-align:right;">Giving</span><span style="text-align:right;">Per resident</span><span style="text-align:right;">Foundations</span></div>';
+    h += '<div style="display:grid; grid-template-columns:30px minmax(0,1fr) 92px 92px 92px; gap:4px 16px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding:0 4px 7px; border-bottom:1px solid #DDDBD2;"><span>#</span><span>State</span><span style="text-align:right;">Giving</span><span style="text-align:right;">Per resident</span><span style="text-align:right;">Foundations</span></div>';
     h += '<div style="max-height:340px; overflow-y:auto;">';
     ranked.forEach(function (r2, i2) {
-      h += '<button data-sfmap-state="' + r2.ab + '" style="display:grid; grid-template-columns:auto 1fr auto auto auto; gap:4px 16px; align-items:baseline; width:100%; text-align:left; border:none; border-bottom:1px solid #EDEBE4; background:none; cursor:pointer; padding:8px 4px; font-family:inherit; font-size:12.5px;">'
+      h += '<button data-sfmap-state="' + r2.ab + '" style="display:grid; grid-template-columns:30px minmax(0,1fr) 92px 92px 92px; gap:4px 16px; align-items:baseline; width:100%; text-align:left; border:none; border-bottom:1px solid #EDEBE4; background:none; cursor:pointer; padding:8px 4px; font-family:inherit; font-size:12.5px;">'
         + '<span style="font-family:Archivo,sans-serif; font-weight:700; color:#8A857B; min-width:22px;">' + (i2 + 1) + '</span>'
         + '<span style="color:#17140F; font-weight:600;">' + esc(r2.name) + '</span>'
         + '<span style="text-align:right; font-family:Archivo,sans-serif; font-weight:700; color:#14432F; font-variant-numeric:tabular-nums;">' + money(r2.giving) + '</span>'
@@ -260,7 +265,7 @@
     h += figCap('Figure 2', 'States ranked by ' + (perCapita ? 'giving per resident' : 'total giving') + ', ' + dataYear(), SRC_EST);
     }
     h += '</div>';
-    h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:80ch;">Map shading uses the representative estimate dataset so the whole country renders instantly. Click any state for its detail: the community-foundation and private-foundation layers pull live IRS data, and the geographic view opens county and metro (CBSA) shading built on the ZIP→county→CBSA crosswalk.</div>';
+    h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:80ch;">Map shading uses the representative estimate dataset so the whole country renders instantly. Every state opens on the recipient-grant view (where dollars land); the community-foundation and private-foundation layers pull live IRS data, and the geographic view opens county and metro (CBSA) shading built on the ZIP→county→CBSA crosswalk.</div>';
 
     box.innerHTML = h;
     drawUsMap();
@@ -335,6 +340,10 @@
     }
   });
   document.addEventListener('change', function (e) {
+    var ss = e.target && e.target.closest ? e.target.closest('[data-sf-sideselect]') : null;
+    if (ss && ss.value) { run(ss.value); return; }
+    var ys = e.target && e.target.closest ? e.target.closest('[data-sf-yearselect]') : null;
+    if (ys) { selYear = ys.value ? +ys.value : null; renderMap(); renderSide(); if (lastBodyD && current) renderBody(lastBodyD, lastBodyCF, lastBodySample); return; }
     var ta = e.target && e.target.closest ? e.target.closest('[data-sftrend-add]') : null;
     if (ta && ta.value && trendSel.length < 5 && trendSel.indexOf(ta.value) < 0) { trendSel.push(ta.value); renderMap(); }
   });
@@ -362,11 +371,11 @@
     var rcb = e.target && e.target.closest ? e.target.closest('[data-rec-county]') : null;
     if (rcb) { var rv = rcb.getAttribute('data-rec-county'); recFips = (!rv || recFips === rv) ? null : rv; renderRecSide(); renderRecTable(); drawRecMap(); return; }
     var lb = e.target && e.target.closest ? e.target.closest('[data-sf-layer]') : null;
-    if (lb) { var nl = lb.getAttribute('data-sf-layer'); if (nl !== layer) { layer = nl; metric = 'giving'; if (current) run(current); renderSide(); } return; }
+    if (lb) { var nl = lb.getAttribute('data-sf-layer'); if (nl !== layer) { layer = nl; metric = 'giving'; if (current) run(current); renderSide(); if (!current) { msg('Layer set to "' + (nl === 'pf' ? 'Private foundations' : nl === 'cf' ? 'Community foundations' : nl === 'rec' ? 'Recipient grants' : 'All foundations estimate') + '". Pick a state to load it.'); } } return; }
     var pcb = e.target && e.target.closest ? e.target.closest('[data-sf-pc]') : null;
     if (pcb) { perCapita = !perCapita; renderMap(); renderSide(); if (current) run(current); return; }
     var yb = e.target && e.target.closest ? e.target.closest('[data-sf-year]') : null;
-    if (yb) { selYear = +yb.getAttribute('data-sf-year'); if (lastBodyD) renderBody(lastBodyD, lastBodyCF, lastBodySample); return; }
+    if (yb) { selYear = +yb.getAttribute('data-sf-year'); renderMap(); renderSide(); if (lastBodyD) renderBody(lastBodyD, lastBodyCF, lastBodySample); return; }
     var shb = e.target && e.target.closest ? e.target.closest('[data-sf-share]') : null;
     if (shb) {
       var link = location.href;
@@ -379,10 +388,10 @@
     if (prb) { preparePrint(); window.print(); return; }
     var csvb = e.target && e.target.closest ? e.target.closest('[data-sf-csv]') : null;
     if (csvb && DATA) {
-      var rows = ['state,abbr,year,foundations,giving_usd,assets_usd,avg_grant_usd,basis'];
+      var rows = ['state,abbr,year,foundations,giving_usd,assets_usd,avg_grant_usd,giving_usd_2023,assets_usd_2023,basis'];
       Object.keys(DATA.states).sort().forEach(function (ab5) {
         var st5 = DATA.states[ab5];
-        st5.years.forEach(function (y5) { rows.push('"' + st5.name + '",' + ab5 + ',' + y5.y + ',' + y5.count + ',' + y5.giving + ',' + y5.assets + ',' + (y5.avgGrant || '') + ',representative_estimate'); });
+        st5.years.forEach(function (y5) { var f5 = CPI23[y5.y] || 1; rows.push('"' + st5.name + '",' + ab5 + ',' + y5.y + ',' + y5.count + ',' + y5.giving + ',' + y5.assets + ',' + (y5.avgGrant || '') + ',' + Math.round(y5.giving * f5) + ',' + Math.round(y5.assets * f5) + ',representative_estimate'); });
       });
       try {
         var blob = new Blob([rows.join('\n')], { type: 'text/csv' });
@@ -397,10 +406,12 @@
     if (rmb2) { recMapMode = rmb2.getAttribute('data-rec-mode'); renderRecControls(); drawRecMap(); return; }
     var rnb = e.target && e.target.closest ? e.target.closest('[data-rec-ntee]') : null;
     if (rnb) { var nv = rnb.getAttribute('data-rec-ntee'); recNtee = (!nv || recNtee === nv) ? null : nv; renderRecControls(); renderRecSide(); renderRecTable(); drawRecMap(); return; }
+    var reb = e.target && e.target.closest ? e.target.closest('[data-rec-expand]') : null;
+    if (reb) { if (reb.getAttribute('data-rec-expand') === 'table') { recShowAll = !recShowAll; renderRecTable(); } else { recSideAll = !recSideAll; renderRecSide(); } return; }
     var mb = e.target && e.target.closest ? e.target.closest('[data-sf-metric]') : null;
     if (mb) { metric = mb.getAttribute('data-sf-metric'); renderChart(); return; }
     var rdb = e.target && e.target.closest ? e.target.closest('[data-sf-real]') : null;
-    if (rdb) { realDollars = !realDollars; renderChart(); renderSide(); return; }
+    if (rdb) { realDollars = !realDollars; renderMap(); renderSide(); if (lastBodyD) renderBody(lastBodyD, lastBodyCF, lastBodySample); else renderChart(); return; }
     var rm = e.target && e.target.closest ? e.target.closest('[data-sf-rm]') : null;
     if (rm) { e.preventDefault(); var i = +rm.getAttribute('data-sf-rm'); if (i > 0 && i < compare.length) { compare.splice(i, 1); renderChart(); } }
   });
@@ -408,7 +419,6 @@
   function msg(t, err) { var m = $('sf-msg'); if (m) { m.textContent = t || ''; m.style.color = err ? '#B04A3C' : '#8A857B'; } }
 
   function run(abbr) {
-    selYear = null;
     loadDataset(function () {
       if (!DATA.states[abbr]) return;
       current = abbr;
@@ -501,11 +511,11 @@
   // { state, grants: [{recipient, county, fips, ntee, amount}], total }), and falls
   // back to clearly-badged representative records until the 990-PF Schedule I
   // ingest is deployed. The UI is identical for both.
-  var recData = null, recFips = null, recMapMode = 'dollars', recNtee = null;
+  var recData = null, recFips = null, recMapMode = 'dollars', recNtee = null, recShowAll = false, recSideAll = false;
   function hashN(s) { var hh = 0; for (var i = 0; i < s.length; i++) hh = (hh * 31 + s.charCodeAt(i)) >>> 0; return (hh % 1000) / 1000; }
 
   function runRec(abbr) {
-    recMapMode = 'dollars'; recNtee = null;
+    recMapMode = 'dollars'; recNtee = null; recShowAll = false; recSideAll = false;
     var res = $('sf-results'); res.style.display = 'block';
     $('sf-teaser').innerHTML = layerToggle() + '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:40px; text-align:center; color:#57534A;"><span style="display:inline-block;width:16px;height:16px;border:2px solid #EDEBE4;border-top-color:#C98A2B;border-radius:50%;animation:sfspin .8s linear infinite;vertical-align:-3px;margin-right:8px;"></span>Geocoding recipient grants for ' + esc(stName(abbr)) + '…</div>';
     try { var y = res.getBoundingClientRect().top + window.scrollY - 120; window.scrollTo({ top: y, behavior: 'smooth' }); } catch (e) {}
@@ -615,7 +625,8 @@
     var rows = Object.keys(by).map(function (k) { return { fips: k, name: by[k].name, val: by[k].val, n: by[k].n }; }).sort(function (a, b) { return b.val - a.val; });
     var max = rows.length ? rows[0].val : 1;
     var h = '';
-    rows.slice(0, 10).forEach(function (r) {
+    var sideRows = recSideAll ? rows : rows.slice(0, 10);
+    sideRows.forEach(function (r) {
       var on = recFips === r.fips;
       var pct = Math.round(r.val / max * 100);
       h += '<button data-rec-county="' + r.fips + '" style="display:block; width:100%; text-align:left; border:none; background:' + (on ? '#F5F4F0' : 'none') + '; cursor:pointer; padding:7px 8px; border-radius:3px; margin-bottom:2px; font-family:inherit;">'
@@ -623,6 +634,7 @@
         + '<div style="background:#F0EEE7; border-radius:3px; height:6px; overflow:hidden;"><div style="height:100%; width:' + pct + '%; background:' + (on ? '#17140F' : '#C98A2B') + ';"></div></div>'
         + '</button>';
     });
+    if (rows.length > 10) h += '<button data-rec-expand="side" style="border:none; background:none; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F; padding:8px; border-bottom:2px solid #14432F;">' + (recSideAll ? 'Show top 10 only' : 'Show all ' + rows.length + ' counties') + '</button>';
     if (recFips) h += '<button data-rec-county="" style="border:none; background:none; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F; padding:8px; border-bottom:2px solid #14432F;">Clear county filter</button>';
     el.innerHTML = h || '<div style="font-size:13px; color:#8A857B;">No county-mapped records.</div>';
   }
@@ -631,17 +643,18 @@
     var el = $('sf-rectable'); if (!el || !recData) return;
     var by = recByCounty();
     var list = recGrants().filter(function (g) { return !recFips || g.fips === recFips; });
-    var shown = list.slice(0, 25);
+    var shown = recShowAll ? list : list.slice(0, 25);
     var h = '<div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;"><span style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B;">Grant records' + (recFips && by[recFips] ? ' \u00b7 ' + esc(by[recFips].name) : '') + '</span><span style="font-size:11.5px; color:#8A857B;">showing ' + shown.length + ' of ' + list.length + '</span></div>';
-    h += '<div style="display:grid; grid-template-columns:1.7fr 1fr 1fr auto; gap:6px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding-bottom:8px; border-bottom:1px solid #DDDBD2;"><span>Recipient</span><span>County</span><span>Purpose</span><span style="text-align:right;">Amount</span></div>';
+    h += '<div style="display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr) minmax(0,1fr) 92px; gap:6px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding-bottom:8px; border-bottom:1px solid #DDDBD2;"><span>Recipient</span><span>County</span><span>Purpose</span><span style="text-align:right;">Amount</span></div>';
     shown.forEach(function (g) {
-      h += '<div style="display:grid; grid-template-columns:1.7fr 1fr 1fr auto; gap:6px 14px; align-items:baseline; padding:10px 0; border-bottom:1px solid #EDEBE4; font-size:13px;">'
+      h += '<div style="display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr) minmax(0,1fr) 92px; gap:6px 14px; align-items:baseline; padding:10px 0; border-bottom:1px solid #EDEBE4; font-size:13px;">'
         + '<span style="color:#17140F; font-weight:600;">' + esc(g.recipient) + '</span>'
         + '<span style="color:#57534A;">' + esc(g.county || 'n/a') + '</span>'
         + '<span style="color:#57534A;">' + esc(g.ntee || 'n/a') + '</span>'
         + '<span style="text-align:right; font-family:Archivo,sans-serif; font-weight:700; color:#14432F; font-variant-numeric:tabular-nums;">' + money(g.amount) + '</span>'
         + '</div>';
     });
+    if (list.length > 25) h += '<div style="text-align:center; padding-top:12px;"><button data-rec-expand="table" style="border:1px solid #DDDBD2; background:#fff; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12.5px; color:#14432F; padding:9px 18px; border-radius:4px;">' + (recShowAll ? 'Show first 25 only' : 'Show all ' + list.length + ' records') + '</button></div>';
     el.innerHTML = h;
   }
 
@@ -755,20 +768,21 @@
   var selYear = null, lastBodyD = null, lastBodyCF = false, lastBodySample = false;
   function yearTable(years, selY) {
     var h = '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">Year by year</div>';
-    h += '<div style="display:grid; grid-template-columns:auto 1fr 1fr auto; gap:4px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding-bottom:7px; border-bottom:1px solid #DDDBD2;"><span>Year</span><span style="text-align:right;">Giving</span><span style="text-align:right;">Assets</span><span style="text-align:right;">YoY</span></div>';
+    h += '<div style="display:grid; grid-template-columns:52px minmax(0,1fr) minmax(0,1fr) 70px; gap:4px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding:0 4px 7px; border-bottom:1px solid #DDDBD2;"><span>Year</span><span style="text-align:right;">Giving</span><span style="text-align:right;">Assets</span><span style="text-align:right;">YoY</span></div>';
     for (var i = years.length - 1; i >= 0; i--) {
       var yr = years[i], pv = years[i - 1];
       var on = yr.y === selY;
+      var gAdj = cpiAdj(yr.giving, yr.y), aAdj = cpiAdj(yr.assets, yr.y);
       var dl = '';
-      if (pv && pv.giving) { var p = (yr.giving - pv.giving) / pv.giving * 100; dl = '<span style="font-weight:700; color:' + (p >= 0 ? '#3F7A55' : '#B04A3C') + ';">' + (p >= 0 ? '\u25b2' : '\u25bc') + Math.abs(p).toFixed(1) + '%</span>'; }
-      h += '<button data-sf-year="' + yr.y + '" style="display:grid; grid-template-columns:auto 1fr 1fr auto; gap:4px 14px; align-items:baseline; width:100%; text-align:left; border:none; border-bottom:1px solid #EDEBE4; background:' + (on ? '#F5F4F0' : 'none') + '; cursor:pointer; padding:8px 4px; font-family:inherit; font-size:12.5px;">'
+      if (pv && pv.giving) { var pvAdj = cpiAdj(pv.giving, pv.y); var p = (gAdj - pvAdj) / pvAdj * 100; dl = '<span style="font-weight:700; color:' + (p >= 0 ? '#3F7A55' : '#B04A3C') + ';">' + (p >= 0 ? '\u25b2' : '\u25bc') + Math.abs(p).toFixed(1) + '%</span>'; }
+      h += '<button data-sf-year="' + yr.y + '" style="display:grid; grid-template-columns:52px minmax(0,1fr) minmax(0,1fr) 70px; gap:4px 14px; align-items:baseline; width:100%; text-align:left; border:none; border-bottom:1px solid #EDEBE4; background:' + (on ? '#F5F4F0' : 'none') + '; cursor:pointer; padding:8px 4px; font-family:inherit; font-size:12.5px;">'
         + '<span style="font-family:Archivo,sans-serif; font-weight:' + (on ? '800' : '700') + '; color:#17140F;">' + yr.y + '</span>'
-        + '<span style="text-align:right; font-family:Archivo,sans-serif; font-weight:600; color:#14432F; font-variant-numeric:tabular-nums;">' + money(yr.giving) + '</span>'
-        + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + money(yr.assets) + '</span>'
+        + '<span style="text-align:right; font-family:Archivo,sans-serif; font-weight:600; color:#14432F; font-variant-numeric:tabular-nums;">' + money(gAdj) + '</span>'
+        + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + money(aAdj) + '</span>'
         + '<span style="text-align:right; font-size:11.5px; font-variant-numeric:tabular-nums;">' + dl + '</span>'
         + '</button>';
     }
-    h += '<div style="font-size:11.5px; color:#8A857B; margin-top:10px;">Click a year to load its figures above.</div>';
+    h += '<div style="font-size:11.5px; color:#8A857B; margin-top:10px;">Click a year to load its figures above. ' + (realDollars ? 'Dollars adjusted to 2023 purchasing power (CPI-U).' : 'Nominal dollars as filed.') + '</div>';
     return h;
   }
 
@@ -780,6 +794,8 @@
     if (selYear != null) for (var yi = 0; yi < years.length; yi++) if (years[yi].y === selYear) idx = yi;
     var latest = years[idx] || {};
     var prev = years[idx - 1] || null;
+    var Lg = cpiAdj(latest.giving, latest.y), La = cpiAdj(latest.assets, latest.y);
+    var Pg = prev ? cpiAdj(prev.giving, prev.y) : null, Pa = prev ? cpiAdj(prev.assets, prev.y) : null;
     function delta(a, b) { if (b == null) return '<span style="font-size:12px; color:#8A857B;">earliest year on record</span>'; if (!b) return ''; var p = (a - b) / b * 100; var up = p >= 0; return '<span style="font-size:12px; font-weight:700; color:' + (up ? '#3F7A55' : '#B04A3C') + ';">' + (up ? '▲ ' : '▼ ') + Math.abs(p).toFixed(1) + '%</span>'; }
 
     var badge = isCF
@@ -804,9 +820,9 @@
     }
     var stats = ytabs + '<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:24px 28px;">'
       + card('Foundations', pc ? (Math.round(latest.count / P * 100000 * 10) / 10) + ' /100k' : num(latest.count), delta(latest.count, prev ? prev.count : null) + (prev && prev.y !== latest.y ? ' vs ' + prev.y : ''))
-      + card('Total giving', pc ? money(latest.giving / P) + ' /res' : money(latest.giving), delta(latest.giving, prev ? prev.giving : null) + (prev && prev.y !== latest.y ? ' vs ' + prev.y : ''))
-      + card('Total assets', pc ? money(latest.assets / P) + ' /res' : money(latest.assets), delta(latest.assets, prev ? prev.assets : null) + (prev && prev.y !== latest.y ? ' vs ' + prev.y : ''))
-      + (isCF ? card('Avg per foundation', money(latest.avgPer), 'giving, ' + (latest.y || '')) : card('Avg grant size', money(latest.avgGrant), 'across the state, ' + (latest.y || '')))
+      + card('Total giving', pc ? money(Lg / P) + ' /res' : money(Lg), delta(Lg, Pg) + (prev && prev.y !== latest.y ? ' vs ' + prev.y : ''))
+      + card('Total assets', pc ? money(La / P) + ' /res' : money(La), delta(La, Pa) + (prev && prev.y !== latest.y ? ' vs ' + prev.y : ''))
+      + (isCF ? card('Avg per foundation', money(cpiAdj(latest.avgPer, latest.y)), 'giving, ' + (latest.y || '')) : card('Avg grant size', money(cpiAdj(latest.avgGrant, latest.y)), 'across the state, ' + (latest.y || '')))
       + '</div>';
     h += artifactCard('State Foundation Overview \u00b7 ' + (isCF ? 'Community foundations' : 'Foundation landscape'), esc(stName(abbr)), esc(sub), badge, stats);
 
@@ -847,7 +863,7 @@
 
   function layerToggle() {
     function seg(id, label, on) { return '<button data-sf-layer="' + id + '" style="' + tabStyle(on) + '">' + label + '</button>'; }
-    return '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px; margin-bottom:26px; border-bottom:1px solid #DDDBD2; padding-bottom:12px;">' + grpLabel('Data layer') + seg('pf', 'All private foundations', layer === 'pf') + seg('cf', 'Community foundations', layer === 'cf') + seg('estimate', 'All foundations estimate', layer === 'estimate') + seg('rec', 'Recipient grants', layer === 'rec') + '</div>';
+    return '<div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 18px; margin-bottom:26px; border-bottom:1px solid #DDDBD2; padding-bottom:12px;">' + grpLabel('View') + seg('rec', 'Where dollars land', layer === 'rec') + seg('pf', 'Private foundations', layer === 'pf') + seg('cf', 'Community foundations', layer === 'cf') + seg('estimate', 'All foundations estimate', layer === 'estimate') + '</div>';
   }
 
   function card(label, val, sub) {
@@ -929,13 +945,23 @@
     var box = $('sf-side'); if (!box || !DATA) return;
     var h = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:16px 12px 18px;">';
     h += '<div style="font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#14432F; margin:0 0 4px 12px;">State Foundation Overview</div>';
-    h += '<div style="font-family:Archivo,sans-serif; font-weight:800; font-size:17px; color:#17140F; margin:0 0 2px 12px;">' + (current ? esc(stName(current)) : 'National view') + '</div>';
-    if (current) h += '<button data-sf-nav="sf-map" style="border:none; background:none; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F; padding:2px 0 0 12px; border-bottom:none; text-decoration:underline;">\u2191 back to national map</button>';
+    h += '<div style="font-family:Archivo,sans-serif; font-weight:800; font-size:17px; color:#17140F; margin:0 0 10px 12px;">' + (current ? esc(stName(current)) : 'National view') + '</div>';
+    var opts6 = '<option value="">' + (current ? 'Switch state\u2026' : 'Choose a state\u2026') + '</option>' + Object.keys(DATA.states).sort(function (a6, b6) { return DATA.states[a6].name.localeCompare(DATA.states[b6].name); }).map(function (k6) { return '<option value="' + k6 + '"' + (k6 === current ? ' selected' : '') + '>' + esc(DATA.states[k6].name) + '</option>'; }).join('');
+    h += '<div style="padding:0 10px 0 12px;"><select data-sf-sideselect style="width:100%; font-family:inherit; font-size:13.5px; color:#17140F; padding:9px 10px; border:1.5px solid #DDDBD2; border-radius:4px; background:#fff;">' + opts6 + '</select></div>';
+    if (current) h += '<button data-sf-nav="sf-map" style="border:none; background:none; cursor:pointer; font-family:Archivo,sans-serif; font-weight:700; font-size:12px; color:#14432F; padding:6px 0 0 12px; text-decoration:underline;">\u2191 back to national map</button>';
 
-    h += sideGroup('Data layer' + (current ? '' : ' \u00b7 pick a state'));
-    [['pf', 'Private foundations'], ['cf', 'Community foundations'], ['estimate', 'All foundations estimate'], ['rec', 'Recipient grants']].forEach(function (l2) {
-      h += sideBtn('data-sf-layer', l2[0], l2[1], current && layer === l2[0], !current);
+    h += sideGroup('View');
+    [['rec', 'Where dollars land'], ['pf', 'Private foundations'], ['cf', 'Community foundations'], ['estimate', 'All foundations estimate']].forEach(function (l2) {
+      h += sideBtn('data-sf-layer', l2[0], l2[1], layer === l2[0], false);
     });
+    if (!current) h += '<div style="font-size:11.5px; color:#8A857B; line-height:1.5; margin:6px 0 0 12px;">Applies once you open a state: click one on the map or use the selector above.</div>';
+
+    h += sideGroup('Year');
+    var yrs7 = [];
+    try { yrs7 = DATA.states[Object.keys(DATA.states)[0]].years.map(function (y7) { return y7.y; }); } catch (e7) {}
+    var latestY = yrs7.length ? yrs7[yrs7.length - 1] : null;
+    var yOpts = '<option value=""' + (selYear == null ? ' selected' : '') + '>Latest (' + latestY + ')</option>' + yrs7.slice().reverse().map(function (y7) { return '<option value="' + y7 + '"' + (selYear === y7 ? ' selected' : '') + '>' + y7 + '</option>'; }).join('');
+    h += '<div style="padding:0 10px 0 12px;"><select data-sf-yearselect style="width:100%; font-family:inherit; font-size:13.5px; color:#17140F; padding:9px 10px; border:1.5px solid #DDDBD2; border-radius:4px; background:#fff;">' + yOpts + '</select></div>';
 
     h += sideGroup('Measure');
     [['giving', 'Giving'], ['assets', 'Assets'], ['count', 'Foundations'], ['avgGrant', 'Avg grant size']].forEach(function (m2) {
@@ -1074,8 +1100,62 @@
     function bigCard(title, sub, obj, accent, shareN) { return '<div style="background:#17140F; color:#F5F4F0; border-radius:4px; padding:22px 24px;"><div style="font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:' + accent + '; margin-bottom:10px;">' + title + '</div><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:30px; letter-spacing:-.02em; line-height:1;">' + geoFmt(obj[geoMetric], obj.pop) + '</div><div style="font-size:12px; color:rgba(245,244,240,.62); margin-top:8px;">' + sub + ' · ' + num(obj.pop) + ' residents · ' + Math.round(shareN * 100) + '% of population</div></div>'; }
     var cards = '<div data-stack style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;">' + bigCard('Metro (CBSA)', 'In ' + covered.length + ' metro counties', metro, '#C98A2B', mShare) + bigCard('Non-metro / rural', 'Balance of the state', rural, '#7FA88C', rShare) + '</div>';
     var mv = metro[geoMetric], rv = rural[geoMetric], tot = mv + rv || 1, mp = Math.round(mv / tot * 100);
-    var bar = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:18px 20px;"><div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">Share of ' + geoMetricLabel().toLowerCase() + ' (state totals)</div><div style="display:flex; height:26px; border-radius:4px; overflow:hidden;"><div style="width:' + mp + '%; background:#C98A2B; min-width:2px;"></div><div style="flex:1; background:#7FA88C;"></div></div><div style="display:flex; justify-content:space-between; font-size:12px; color:#57534A; margin-top:8px;"><span>Metro ' + mp + '%</span><span>' + (100 - mp) + '% rural</span></div></div>';
-    return cards + bar;
+    var bar = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:18px 20px; margin-bottom:16px;"><div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">Share of ' + geoMetricLabel().toLowerCase() + ' (state totals)</div><div style="display:flex; height:26px; border-radius:4px; overflow:hidden;"><div style="width:' + mp + '%; background:#C98A2B; min-width:2px;"></div><div style="flex:1; background:#7FA88C;"></div></div><div style="display:flex; justify-content:space-between; font-size:12px; color:#57534A; margin-top:8px;"><span>Metro ' + mp + '%</span><span>' + (100 - mp) + '% rural</span></div></div>';
+
+    // all three measures, metro vs non-metro
+    function row3(label, mVal, rVal, fmt) { return '<div style="display:grid; grid-template-columns:minmax(0,1fr) 110px 110px; gap:4px 14px; align-items:baseline; padding:9px 4px; border-bottom:1px solid #EDEBE4; font-size:13px;"><span style="color:#17140F; font-weight:600;">' + label + '</span><span style="text-align:right; font-family:Archivo,sans-serif; font-weight:700; color:#14432F; font-variant-numeric:tabular-nums;">' + fmt(mVal) + '</span><span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + fmt(rVal) + '</span></div>'; }
+    var tbl = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:18px 20px; margin-bottom:16px;">';
+    tbl += '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">All measures, side by side</div>';
+    tbl += '<div style="display:grid; grid-template-columns:minmax(0,1fr) 110px 110px; gap:4px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding:0 4px 7px; border-bottom:1px solid #DDDBD2;"><span></span><span style="text-align:right; color:#C98A2B;">Metro</span><span style="text-align:right; color:#7FA88C;">Non-metro</span></div>';
+    tbl += row3('Foundations', metro.count, rural.count, num);
+    tbl += row3('Total giving', metro.giving, rural.giving, money);
+    tbl += row3('Total assets', metro.assets, rural.assets, money);
+    tbl += row3('Giving per resident', metro.giving / (metro.pop || 1), rural.giving / (rural.pop || 1), money);
+    tbl += row3('Residents', metro.pop, rural.pop, num);
+    tbl += '<div style="font-size:11.5px; color:#8A857B; margin-top:10px; line-height:1.5;">Per-resident rates match the state average by construction: dollars are allocated by population share until foundation-level geocoding (the countyagg build) ships real metro/rural intensity.</div></div>';
+
+    // the state's metros, one row each
+    var mlist = GEO.cbsas.filter(function (c) { return c.states.indexOf(abbr) >= 0; }).map(function (c) {
+      var inState = c.counties.filter(function (fp) { return GEO.countyIndex[fp] && GEO.countyIndex[fp].st === abbr; });
+      var inPop = inState.reduce(function (s, fp) { return s + GEO.countyIndex[fp].pop; }, 0);
+      return { name: c.name.split(',')[0], counties: inState.length, pop: inPop, share: inPop / statePop, multi: c.states.length > 1 };
+    }).sort(function (a, b) { return b.pop - a.pop; });
+    var metros = '';
+    if (mlist.length) {
+      metros = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:18px 20px; margin-bottom:16px;">';
+      metros += '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">' + stName(abbr) + '\u2019s metro areas (' + mlist.length + ')</div>';
+      metros += '<div style="display:grid; grid-template-columns:minmax(0,1fr) 70px 110px 110px 90px; gap:4px 14px; font-family:Archivo,sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; padding:0 4px 7px; border-bottom:1px solid #DDDBD2;"><span>Metro</span><span style="text-align:right;">Counties</span><span style="text-align:right;">Residents</span><span style="text-align:right;">' + geoMetricLabel() + '</span><span style="text-align:right;">Pop share</span></div>';
+      mlist.forEach(function (m) {
+        metros += '<div style="display:grid; grid-template-columns:minmax(0,1fr) 70px 110px 110px 90px; gap:4px 14px; align-items:baseline; padding:9px 4px; border-bottom:1px solid #EDEBE4; font-size:13px;">'
+          + '<span style="color:#17140F; font-weight:600;">' + esc(m.name) + (m.multi ? ' <span style="color:#8A857B; font-weight:400; font-size:11px;">multi-state</span>' : '') + '</span>'
+          + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + m.counties + '</span>'
+          + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + num(m.pop) + '</span>'
+          + '<span style="text-align:right; font-family:Archivo,sans-serif; font-weight:700; color:#14432F; font-variant-numeric:tabular-nums;">' + geoFmt(base[geoMetric] * m.share, m.pop) + '</span>'
+          + '<span style="text-align:right; color:#57534A; font-variant-numeric:tabular-nums;">' + Math.round(m.share * 100) + '%</span>'
+          + '</div>';
+      });
+      metros += '</div>';
+    }
+
+    // national context: this state's metro-population share vs all states
+    var shares = Object.keys(GEO.stateCounties).map(function (ab7) {
+      var p7 = popOf(ab7); if (!p7) return null;
+      var mp7 = 0;
+      GEO.stateCounties[ab7].forEach(function (fp) { var ci7 = GEO.countyIndex[fp]; if (ci7) mp7 += ci7.pop; });
+      return { ab: ab7, share: Math.min(1, mp7 / p7) };
+    }).filter(Boolean).sort(function (a, b) { return b.share - a.share; });
+    var rank = 1 + shares.findIndex(function (s7) { return s7.ab === abbr; });
+    var med = shares[Math.floor(shares.length / 2)];
+    var ctx = '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:18px 20px;">'
+      + '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#8A857B; margin-bottom:12px;">How ' + stName(abbr) + ' compares</div>'
+      + '<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:18px 24px;">'
+      + '<div style="border-top:2px solid #17140F; padding-top:10px;"><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; color:#17140F; font-variant-numeric:tabular-nums;">' + Math.round(mShare * 100) + '%</div><div style="font-size:11.5px; color:#8A857B; margin-top:4px;">of residents live in crosswalk metros</div></div>'
+      + '<div style="border-top:2px solid #17140F; padding-top:10px;"><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; color:#17140F; font-variant-numeric:tabular-nums;">#' + rank + ' of ' + shares.length + '</div><div style="font-size:11.5px; color:#8A857B; margin-top:4px;">states by metro population share</div></div>'
+      + '<div style="border-top:2px solid #17140F; padding-top:10px;"><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; color:#17140F; font-variant-numeric:tabular-nums;">' + Math.round((med ? med.share : 0) * 100) + '%</div><div style="font-size:11.5px; color:#8A857B; margin-top:4px;">median state, same basis</div></div>'
+      + '<div style="border-top:2px solid #17140F; padding-top:10px;"><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:24px; color:#17140F; font-variant-numeric:tabular-nums;">' + Math.max(0, (GEO.stateCounties[abbr] || []).length - covered.length) + '</div><div style="font-size:11.5px; color:#8A857B; margin-top:4px;">non-metro counties in the balance</div></div>'
+      + '</div></div>';
+
+    return cards + bar + tbl + metros + ctx;
   }
 
   // Recipient-level grant flows (CONCEPT). Demo corridors derived deterministically

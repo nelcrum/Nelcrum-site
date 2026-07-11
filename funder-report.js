@@ -73,6 +73,14 @@
     var q = $('fr-q') ? $('fr-q').value.trim() : '';
     var state = $('fr-state') ? $('fr-state').value : '';
     var ntee = $('fr-ntee') ? $('fr-ntee').value : '';
+    // Subcategory values are "majorGroup:keyword": the IRS/ProPublica index filters
+    // by major group only, so the keyword narrows via the name search when the
+    // user has not typed their own query.
+    if (ntee.indexOf(':') > -1) {
+      var parts = ntee.split(':');
+      ntee = parts[0];
+      if (!q) q = parts[1];
+    }
     var ein = q.replace(/[^0-9]/g, '');
     if (ein.length === 9) { run(ein); return; }
     if (!q && !state && !ntee) { setMsg('Enter a name or EIN, or pick a state or program area.', true); return; }
