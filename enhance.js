@@ -49,7 +49,7 @@
       + (pkg.deliverable ? '<div style="font-size:12.5px; line-height:1.5; color:rgba(245,244,240,.6); margin-bottom:14px;">' + pkg.deliverable + '</div>' : '<div style="margin-bottom:14px;"></div>')
       + '<div style="display:flex; flex-direction:column; gap:8px;">'
       + '<a href="' + (pkg.href || 'packages.html') + '" style="text-decoration:none; text-align:center; background:#C98A2B; color:#17140F; padding:12px 20px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:14px;">' + (pkg.cta || 'See the package \u2192') + '</a>'
-      + '<a href="contact.html" style="text-decoration:none; text-align:center; color:#F5F4F0; border:1px solid rgba(245,244,240,.3); padding:11px 20px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:13.5px;">Book a free scoping call</a>'
+      + '<a href="contact.html" style="text-decoration:none; text-align:center; color:#F5F4F0; border:1px solid rgba(245,244,240,.3); padding:11px 20px; border-radius:4px; font-family:Archivo,sans-serif; font-weight:700; font-size:13.5px;">Book a strategy consultation</a>'
       + '</div></div></div></div>';
   };
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -307,10 +307,8 @@
       ],
       'Free tools': [
         ['Grant Readiness Scorecard', 'Score your org, get your top fixes', 'scorecard.html'],
-        ['Funder Intelligence Report', 'Pull a funder\'s IRS 990 giving trends', 'funder-report.html'],
         ['State Foundation Overview', 'Foundation landscape by state, over time', 'state-foundations.html'],
         ['Workplace mini-360', 'A quick read on team health', 'assessment.html'],
-        ['Community Mobility Dashboard', 'Census-tract mobility and investment data', 'mobility-dashboard.html'],
         ['See all free tools', 'The full roadmap', 'tools.html']
       ]
     };

@@ -596,7 +596,7 @@
     h += '<div style="background:#fff; border:1px solid #DDDBD2; border-radius:4px; padding:20px 22px;"><div id="sf-rectable"></div></div>';
     h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:88ch;">' + (isSample
       ? 'Records shown are representative placeholders sized from state totals; recipient names are generic by design. This layer switches to verified grant rows automatically once the 990-PF Schedule I ingest is deployed to the proxy.'
-      : 'Records parsed from 990-PF Schedule I filings and geocoded to the recipient\u2019s county. Amounts are as filed; verify any single organization in the Funder Intelligence Report.') + '</div>';
+      : 'Records parsed from 990-PF Schedule I filings and geocoded to the recipient\u2019s county. Amounts are as filed; verified per-organization figures come with our Funder Intelligence Briefing.') + '</div>';
     $('sf-teaser').innerHTML = h;
     renderRecControls(); renderRecSide(); renderRecTable(); drawRecMap();
     injectToolNav();
@@ -848,10 +848,9 @@
       h += '<div style="display:flex; flex-wrap:wrap; gap:8px;">';
       notable.forEach(function (f) {
         var chip = '<strong style="font-weight:700;">' + esc(f.name) + '</strong>' + (f.city ? ' <span style="color:#8A857B;">\u00b7 ' + esc(f.city) + '</span>' : '');
-        if (f.ein) h += '<a href="funder-report.html" style="text-decoration:none; font-size:13.5px; color:#17140F; background:#F5F4F0; border:1px solid #DDDBD2; border-radius:4px; padding:8px 13px;">' + chip + '</a>';
-        else h += '<span style="font-size:13.5px; color:#17140F; background:#F5F4F0; border:1px solid #DDDBD2; border-radius:4px; padding:8px 13px;">' + chip + '</span>';
+        h += '<span style="font-size:13.5px; color:#17140F; background:#F5F4F0; border:1px solid #DDDBD2; border-radius:4px; padding:8px 13px;">' + chip + '</span>';
       });
-      h += '</div><div style="font-size:12px; color:#8A857B; margin-top:12px;">' + (isCF ? 'Pulled live from IRS 990 filings. Open the Funder Intelligence Report to see any one\u2019s full financials.' : 'Names are real, publicly-known organizations. Look any up in the Funder Intelligence Report for verified 990 figures.') + '</div></div>';
+      h += '</div><div style="font-size:12px; color:#8A857B; margin-top:12px;">' + (isCF ? 'Pulled live from IRS 990 filings. Verified full financials for any one of them come with our Funder Intelligence Briefing.' : 'Names are real, publicly-known organizations. Verified 990 figures come with our Funder Intelligence Briefing.') + '</div></div>';
     }
 
     $('sf-teaser').innerHTML = h;
@@ -1013,7 +1012,7 @@
     return window.ncUpsell({
       headline: 'Need this analysis for ' + name + ' at board depth?',
       body: 'Figures on this page are population-anchored estimates. A custom brief gives you verified, citable analysis for your exact geography \u2014 counties, metros, or tracts \u2014 with methodology and full sources.',
-      pkg: { name: 'Custom Data & Research Brief', price: 'from $1,200', meta: 'scoped on a free call', deliverable: 'Written brief + charts + underlying data as CSV.', href: 'packages.html#brief' }
+      pkg: { name: 'Custom Data & Research Brief', price: 'from $2,500', meta: 'scoped in a strategy consultation', deliverable: 'Written brief + charts + underlying data as CSV.', href: 'packages.html#brief' }
     });
   }
 
@@ -1033,7 +1032,7 @@
         try {
           var trail = '';
           try { trail = (JSON.parse(sessionStorage.getItem('nc_sf_trail') || '[]')).join(', '); } catch (e3) {}
-          var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'State Foundation Overview unlock: ' + name + ' (' + (isCF ? 'community foundations' : 'all foundations') + ')' + (trail ? ' \u00b7 explored: ' + trail : ''), submittedAt: new Date().toISOString(), source: 'State Foundation Overview' });
+          var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'State Foundation Overview unlock: ' + name + ' (' + (isCF ? 'community foundations' : 'all foundations') + ')' + (trail ? ' \u00b7 explored: ' + trail : ''), stateName: name, layer: (isCF ? 'community foundations' : 'all foundations'), submittedAt: new Date().toISOString(), source: 'State Foundation Overview' });
           fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
         } catch (err) {}
         try { localStorage.setItem('nc_states_unlock', '1'); } catch (e2) {}
@@ -1281,7 +1280,7 @@
       h += '<span style="flex:1;"></span><button data-geo-pc="1" style="' + tabStyle(perCapita, '#14432F') + '">Per capita ' + (perCapita ? 'on' : 'off') + '</button></div>';
     }
     h += geoTab === 'county' ? geoCounty(abbr, base, statePop) : geoTab === 'cbsa' ? geoCbsa(abbr, base, statePop) : geoTab === 'flow' ? geoFlow(abbr, base, statePop) : geoSplit(abbr, base, statePop);
-    h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:88ch;">County and metro figures split the state total by resident population (crosswalk vintage: ' + esc(GEO.meta.popVintage) + '), not per-organization filings. It is a representative estimate for orientation. Verified per-foundation numbers come from the Funder Intelligence Report.</div>';
+    h += '<div style="font-size:12px; color:#8A857B; margin-top:14px; line-height:1.5; max-width:88ch;">County and metro figures split the state total by resident population (crosswalk vintage: ' + esc(GEO.meta.popVintage) + '), not per-organization filings. It is a representative estimate for orientation. Verified per-foundation numbers come with our Funder Intelligence Briefing.</div>';
     h += '</div>';
     box.innerHTML = h;
   }

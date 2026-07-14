@@ -288,7 +288,7 @@
     h += (window.ncUpsell ? window.ncUpsell({
       headline: 'Researching more than one funder?',
       body: 'The briefing does this work for you across your whole prospect pool: up to eight named funders matched to your mission, with verified giving, deadlines, and how to approach each one.',
-      pkg: { name: 'Funder Intelligence Briefing', price: '$950', meta: 'flat \u00b7 2\u20133 weeks', deliverable: 'Up to 8 analyst-verified funder profiles + a 12-month deadline calendar.', href: 'packages.html#briefing' }
+      pkg: { name: 'Funder Intelligence Briefing', price: '$1,250', meta: 'flat \u00b7 2\u20133 weeks', deliverable: 'Up to 8 analyst-verified funder profiles + a 12-month deadline calendar.', href: 'packages.html#briefing' }
     }) : '');
     full.innerHTML = h;
     var ein = (d.organization && d.organization.ein) || '';

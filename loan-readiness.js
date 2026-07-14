@@ -1,4 +1,4 @@
-/* NELCRUM — CDFI / Loan Readiness Check. Eight Yes/Partly/No questions ->
+/* NELCRUM — Loan Readiness Check. Eight Yes/Partly/No questions ->
  * readiness band + priority gaps. Results email-gated. Delegation-bound. */
 (function () {
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycby6VPp5kEWJupRvJH2xRvs5D14CEGQvxaMR3kDFH43WTTv69_DL3ZesS8NFKdTxvMgFGg/exec';
@@ -8,12 +8,12 @@
   var Q = [
     { dim: 'Cash flow & repayment', q: 'Have you had positive or break-even cash flow over the last 12 months?', rec: 'Build at least a few months of positive or break-even cash flow, and be ready to show it on a statement.' },
     { dim: 'Cash flow & repayment', q: 'Can you cover a new loan payment from reliable, recurring revenue?', rec: 'Map a specific, recurring revenue source to the new payment; lenders want to see repayment does not depend on hoped-for grants.' },
-    { dim: 'Collateral & security', q: 'Do you have assets or property you could pledge as collateral?', rec: 'Inventory pledgeable assets (property, equipment, receivables). If none, explore CDFIs that lend against cash flow or offer guarantees.' },
+    { dim: 'Collateral & security', q: 'Do you have assets or property you could pledge as collateral?', rec: 'Inventory pledgeable assets (property, equipment, receivables). If none, explore mission lenders that lend against cash flow or offer guarantees.' },
     { dim: 'Collateral & security', q: 'Could a board member, partner, or funder provide a guarantee if asked?', rec: 'Line up a potential guarantor or a grant-funded loan-loss reserve early; it widens the lenders who can say yes.' },
     { dim: 'Governance & financials', q: 'Do you have current financial statements, ideally reviewed or audited?', rec: 'Get current statements in order; a review or audit signals reliability and is often required above a certain loan size.' },
     { dim: 'Governance & financials', q: 'Does your board review finances regularly and formally approve major debt?', rec: 'Adopt a board practice of regular financial review and a documented vote to approve borrowing.' },
     { dim: 'Use of funds & mission', q: 'Is your use of funds specific, with a budget and a timeline?', rec: 'Write a clear use-of-funds: line-item budget, timeline, and what the capital unlocks.' },
-    { dim: 'Use of funds & mission', q: 'Does the project clearly advance your mission and community benefit?', rec: 'State the community-development outcome plainly; mission lenders and CRA-motivated banks weigh it heavily.' }
+    { dim: 'Use of funds & mission', q: 'Does the project clearly advance your mission and community benefit?', rec: 'State the community-development outcome plainly; mission lenders and community-focused banks weigh it heavily.' }
   ];
   var OPTS = [ ['Yes', 1], ['Partly', 0.5], ['Not yet', 0] ];
 
@@ -60,7 +60,7 @@
   }
 
   function band(pct) {
-    if (pct >= 75) return { label: 'Loan-ready', color: '#3F7A55', note: 'You present well to a CDFI or mission lender. Tighten the few gaps below and assemble your package.' };
+    if (pct >= 75) return { label: 'Loan-ready', color: '#3F7A55', note: 'You present well to a mission lender. Tighten the few gaps below and assemble your package.' };
     if (pct >= 50) return { label: 'Nearly ready', color: '#14432F', note: 'The foundation is there. Close the gaps below before you sit down with a lender.' };
     if (pct >= 25) return { label: 'Building the foundation', color: '#C08A2E', note: 'Real groundwork remains. Focus on the priorities below over the next few quarters.' };
     return { label: 'Early stage', color: '#B04A3C', note: 'Borrowing is likely premature. Build cash flow and financial systems first; grants may fit better for now.' };
@@ -83,7 +83,7 @@
     var b = band(pct);
     var done = false; try { done = localStorage.getItem(KEY) === '1'; } catch (e) {}
     var h = sec();
-    h += '<div style="display:flex; align-items:baseline; gap:8px; margin-bottom:18px;"><span style="font-family:Archivo,sans-serif; font-weight:800; font-size:15px; letter-spacing:.12em; color:#17140F;">NELCRUM</span><span style="font-family:Archivo,sans-serif; font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:#C98A2B;">Solutions</span><span style="font-size:11px; color:#8A857B; margin-left:6px;">CDFI / Loan Readiness</span></div>';
+    h += '<div style="display:flex; align-items:baseline; gap:8px; margin-bottom:18px;"><span style="font-family:Archivo,sans-serif; font-weight:800; font-size:15px; letter-spacing:.12em; color:#17140F;">NELCRUM</span><span style="font-family:Archivo,sans-serif; font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:#C98A2B;">Solutions</span><span style="font-size:11px; color:#8A857B; margin-left:6px;">Loan Readiness</span></div>';
     h += '<div style="font-family:Archivo,sans-serif; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#C98A2B; margin-bottom:14px;">Your loan-readiness</div>';
     h += '<div style="display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:10px;"><div style="font-family:Archivo,sans-serif; font-weight:800; font-size:clamp(44px,7vw,72px); letter-spacing:-.03em; line-height:1;">' + pct + '<span style="font-size:.4em; color:#8A857B;">/100</span></div><div style="font-family:Archivo,sans-serif; font-weight:700; font-size:18px; color:' + b.color + ';">' + b.label + '</div></div>';
     h += '<p style="font-size:16px; line-height:1.6; color:#57534A; margin:0 0 28px; max-width:60ch;">' + b.note + '</p>';
@@ -117,8 +117,8 @@
     }
     h += (window.ncUpsell ? window.ncUpsell({
       headline: 'Ready to build a lender-ready package?',
-      body: 'We assemble the financials, use-of-funds, and narrative that CDFIs and mission lenders want to see. Start with the audit: a full capacity review with a written action plan \u2014 the same fundamentals lenders underwrite.',
-      pkg: { name: 'Grant Readiness Audit', price: '$550', meta: 'flat \u00b7 ~2 weeks', deliverable: 'Six-area capacity assessment + prioritized action plan + debrief call.', href: 'packages.html#audit' }
+      body: 'We assemble the financials, use-of-funds, and narrative that mission lenders want to see. Start with the audit: a full capacity review with a written action plan \u2014 the same fundamentals lenders underwrite.',
+      pkg: { name: 'Grant Readiness Audit', price: '$750', meta: 'flat \u00b7 ~2 weeks', deliverable: 'Six-area capacity assessment + prioritized action plan + debrief call.', href: 'packages.html#audit' }
     }) : '<div style="margin-top:22px;"><a href="packages.html#audit" style="color:#14432F; font-weight:700;">See the Grant Readiness Audit \u2192</a></div>');
     return h;
   }
@@ -127,7 +127,10 @@
     var em = $('lr-email').value.trim();
     if (em.indexOf('@') < 1) { $('lr-email').style.borderColor = '#B04A3C'; return; }
     try {
-      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'CDFI / Loan Readiness: ' + window.__lr.pct + '/100 (' + window.__lr.band + ')', submittedAt: new Date().toISOString(), source: 'CDFI / Loan Readiness' });
+      var _lr = window.__lr;
+      var _dims = Object.keys(_lr.dims).map(function (d) { var arr = _lr.dims[d]; return d + ': ' + Math.round((arr.reduce(function (a, b) { return a + b; }, 0) / arr.length) * 100) + '%'; }).join('|');
+      var _gaps = _lr.gaps.map(function (g) { return g.item.q + '~~' + g.item.dim + '~~' + g.item.rec; }).join('||');
+      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Loan Readiness: ' + _lr.pct + '/100 (' + _lr.band + ')', score: String(_lr.pct), band: _lr.band, dimensions: _dims, gaps: _gaps, submittedAt: new Date().toISOString(), source: 'Loan Readiness' });
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     } catch (e) {}
     try { localStorage.setItem(KEY, '1'); } catch (e2) {}

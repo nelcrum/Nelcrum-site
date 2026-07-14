@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Community Mobility Dashboard · NELCRUM Solutions</title>
 <script>
 (function(){
@@ -555,12 +556,12 @@ class Component extends DCLogic {
       mission: {
         short:"Mission", label:"Mission investors", tag:"Mission-driven capital",
         headline:"Put capital where the market will not, and prove additionality.",
-        intro:"For CDFIs, foundations, and impact funds, prioritize additionality: persistently underinvested tracts and newly distressed areas that market-rate capital overlooks, with demographic stability that signals inclusive recovery.",
+        intro:"For community lenders, foundations, and impact funds, prioritize additionality: persistently underinvested tracts and newly distressed areas that market-rate capital overlooks, with demographic stability that signals inclusive recovery.",
       },
       cra: {
-        short:"CRA", label:"CRA examiners & banks", tag:"CRA examination",
+        short:"Banks", label:"Banks & lenders", tag:"Community lending",
         headline:"Separate real economic change from statistical reclassification.",
-        intro:"With 2024 MSA redefinitions, many tracts flipped income category overnight. Document true change versus artifact, and capture newly LMI-eligible tracts to defend assessment-area responsiveness.",
+        intro:"With 2024 MSA redefinitions, many tracts flipped income category overnight. Document true change versus artifact, and capture newly LMI-eligible tracts to document responsiveness in your service area.",
       },
     };
     this.FIPS = {}; this.STATES.forEach((s) => { this.FIPS[s.fips] = s; });
@@ -782,7 +783,7 @@ class Component extends DCLogic {
       cardsTitle = "High-additionality targets";
       sortRank = (t) => (t.bucket === "distressed" ? 0 : t.bucket === "persistLow" ? 1 : 3);
     } else {
-      primary = { value: newlyLMI, label: "Newly LMI-eligible tracts for your assessment area" };
+      primary = { value: newlyLMI, label: "Newly LMI-eligible tracts in your service area" };
       riskNote = "High-risk upward tracts support displacement and redlining review.";
       cardsTitle = "Assessment-area documentation";
       sortRank = (t) => (t.reclass ? 0 : (t.i24 <= 1 && t.i20 >= 2) ? 1 : 3);

@@ -62,16 +62,10 @@
         <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
       </a>
       <nav data-nav style="display: flex; align-items: center; gap: 22px;">
-        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
-        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
-        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
-        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
-        <a href="shop.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Shop</a>
-        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
-        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Services &amp; Pricing</a>
+        <a href="tools.html" style="text-decoration: none; color: #17140F; font-size: 14px; font-weight: 700;">Free Tools &amp; Assessments</a>
         <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
-        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
-        <a href="index.html#contact" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+        <a href="contact.html?package=strategy-session" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
       </nav>
     </div>
   </header>
@@ -81,11 +75,9 @@
 
     <!-- ---------- Breadcrumb + heading ---------- -->
     <div style="text-align: center; max-width: 62ch; margin: 0 auto clamp(28px,4vw,44px);">
-      <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 18px;"><a href="tools.html" style="text-decoration: none; color: #14432F;">Free tools</a>
-        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
-        <a href="shop.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Shop</a> · Grant Readiness Scorecard</div>
+      <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 18px;"><a href="tools.html" style="text-decoration: none; color: #14432F;">Free Tools &amp; Assessments</a> · Grant Readiness Scorecard</div>
       <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(32px,5vw,58px); line-height: 1.04; letter-spacing: -.02em; margin: 0 0 16px;">Are you <span style="font-style: italic; color: #14432F;">ready</span> for the grant you want?</h1>
-      <p style="font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #57534A; margin: 0;">Fifteen questions across the six areas funders scrutinize. Answer honestly and we will show you a readiness score, a breakdown by area, and the exact gaps to close before you apply.</p>
+      <p style="font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #57534A; margin: 0;">Fifteen questions across the six areas funders scrutinize. Answer honestly and we will show you a readiness score, a breakdown by area, and where to focus first. It is a self-reported snapshot; the analyst-verified assessment and prioritized plan is our Grant Readiness Audit.</p>
     </div>
 
     <!-- ---------- Card ---------- -->
@@ -509,7 +501,7 @@ class Component extends DCLogic {
       ? "With the fundamentals in place, funder selection is what wins. The briefing gives you up to eight named funders matched to your mission, with verified giving and deadlines."
       : "The audit goes deeper than this scorecard: a full review of all six areas, a written action plan in priority order, and a debrief call to walk it through.";
     const recName = grantReady ? "Funder Intelligence Briefing" : "Grant Readiness Audit";
-    const recPrice = grantReady ? "$950" : "$550";
+    const recPrice = grantReady ? "$1,250" : "$750";
     const recMeta = grantReady ? "flat · 2–3 weeks" : "flat · ~2 weeks";
     const recDeliv = grantReady
       ? "Up to 8 analyst-verified funder profiles + a 12-month deadline calendar."

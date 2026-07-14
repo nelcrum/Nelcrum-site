@@ -12,6 +12,9 @@
   var se = document.createElement('script');
   se.src = './enhance.js' + (m ? '?t=' + m[1] : '');
   document.head.appendChild(se);
+  var si = document.createElement('script');
+  si.src = './image-slot.js' + (m ? '?t=' + m[1] : '');
+  document.head.appendChild(si);
 })();
 </script>
 </head>
@@ -43,16 +46,10 @@
         <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
       </a>
       <nav data-nav style="display: flex; align-items: center; gap: 22px;">
-        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
-        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
-        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free tools</a>
-        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
-        <a href="shop.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Shop</a>
-        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
-        <a href="insights.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Insights</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Services &amp; Pricing</a>
+        <a href="tools.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Free Tools &amp; Assessments</a>
         <a href="about.html" style="text-decoration: none; color: #17140F; font-size: 14px; font-weight: 700;">About</a>
-        <a href="https://wenbee.nelcrum.com" target="_blank" rel="noopener" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"><svg viewBox="0 0 68 60" style="width: 15px; height: 13px; display: block; flex: none;"><path d="M2 6 L42 6 L22 54 Z" fill="#294056"></path><path d="M26 6 L66 6 L46 54 Z" fill="#B05733"></path></svg>Wenbee</a>
-        <a href="contact.html" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+        <a href="contact.html?package=strategy-session" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
       </nav>
     </div>
   </header>
@@ -87,6 +84,30 @@
             <span style="font-size: 13px; font-weight: 600; color: #17140F; background: #EEF3E9; border: 1px solid #DDDBD2; padding: 8px 14px; border-radius: 4px;">Capacity-building</span>
             <span style="font-size: 13px; font-weight: 600; color: #17140F; background: #EEF3E9; border: 1px solid #DDDBD2; padding: 8px 14px; border-radius: 4px;">Outcomes-focused</span>
             <span style="font-size: 13px; font-weight: 600; color: #17140F; background: #EEF3E9; border: 1px solid #DDDBD2; padding: 8px 14px; border-radius: 4px;">Partnership-driven</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER -->
+  <section style="background: #FCFCFA; border-bottom: 1px solid #DDDBD2;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: clamp(64px,8vw,104px) 32px;">
+      <div data-stack style="display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(32px,5vw,64px); align-items: center;">
+        <div>
+          <div style="width: 100%; aspect-ratio: 4/5; border-radius: 4px; border: 1px solid #DDDBD2; overflow: hidden;">
+            <image-slot id="founder-donta" shape="rect" placeholder="Drop in a headshot of Donta Council" style="display:block; width:100%; height:100%;"></image-slot>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #14432F; margin-bottom: 20px;">Founder</div>
+          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(28px,4vw,44px); line-height: 1.08; letter-spacing: -.015em; margin: 0 0 6px;">Donta Council, Ph.D.</h2>
+          <div style="font-size: 15px; font-weight: 600; color: #C98A2B; margin-bottom: 22px;">Founder &amp; Principal</div>
+          <p style="font-size: 17px; line-height: 1.65; color: #57534A; margin: 0 0 18px;">Dr. Dontá Council founded NELCRUM to put rigorous social science to work for the organizations that need it most. His research and applied practice span community and economic development, program evaluation, and the data systems that turn evidence into decisions, having worked on both the funder and the applicant side of the table.</p>
+          <p style="font-size: 17px; line-height: 1.65; color: #57534A; margin: 0 0 28px;">He holds a Ph.D. and brings a decade of public- and nonprofit-sector experience to every engagement, pairing quantitative and qualitative methods with a practical instinct for what actually moves an organization forward.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <a href="https://www.linkedin.com/in/dontacouncil/" target="_blank" rel="noopener" style="text-decoration: none; display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 700; color: #17140F; background: #fff; border: 1px solid #DDDBD2; padding: 11px 18px; border-radius: 4px;"><svg viewBox="0 0 24 24" style="width:16px; height:16px; display:block; flex:none;" fill="#14432F"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"></path></svg>LinkedIn</a>
+            <a href="https://scholar.google.com/citations?user=OxPheXMAAAAJ&amp;hl=en&amp;authuser=1" target="_blank" rel="noopener" style="text-decoration: none; display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 700; color: #17140F; background: #fff; border: 1px solid #DDDBD2; padding: 11px 18px; border-radius: 4px;"><svg viewBox="0 0 24 24" style="width:16px; height:16px; display:block; flex:none;" fill="#14432F"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.84 3.77A8 8 0 0 1 12 9a8 8 0 0 1 7.16 4.27L24 9.5 12 0z"></path></svg>Google Scholar</a>
           </div>
         </div>
       </div>
@@ -131,7 +152,6 @@
       <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         <span style="font-size: 14px; font-weight: 600; color: #F5F4F0; background: rgba(245,244,240,.08); border: 1px solid rgba(245,244,240,.16); padding: 9px 16px; border-radius: 4px;">Foundations &amp; philanthropic funders</span>
         <span style="font-size: 14px; font-weight: 600; color: #F5F4F0; background: rgba(245,244,240,.08); border: 1px solid rgba(245,244,240,.16); padding: 9px 16px; border-radius: 4px;">Nonprofits</span>
-        <span style="font-size: 14px; font-weight: 600; color: #F5F4F0; background: rgba(245,244,240,.08); border: 1px solid rgba(245,244,240,.16); padding: 9px 16px; border-radius: 4px;">CDFIs</span>
         <span style="font-size: 14px; font-weight: 600; color: #F5F4F0; background: rgba(245,244,240,.08); border: 1px solid rgba(245,244,240,.16); padding: 9px 16px; border-radius: 4px;">Community development institutions</span>
         <span style="font-size: 14px; font-weight: 600; color: #F5F4F0; background: rgba(245,244,240,.08); border: 1px solid rgba(245,244,240,.16); padding: 9px 16px; border-radius: 4px;">Government &amp; agency leaders</span>
       </div>
@@ -149,16 +169,15 @@
             <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .14em; color: #F5F4F0;">NELCRUM</span>
             <span style="font-family: 'Archivo', sans-serif; font-size: 10px; letter-spacing: .26em; color: #C98A2B; text-transform: uppercase;">Solutions, LLC</span>
           </div>
-          <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, CDFIs, and community institutions.</p>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 0 0 18px; max-width: 34ch;">Advisory and software for foundations, nonprofits, and community institutions.</p>
           <a href="contact.html" style="text-decoration: none; background: #14432F; color: #fff; padding: 12px 20px; border-radius: 4px; font-size: 14px; font-weight: 700; display: inline-block;">Book a consultation</a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Explore</div>
           <a href="advisory.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Advisory</a>
           <a href="applications.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Applications</a>
-          <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free tools</a>
-        <a href="packages.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Packages</a>
-        <a href="shop.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Shop</a>
+          <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Free Tools &amp; Assessments</a>
+        <a href="packages.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Services &amp; Pricing</a>
           <a href="work.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Work</a>
           <a href="insights.html" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">Insights</a>
         </div>

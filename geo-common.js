@@ -26,7 +26,7 @@
   NCGeo.fmt = function (n) { return n == null || isNaN(n) ? 'n/a' : Math.round(n).toLocaleString(); };
   NCGeo.pct = function (n, d) { return n == null || isNaN(n) ? 'n/a' : n.toFixed(d == null ? 1 : d) + '%'; };
 
-  // ---------- CRA income bands (FFIEC definitions) ----------
+  // ---------- FFIEC income bands ----------
   // pct = tract median family income as a % of area (MSA or statewide non-metro) median
   NCGeo.band = function (pct) {
     if (pct == null || isNaN(pct)) return { key: 'unknown', label: 'Unknown', lmi: false, color: '#8A857B', bg: '#EFEEE9' };

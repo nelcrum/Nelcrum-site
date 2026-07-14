@@ -10,9 +10,9 @@
     community: { name: 'Community foundation', want: 'A clear local need, your board and budget, and evidence you are rooted in the community you serve.' },
     national:  { name: 'National / private foundation', want: 'A theory of change, outcome evidence, and tight alignment to their published funding priorities.' },
     gov:       { name: 'Government / public grants', want: 'Compliance capacity, measurable outputs, and the systems to manage and report on restricted funds.' },
-    cra:       { name: 'CRA-motivated bank', want: 'Activity in low-to-moderate-income areas, a community-development purpose, and measurable local reach.' },
+    cra:       { name: 'Community-focused bank', want: 'Activity in low-to-moderate-income areas, a community-development purpose, and measurable local reach.' },
     corp:      { name: 'Corporate / sponsorship', want: 'Brand-aligned visibility, an audience, and a simple sponsorship menu with clear benefits.' },
-    impact:    { name: 'Impact investor / CDFI', want: 'A repayment story: reliable cash flow, use of funds, and collateral or a guarantee, plus mission return.' }
+    impact:    { name: 'Impact investor / community lender', want: 'A repayment story: reliable cash flow, use of funds, and collateral or a guarantee, plus mission return.' }
   };
 
   var Q = [
@@ -131,7 +131,7 @@
     h += (window.ncUpsell ? window.ncUpsell({
       headline: 'Turn this profile into named funders',
       body: 'You now know which funder type fits. The briefing turns that into up to eight named funders matched to your mission \u2014 verified giving from IRS filings, deadlines, and how to approach each one.',
-      pkg: { name: 'Funder Intelligence Briefing', price: '$950', meta: 'flat \u00b7 2\u20133 weeks', deliverable: 'Up to 8 analyst-verified funder profiles + a 12-month deadline calendar.', href: 'packages.html#briefing' }
+      pkg: { name: 'Funder Intelligence Briefing', price: '$1,250', meta: 'flat \u00b7 2\u20133 weeks', deliverable: 'Up to 8 analyst-verified funder profiles + a 12-month deadline calendar.', href: 'packages.html#briefing' }
     }) : '<div style="margin-top:20px;"><a href="packages.html#briefing" style="color:#14432F; font-weight:700;">See the Funder Intelligence Briefing \u2192</a></div>');
     return h;
   }
@@ -140,7 +140,9 @@
     var em = $('ff-email').value.trim();
     if (em.indexOf('@') < 1) { $('ff-email').style.borderColor = '#B04A3C'; return; }
     try {
-      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Funder-Fit Finder: top match ' + ARCH[window.__ffRanked[0]].name, submittedAt: new Date().toISOString(), source: 'Funder-Fit Finder' });
+      var _r = window.__ffRanked, _s = window.__ffScore, _mx = window.__ffMax || 1;
+      var _ranking = _r.map(function (k) { return ARCH[k].name + ': ' + Math.round((_s[k] / _mx) * 100) + '%'; }).join('|');
+      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Funder-Fit Finder: top match ' + ARCH[_r[0]].name, topMatch: ARCH[_r[0]].name, topWants: ARCH[_r[0]].want, ranking: _ranking, submittedAt: new Date().toISOString(), source: 'Funder-Fit Finder' });
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     } catch (e) {}
     try { localStorage.setItem(KEY, '1'); } catch (e2) {}

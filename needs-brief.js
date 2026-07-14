@@ -120,7 +120,7 @@
       var tr = tracts.byGeoid.get(loc.geoid);
       if (tr) {
         var b = G().band(tr.t24);
-        tractLine = '<div style="margin-top:14px;padding:14px 16px;background:#F5F4F0;border-radius:4px;font-size:13.5px;line-height:1.6;color:#404A3D;"><strong>Project site:</strong> ' + G().esc(loc.matched || '') + ' \u2014 census tract ' + G().esc(loc.geoid) + ', a <strong>' + b.label.toLowerCase() + '</strong> tract (' + G().pct(tr.t24, 0) + ' of area median family income)' + (b.lmi ? ', a CRA-qualifying LMI geography' : '') + '.</div>';
+        tractLine = '<div style="margin-top:14px;padding:14px 16px;background:#F5F4F0;border-radius:4px;font-size:13.5px;line-height:1.6;color:#404A3D;"><strong>Project site:</strong> ' + G().esc(loc.matched || '') + ' \u2014 census tract ' + G().esc(loc.geoid) + ', a <strong>' + b.label.toLowerCase() + '</strong> tract (' + G().pct(tr.t24, 0) + ' of area median family income)' + (b.lmi ? ', an LMI-qualifying geography' : '') + '.</div>';
       }
     }
 
