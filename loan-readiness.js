@@ -127,7 +127,7 @@
     var em = $('lr-email').value.trim();
     if (em.indexOf('@') < 1) { $('lr-email').style.borderColor = '#B04A3C'; return; }
     try {
-      var body = new URLSearchParams({ name: '', email: em, organization: '', message: 'CDFI / Loan Readiness: ' + window.__lr.pct + '/100 (' + window.__lr.band + ')', submittedAt: new Date().toISOString(), source: 'CDFI / Loan Readiness' });
+      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'CDFI / Loan Readiness: ' + window.__lr.pct + '/100 (' + window.__lr.band + ')', submittedAt: new Date().toISOString(), source: 'CDFI / Loan Readiness' });
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     } catch (e) {}
     try { localStorage.setItem(KEY, '1'); } catch (e2) {}

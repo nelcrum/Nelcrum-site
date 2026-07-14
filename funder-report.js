@@ -255,7 +255,7 @@
       var em = $('fr-email').value.trim();
       if (em.indexOf('@') < 1) { $('fr-email').style.borderColor = '#B04A3C'; return; }
       try {
-        var body = new URLSearchParams({ name: '', email: em, organization: (d.organization && d.organization.name) || '', message: 'Funder Intelligence Report unlock: ' + ((d.organization && d.organization.name) || ''), submittedAt: new Date().toISOString(), source: 'Funder Intelligence Report' });
+        var body = new URLSearchParams({ name: '', email: em, organization: (d.organization && d.organization.name) || '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Funder Intelligence Report unlock: ' + ((d.organization && d.organization.name) || ''), submittedAt: new Date().toISOString(), source: 'Funder Intelligence Report' });
         fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
       } catch (err) {}
       try { localStorage.setItem('nc_funder_unlock', '1'); } catch (e2) {}

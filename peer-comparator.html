@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peer Community Comparator · NELCRUM Solutions</title>
+<script>
+(function(){
+  var RO = 'ResizeObserver loop';
+  window.addEventListener('error', function(e){
+    if (e && e.message && e.message.indexOf(RO) !== -1) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
+  var _ce = console.error;
+  console.error = function(){
+    try { if (arguments[0] && String(arguments[0]).indexOf(RO) !== -1) return; } catch(_) {}
+    return _ce.apply(console, arguments);
+  };
+  var m = location.search.match(/[?&]t=([^&]+)/);
+  function add(src){ var s = document.createElement("script"); s.src = src + (m ? "?t=" + m[1] : ""); document.head.appendChild(s); }
+  add("./support.js"); add("./enhance.js"); add("./geo-common.js"); add("./peer-comparator.js");
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  ::selection { background: #E4EDE1; color: #17140F; }
+  a { color: #14432F; }
+  a:hover { color: #8A4225; }
+  @keyframes pcspin { to { transform: rotate(360deg); } }
+  input[type="range"] { accent-color: #14432F; }
+  @media (max-width: 880px){ [data-stack]{ grid-template-columns: 1fr !important; } }
+  @media (max-width: 1040px){
+    [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
+    [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family: 'Archivo', system-ui, sans-serif; color: #17140F; background: #F5F4F0; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(245,244,240,.82); backdrop-filter: blur(12px); border-bottom: 1px solid #DDDBD2;">
+    <div data-navrow style="max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <a href="index.html" style="text-decoration: none; color: #17140F; display: flex; align-items: baseline; gap: 9px;">
+        <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .14em;">NELCRUM</span>
+        <span style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .28em; color: #14432F; text-transform: uppercase;">Solutions</span>
+      </a>
+      <nav data-nav style="display: flex; align-items: center; gap: 22px;">
+        <a href="advisory.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Advisory</a>
+        <a href="applications.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Applications</a>
+        <a href="tools.html" style="text-decoration: none; color: #17140F; font-size: 14px; font-weight: 700;">Free tools</a>
+        <a href="packages.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Packages</a>
+        <a href="work.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">Work</a>
+        <a href="about.html" style="text-decoration: none; color: #57534A; font-size: 14px; font-weight: 600;">About</a>
+        <a href="index.html#contact" style="text-decoration: none; color: #fff; background: #17140F; padding: 11px 19px; border-radius: 4px; font-size: 14px; font-weight: 700; white-space: nowrap;">Book a consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="flex: 1;">
+
+  <!-- HERO + CONTROLS -->
+  <section data-screen-label="Peer comparator hero" style="background: #17140F; color: #F5F4F0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(44px,6vw,80px) 32px clamp(40px,5vw,60px);">
+      <a href="tools.html" style="text-decoration: none; color: rgba(245,244,240,.55); font-size: 13px; font-weight: 600;">&larr; All free tools</a>
+      <div style="display: flex; align-items: center; gap: 12px; margin: 22px 0 20px;">
+        <span style="font-family: 'Archivo', sans-serif; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: #C98A2B;">Funder &amp; agency tools · Data</span>
+        <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; color: #6FBF8B; border: 1px solid rgba(111,191,139,.4); border-radius: 4px; padding: 4px 10px;">Live · beta</span>
+      </div>
+      <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(34px,4.6vw,60px); line-height: 1.04; letter-spacing: -.02em; margin: 0 0 18px; max-width: 22ch;">Which communities are <span style="font-style: italic; color: #C98A2B;">statistically your peers?</span></h1>
+      <p style="font-size: clamp(15.5px,1.4vw,18px); line-height: 1.62; color: rgba(245,244,240,.74); max-width: 70ch; margin: 0 0 8px;">Pick your county and we match it against 3,000+ U.S. counties on income, need, education, housing, and — unlike older peer tools — its <em>trajectory</em>: how tract incomes have actually moved since 2020. Weight what matters to you. See who else faces your exact situation, and learn what's working there.</p>
+      <p style="font-size: 13px; line-height: 1.6; color: rgba(245,244,240,.5); max-width: 70ch; margin: 0 0 30px;">Inspired by the Chicago Fed's Peer Cities Identification Tool — extended to every county, with adjustable weights and trend-aware matching.</p>
+
+      <form id="pc-form" style="display: flex; gap: 12px; max-width: 860px; flex-wrap: wrap;">
+        <select id="pc-state" style="flex: 0 1 220px; font-family: inherit; font-size: 15px; color: #17140F; background: #F5F4F0; border: none; border-radius: 4px; padding: 14px; outline: none;">
+          <option value="">Choose a state…</option>
+        </select>
+        <select id="pc-county" disabled style="flex: 1 1 260px; font-family: inherit; font-size: 15px; color: #17140F; background: #F5F4F0; border: none; border-radius: 4px; padding: 14px; outline: none;">
+          <option value="">County…</option>
+        </select>
+        <button type="submit" style="font-family: inherit; font-weight: 700; font-size: 16px; color: #17140F; background: #C98A2B; border: none; border-radius: 4px; padding: 14px 26px; cursor: pointer;">Find my peers</button>
+      </form>
+
+      <!-- weights -->
+      <div style="display: flex; flex-wrap: wrap; gap: 16px 32px; margin-top: 24px; padding: 18px 20px; background: rgba(245,244,240,.06); border: 1px solid rgba(245,244,240,.14); border-radius: 4px; max-width: 860px; align-items: center;">
+        <div style="flex: 1 1 180px;">
+          <label for="pc-w-econ" style="display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px;">Income &amp; economy</label>
+          <input id="pc-w-econ" type="range" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+        <div style="flex: 1 1 180px;">
+          <label for="pc-w-need" style="display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px;">Need &amp; distress</label>
+          <input id="pc-w-need" type="range" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+        <div style="flex: 1 1 180px;">
+          <label for="pc-w-traj" style="display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 6px;">Trajectory since 2020</label>
+          <input id="pc-w-traj" type="range" min="0" max="100" value="50" style="width: 100%;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+          <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;"><input id="pc-metro" type="checkbox" checked style="accent-color: #C98A2B;">Match metro / rural status</label>
+          <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;"><input id="pc-size" type="checkbox" checked style="accent-color: #C98A2B;">Similar population size</label>
+        </div>
+      </div>
+      <div id="pc-msg" style="font-size: 14px; color: rgba(245,244,240,.6); margin-top: 14px; min-height: 20px;"></div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="pc-result" data-screen-label="Peer results" style="max-width: 1200px; margin: 0 auto; padding: 0 32px; width: 100%; display: none;">
+    <div style="padding: clamp(36px,5vw,56px) 0 clamp(48px,6vw,72px);">
+      <div data-stack style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; align-items: start;">
+        <div>
+          <div id="pc-selected"></div>
+          <div style="background: #fff; border: 1px solid #DDDBD2; border-radius: 4px; padding: 18px; margin-top: 20px;">
+            <canvas id="pc-map" style="width: 100%; height: 320px; display: block;"></canvas>
+            <div style="display: flex; gap: 18px; font-size: 12px; color: #57534A; margin-top: 10px; justify-content: center;">
+              <span style="display: inline-flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; border-radius: 999px; background: #C98A2B;"></span>Your county</span>
+              <span style="display: inline-flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; border-radius: 999px; background: #14432F;"></span>Peers</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div id="pc-peers"></div>
+        </div>
+      </div>
+      <div id="pc-table" style="margin-top: 20px;"></div>
+      <p style="font-size: 12.5px; line-height: 1.6; color: #8A857B; margin: 28px 0 0; max-width: 90ch;">Method: counties are compared on z-scored indicators grouped into three weighted dimensions — income &amp; economy (median household income, unemployment, educational attainment), need &amp; distress (poverty, LMI tract share, rent burden), and trajectory (tract income movement 2020–2024). Sources: ACS 2023 5-year; FFIEC tract designations analyzed by NELCRUM. Peer matching is a screening aid, not a formal benchmarking study — <a href="index.html#contact">ask us</a> for the rigorous version.</p>
+    </div>
+  </section>
+
+  </main>
+
+  <footer style="background: #17140F; color: rgba(245,244,240,.6);">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 32px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: rgba(245,244,240,.5);">
+        <span>© 2026 NELCRUM Solutions, LLC · <a href="tools.html" style="color: rgba(245,244,240,.7);">Free tools</a></span>
+        <span><a href="mailto:contact@nelcrum.com" style="color: rgba(245,244,240,.7); text-decoration: none;">contact@nelcrum.com</a> · Kennesaw, GA</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

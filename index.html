@@ -1092,6 +1092,8 @@ class Component extends DCLogic {
         message: cf.message,
         submittedAt: new Date().toISOString(),
         source: "nelcrum.com contact form",
+        hp: "",
+        elapsed: String(Math.round(performance.now())),
       });
       fetch(this.SHEET_ENDPOINT, {
         method: "POST",

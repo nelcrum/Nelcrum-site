@@ -140,7 +140,7 @@
     var em = $('ff-email').value.trim();
     if (em.indexOf('@') < 1) { $('ff-email').style.borderColor = '#B04A3C'; return; }
     try {
-      var body = new URLSearchParams({ name: '', email: em, organization: '', message: 'Funder-Fit Finder: top match ' + ARCH[window.__ffRanked[0]].name, submittedAt: new Date().toISOString(), source: 'Funder-Fit Finder' });
+      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Funder-Fit Finder: top match ' + ARCH[window.__ffRanked[0]].name, submittedAt: new Date().toISOString(), source: 'Funder-Fit Finder' });
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     } catch (e) {}
     try { localStorage.setItem(KEY, '1'); } catch (e2) {}

@@ -431,6 +431,8 @@ class Component extends DCLogic {
       message: "Grant Readiness Scorecard: " + score + "/100 (" + b.band + "). " + dimStr + ". Top gaps: " + gapsStr,
       submittedAt: new Date().toISOString(),
       source: "Grant Readiness Scorecard",
+      hp: "",
+      elapsed: String(Math.round(performance.now())),
       score: String(score),
       band: b.band,
       dimensions: dimsPipe,

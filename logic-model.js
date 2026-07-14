@@ -123,7 +123,7 @@
     var em = $('lm-email').value.trim();
     if (em.indexOf('@') < 1) { $('lm-email').style.borderColor = '#B04A3C'; return; }
     try {
-      var body = new URLSearchParams({ name: '', email: em, organization: '', message: 'Logic Model Builder: ' + String(state.problem || '').slice(0, 120), submittedAt: new Date().toISOString(), source: 'Logic Model Builder' });
+      var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'Logic Model Builder: ' + String(state.problem || '').slice(0, 120), submittedAt: new Date().toISOString(), source: 'Logic Model Builder' });
       fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
     } catch (e) {}
     try { localStorage.setItem(KEY, '1'); } catch (e2) {}

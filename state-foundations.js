@@ -1033,7 +1033,7 @@
         try {
           var trail = '';
           try { trail = (JSON.parse(sessionStorage.getItem('nc_sf_trail') || '[]')).join(', '); } catch (e3) {}
-          var body = new URLSearchParams({ name: '', email: em, organization: '', message: 'State Foundation Overview unlock: ' + name + ' (' + (isCF ? 'community foundations' : 'all foundations') + ')' + (trail ? ' \u00b7 explored: ' + trail : ''), submittedAt: new Date().toISOString(), source: 'State Foundation Overview' });
+          var body = new URLSearchParams({ name: '', email: em, organization: '', hp: '', elapsed: String(Math.round(performance.now())), message: 'State Foundation Overview unlock: ' + name + ' (' + (isCF ? 'community foundations' : 'all foundations') + ')' + (trail ? ' \u00b7 explored: ' + trail : ''), submittedAt: new Date().toISOString(), source: 'State Foundation Overview' });
           fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
         } catch (err) {}
         try { localStorage.setItem('nc_states_unlock', '1'); } catch (e2) {}

@@ -387,6 +387,8 @@ class Component extends DCLogic {
       message: "Workplace mini-360 score: " + score + "/100 (" + b.band + "). " + dimStr,
       submittedAt: new Date().toISOString(),
       source: "Workplace mini-360",
+      hp: "",
+      elapsed: String(Math.round(performance.now())),
       score: String(score),
       band: b.band,
       dimensions: dimsPipe,

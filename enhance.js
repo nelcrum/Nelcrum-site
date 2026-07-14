@@ -178,6 +178,11 @@
         'Join our list for evidence-led insights and tool updates, and get a code for 10% off your first engagement or Wenbee plan.'));
 
       var form = el('form', 'display:flex;flex-direction:column;gap:10px;');
+      var shownAt = Date.now();
+      // Honeypot: hidden field humans never see; bots auto-fill it.
+      var hp = el('input', 'position:absolute;left:-9999px;top:-9999px;height:1px;width:1px;overflow:hidden;');
+      hp.type = 'text'; hp.name = 'website'; hp.tabIndex = -1;
+      hp.setAttribute('autocomplete', 'off'); hp.setAttribute('aria-hidden', 'true');
       var input = el('input', 'font-family:' + F_SANS + ';font-size:15px;color:#17140F;background:#fff;' +
         'border:1.5px solid #DDDBD2;border-radius: 3px;padding:13px 15px;outline:none;');
       input.type = 'email'; input.required = true; input.placeholder = 'you@org.com';
@@ -191,6 +196,7 @@
       var fine = el('p', 'font-size:11.5px;line-height:1.5;color:#8A857B;margin:14px 0 0;',
         'No spam. Unsubscribe anytime. We never share your details.');
 
+      form.appendChild(hp);
       form.appendChild(input);
       form.appendChild(submit);
       body.appendChild(form);
@@ -225,11 +231,13 @@
         e.preventDefault();
         var email = input.value.trim();
         if (email.indexOf('@') < 1) { input.style.borderColor = '#B04A3C'; return; }
+        if (hp.value) { try { localStorage.setItem('nc_signup', '1'); } catch (e2) {} success(); return; } // honeypot tripped: pretend success, send nothing
         submit.disabled = true; submit.style.opacity = '.6'; submit.innerHTML = 'Sending&hellip;';
         try {
           var payload = new URLSearchParams({
             name: '', email: email, organization: '',
             message: 'Requested 10% off via website popup',
+            hp: '', elapsed: String(Date.now() - shownAt),
             submittedAt: new Date().toISOString(),
             source: 'Website popup (10% off)'
           });
