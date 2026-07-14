@@ -31,6 +31,30 @@
     [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
     [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
   }
+  /* Economist / MGI style charts */
+  @keyframes ecgrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .ec { background: #fff; border: 1px solid #DDDBD2; border-radius: 2px; padding: 24px 26px 20px; margin: 4px 0 30px; }
+  .ec-tab { display: block; width: 34px; height: 5px; background: #C98A2B; margin-bottom: 15px; }
+  .ec-kick { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #8A857B; margin-bottom: 4px; }
+  .ec-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.25; letter-spacing: -.01em; color: #17140F; margin: 0 0 18px; }
+  .ec-row { display: grid; grid-template-columns: 106px 1fr 50px; align-items: center; height: 30px; transition: background .15s ease; }
+  .ec-row:hover { background: #F7F5F0; }
+  .ec-lab { font-size: 12.5px; font-weight: 600; color: #3A362F; white-space: nowrap; }
+  .ec-plot { position: relative; height: 15px; }
+  .ec-grid { position: absolute; inset: -8px 0; background-image: repeating-linear-gradient(to right, #ECE8DF 0, #ECE8DF 1px, transparent 1px, transparent 25%); }
+  .ec-fill { position: relative; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
+  .ec-val { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #17140F; font-variant-numeric: tabular-nums; text-align: right; }
+  .ec-src { font-size: 11.5px; line-height: 1.5; color: #8A857B; margin: 18px 0 0; padding-top: 12px; border-top: 1px solid #ECE8DF; }
+  .ec-src b { color: #3A362F; font-weight: 700; }
+  /* diverging (zero-baseline) */
+  .ec-dplot { position: relative; height: 15px; }
+  .ec-zero { position: absolute; top: -8px; bottom: -8px; width: 1px; background: #9A9282; }
+  .ec-pos { position: absolute; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
+  .ec-neg { position: absolute; height: 100%; transform-origin: right; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
+  /* stacked */
+  .ec-stack { display: flex; height: 20px; overflow: hidden; border: 1px solid #DDD8CC; }
+  .ec-stack > i { display: block; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
+  @media (max-width: 520px){ .ec-row, .ec-drow { grid-template-columns: 86px 1fr 46px; } }
 </style>
 </helmet>
 
@@ -94,6 +118,16 @@
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;">What a funder is really asking is simple: can this organization steward our money, deliver what it promises, and show us what happened. Every line on the checklist is a proxy for one of those three questions. A clean audit signals stewardship. A clear logic model signals delivery. Documented outcomes signal accountability.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;">That reframing changes what you work on. Instead of assembling paperwork under pressure, you build the underlying health continuously: a board that meets and records its decisions, budgets approved on time, a simple way to capture outcomes as the work happens. Readiness stops being an event and becomes a state you maintain.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 28px;">The payoff is compounding. An organization that is genuinely ready does not just win more grants. It manages them better, reports more easily, and renews more often. The checklist gets handled almost as an afterthought, because the substance behind it is already there.</p>
+      <div class="ec">
+        <span class="ec-tab"></span>
+        <div class="ec-kick">The evidence · the landscape you're getting ready for</div>
+        <div class="ec-title">U.S. charitable giving by source, 2024 (% of total)</div>
+        <div class="ec-row"><span class="ec-lab">Individuals</span><div class="ec-plot"><span class="ec-grid"></span><div class="ec-fill" style="width: 66%; background: #14432F;"></div></div><span class="ec-val">66</span></div>
+        <div class="ec-row"><span class="ec-lab">Foundations</span><div class="ec-plot"><span class="ec-grid"></span><div class="ec-fill" style="width: 19%; background: #C98A2B;"></div></div><span class="ec-val">19</span></div>
+        <div class="ec-row"><span class="ec-lab">Bequests</span><div class="ec-plot"><span class="ec-grid"></span><div class="ec-fill" style="width: 8%; background: #6E8B77;"></div></div><span class="ec-val">8</span></div>
+        <div class="ec-row"><span class="ec-lab">Corporations</span><div class="ec-plot"><span class="ec-grid"></span><div class="ec-fill" style="width: 7%; background: #B0885A;"></div></div><span class="ec-val">7</span></div>
+        <p class="ec-src">Foundations alone gave $109.8B in 2024 — readiness is what lets you compete for it. <b>Source:</b> Giving USA 2025, Indiana University Lilly Family School of Philanthropy.</p>
+      </div>
       <div style="border-top: 1px solid #DDDBD2; padding-top: 22px;">
         <a href="index.html#assessments" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px;">Take our free Grant Readiness Assessment →</a>
       </div>
@@ -110,6 +144,16 @@
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;"><strong style="color:#17140F;">Alignment.</strong> The budget should map to the narrative. If your proposal centers on a new program but the budget pours money into general overhead, reviewers notice. Every major line should trace back to something you promised to do.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;"><strong style="color:#17140F;">Honesty about indirect costs.</strong> Many organizations hide indirect costs out of fear, then cannot sustain the work. Funders increasingly expect to see reasonable indirect rates. Naming them is a sign of maturity, not weakness.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 28px;"><strong style="color:#17140F;">Sustainability.</strong> A single year of funding is rarely the whole story. Showing how the work continues, through diversified revenue or a realistic path to other support, tells a funder their investment will not collapse the moment the grant ends.</p>
+      <div class="ec">
+        <span class="ec-tab"></span>
+        <div class="ec-kick">The evidence · why sustainability wins</div>
+        <div class="ec-title">Change in U.S. giving by source, 2023–24 (%)</div>
+        <div class="ec-row"><span class="ec-lab">Corporations</span><div class="ec-dplot"><span class="ec-zero" style="left: 28.6%;"></span><i class="ec-pos" style="left: 28.6%; width: 65.0%; background: #14432F;"></i></div><span class="ec-val">+9.1</span></div>
+        <div class="ec-row"><span class="ec-lab">Individuals</span><div class="ec-dplot"><span class="ec-zero" style="left: 28.6%;"></span><i class="ec-pos" style="left: 28.6%; width: 58.6%; background: #C98A2B;"></i></div><span class="ec-val">+8.2</span></div>
+        <div class="ec-row"><span class="ec-lab">Foundations</span><div class="ec-dplot"><span class="ec-zero" style="left: 28.6%;"></span><i class="ec-pos" style="left: 28.6%; width: 17.1%; background: #6E8B77;"></i></div><span class="ec-val">+2.4</span></div>
+        <div class="ec-row"><span class="ec-lab">Bequests</span><div class="ec-dplot"><span class="ec-zero" style="left: 28.6%;"></span><i class="ec-neg" style="left: 17.2%; width: 11.4%; background: #B04A3C;"></i></div><span class="ec-val" style="color: #B04A3C;">−1.6</span></div>
+        <p class="ec-src">Every source shifts year to year, so a budget built on one is fragile; diversification is linked to greater financial stability. <b>Sources:</b> Giving USA 2025; Carroll &amp; Stater, J. of Public Administration Research &amp; Theory, 2009.</p>
+      </div>
       <div style="border-top: 1px solid #DDDBD2; padding-top: 22px;">
         <a href="contact.html" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px;">Talk to us about your next proposal →</a>
       </div>
@@ -126,6 +170,20 @@
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;"><strong style="color:#17140F;">Do not build when a good tool already exists.</strong> If an affordable, well-supported product does ninety percent of what you need, use it. Custom software you have to maintain forever is rarely worth the last ten percent.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 20px;"><strong style="color:#17140F;">Do not build a process that is not yet stable.</strong> If how you work is still changing month to month, software will freeze the wrong version in place. Get the process right on paper first, then build.</p>
       <p style="font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 28px;">The middle path is usually the right one: a small, focused tool that solves a single expensive problem, built quickly and improved over time. You do not need a platform. You need the one thing that gives your team hours back every week, and the discipline to stop there.</p>
+      <div class="ec">
+        <span class="ec-tab"></span>
+        <div class="ec-kick">The evidence · the cost of scattered data</div>
+        <div class="ec-title">How the knowledge-work week splits (% of time)</div>
+        <div class="ec-stack">
+          <i style="width: 19%; background: #C98A2B;"></i>
+          <i style="width: 81%; background: #14432F;"></i>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12.5px; color: #3A362F;">
+          <span><b style="color: #C98A2B; font-family: 'Archivo', sans-serif; font-variant-numeric: tabular-nums;">19%</b> searching &amp; reconciling</span>
+          <span><b style="color: #14432F; font-family: 'Archivo', sans-serif; font-variant-numeric: tabular-nums;">81%</b> everything else</span>
+        </div>
+        <p class="ec-src">Teams lose nearly a day a week reconciling data spread across tools — the exact pain a focused build removes. <b>Source:</b> McKinsey Global Institute, “The Social Economy,” 2012.</p>
+      </div>
       <div style="border-top: 1px solid #DDDBD2; padding-top: 22px;">
         <a href="applications.html" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px;">See how NELCRUM builds software →</a>
       </div>
@@ -173,7 +231,7 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="font-family: 'Archivo', sans-serif; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #C98A2B; margin-bottom: 4px;">Contact</div>
-          <a href="mailto:contact@nelcrum.com" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">contact@nelcrum.com</a>
+          <a href="/cdn-cgi/l/email-protection#dab9b5b4aebbb9ae9ab4bfb6b9a8afb7f4b9b5b7" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;"><span class="__cf_email__" data-cfemail="dab9b5b4aebbb9ae9ab4bfb6b9a8afb7f4b9b5b7">[email&#160;protected]</span></a>
           <a href="tel:7706762824" style="text-decoration: none; color: rgba(245,244,240,.78); font-size: 14px;">770-676-2824</a>
           <span style="color: rgba(245,244,240,.6); font-size: 14px;">Kennesaw, GA</span>
         </div>
@@ -187,5 +245,5 @@
 
 </div>
 </x-dc>
-</body>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
 </html>
