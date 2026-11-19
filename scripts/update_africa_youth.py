@@ -22,6 +22,7 @@ import os
 import sys
 import time
 import urllib.request
+from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timezone
 
 API = "https://api.worldbank.org/v2"
@@ -56,6 +57,11 @@ def get_json(url, tries=6):
             time.sleep(15 * (i + 1))
 
 
+def r1(v):
+    """Round half up to one decimal, from the API's decimal text, as Stata and Excel would."""
+    return float(Decimal(repr(v)).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+
+
 def fetch_indicator(code, first_year, last_year):
     """Page through the API in modest chunks; very large single pages time out."""
     out, updated, page, pages = {}, None, 1, 1
@@ -67,7 +73,7 @@ def fetch_indicator(code, first_year, last_year):
         for r in rows or []:
             if r["value"] is None:
                 continue
-            out.setdefault(r["countryiso3code"], {})[int(r["date"])] = round(float(r["value"]), 1)
+            out.setdefault(r["countryiso3code"], {})[int(r["date"])] = r1(r["value"])
         page += 1
     return out, updated
 
