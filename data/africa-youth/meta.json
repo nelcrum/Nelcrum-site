@@ -1,11 +1,12 @@
 {
-  "refreshed_at": "2026-11-19T17:19:55Z",
+  "refreshed_at": "2026-11-19T18:10:11Z",
   "source": "World Bank, World Development Indicators (api.worldbank.org/v2)",
   "world_bank_last_updated": {
     "SL.UEM.1524.ZS": "2026-11-11",
     "SL.EMP.VULN.ZS": "2026-11-11",
     "SP.POP.0014.TO.ZS": "2026-11-11",
-    "SL.UEM.NEET.ZS": "2026-11-11"
+    "SL.UEM.NEET.ZS": "2026-11-11",
+    "SP.POP.0014.TO": "2026-11-11"
   },
   "headline": {
     "year": 2025,
@@ -16,6 +17,15 @@
     "madagascar_youth_unemployment": 5.2,
     "madagascar_vulnerable_employment": 84.4,
     "ssa_under15": 40.4,
-    "eu_under15": 14.2
+    "eu_under15": 14.2,
+    "germany": 6.9,
+    "african_countries_below_germany": 19,
+    "ve_median_above_france": 30.1,
+    "ve_median_below_germany": 76.9,
+    "ve_min_below_germany": 60.0,
+    "rank_correlation": -0.77,
+    "ssa_under15_millions": 534,
+    "eu_under15_millions": 64,
+    "ssa_eu_under15_multiple": 8
   }
 }
