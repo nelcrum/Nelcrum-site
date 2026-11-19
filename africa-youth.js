@@ -116,6 +116,12 @@
       if (v == null) return;
       n.textContent = (k === 'year' || /countries/.test(k)) ? String(v) : f1(v);
     });
+    // Country values quoted in the text: <span data-c="ISO3" data-f="column">
+    var byIso = {}; (D.countries || []).forEach(function (r) { byIso[r.iso3] = r; });
+    document.querySelectorAll('[data-c]').forEach(function (n) {
+      var r = byIso[n.getAttribute('data-c')], f = n.getAttribute('data-f') || 'youth_unemployment';
+      if (r && r[f] !== '' && r[f] != null) n.textContent = f1(+r[f]);
+    });
     var fmt = function (iso) {
       var d = new Date(iso + (iso.length === 10 ? 'T12:00:00Z' : ''));
       return isNaN(d) ? iso : d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
