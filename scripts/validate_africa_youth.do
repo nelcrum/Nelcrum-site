@@ -61,13 +61,16 @@ program define wbget
     if "`meta'" == "meta" {
         local mfiles : dir . files "Metadata_Country_API_`ind'_DS2*.csv"
         local mf : word 1 of `mfiles'
-        import delimited using `"`mf'"', varnames(nonames) stringcols(_all) encoding("utf-8") clear
-        drop in 1
+        * bindquote(strict) keeps quoted notes that contain line breaks in one row
+        import delimited using `"`mf'"', varnames(nonames) stringcols(_all) encoding("utf-8") bindquote(strict) clear
         keep v1 v2
         rename (v1 v2) (iso3 wbregion)
+        replace iso3 = trim(iso3)
+        keep if regexm(iso3, "^[A-Z][A-Z0-9][A-Z0-9]$")
+        duplicates drop iso3, force
         save wb_regions.dta, replace
     }
-    import delimited using `"`f'"', varnames(nonames) stringcols(_all) encoding("utf-8") clear
+    import delimited using `"`f'"', varnames(nonames) stringcols(_all) encoding("utf-8") bindquote(strict) clear
     gen long obsno = _n
     quietly summarize obsno if v2 == "Country Code"
     local h = r(min)
@@ -80,6 +83,9 @@ program define wbget
     }
     drop if obsno <= `h'
     drop obsno
+    replace iso3 = trim(iso3)
+    keep if regexm(iso3, "^[A-Z][A-Z0-9][A-Z0-9]$")
+    duplicates drop iso3, force
     reshape long `short', i(iso3) j(year)
     destring `short', replace
     capture erase wb_download.zip
