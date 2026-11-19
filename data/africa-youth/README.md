@@ -1,6 +1,6 @@
 # Africa youth data: monthly refresh with review
 
-This folder holds the data behind "The continent the chart left out" (africa-youth.html) and documents its reviewed monthly refresh.
+This folder holds the data behind "Africa's Youth Unemployment" (africa-youth.html) and documents its reviewed monthly refresh.
 
 ## What is involved
 
