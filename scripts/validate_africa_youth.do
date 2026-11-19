@@ -2,11 +2,11 @@
   validate_africa_youth.do
 
   Independent check of "Africa's Youth Unemployment" (nelcrum.com/africa-youth.html).
-  Pulls the World Bank data fresh with wbopendata, rebuilds every figure the
+  Downloads the World Bank data fresh, rebuilds every figure the
   article quotes, and compares the published data files value by value.
 
-  Requirements: Stata 14 or later, internet access, wbopendata (installed
-                automatically from SSC if missing).
+  Requirements: Stata 14 or later and internet access. No add-on packages:
+                the World Bank's own CSV downloads are read directly.
   Run:          do validate_africa_youth.do
   Output:       validate_africa_youth.log, plus a PASS/FAIL line for each check.
 
@@ -21,9 +21,6 @@ clear all
 set more off
 capture log close
 log using validate_africa_youth.log, replace text
-
-capture which wbopendata
-if _rc ssc install wbopendata, replace
 
 local YEAR  2025
 local URL   "https://nelcrum.com/data/africa-youth"
@@ -47,35 +44,60 @@ end
 *------------------------------------------------------------------------------
 * 1. Fresh World Bank pull, all years
 *------------------------------------------------------------------------------
-* One indicator per call: older wbopendata versions are most reliable this way.
-local INDS  SL.UEM.1524.ZS SL.EMP.VULN.ZS SP.POP.0014.TO.ZS
-local SHORT yu ve u15
-local i 0
+* wbget: download one indicator as the World Bank's bulk CSV, reshape to long.
+* Optional third argument "meta" also saves the World Bank region of each economy.
+capture program drop wbget
+program define wbget
+    args ind short meta
+    capture erase wb_download.zip
+    copy "https://api.worldbank.org/v2/en/indicator/`ind'?downloadformat=csv" wb_download.zip, replace
+    unzipfile wb_download.zip, replace
+    local files : dir . files "API_`ind'_DS2*.csv"
+    local f : word 1 of `files'
+    if `"`f'"' == "" {
+        display as error "Downloaded file for `ind' not found"
+        exit 601
+    }
+    if "`meta'" == "meta" {
+        local mfiles : dir . files "Metadata_Country_API_`ind'_DS2*.csv"
+        local mf : word 1 of `mfiles'
+        import delimited using `"`mf'"', varnames(nonames) stringcols(_all) encoding("utf-8") clear
+        drop in 1
+        keep v1 v2
+        rename (v1 v2) (iso3 wbregion)
+        save wb_regions.dta, replace
+    }
+    import delimited using `"`f'"', varnames(nonames) stringcols(_all) encoding("utf-8") clear
+    gen long obsno = _n
+    quietly summarize obsno if v2 == "Country Code"
+    local h = r(min)
+    foreach v of varlist v* {
+        local lab = `v'[`h']
+        if "`lab'" == "Country Name" rename `v' countryname
+        else if "`lab'" == "Country Code" rename `v' iso3
+        else if regexm("`lab'", "^[12][0-9][0-9][0-9]$") rename `v' `short'`lab'
+        else drop `v'
+    }
+    drop if obsno <= `h'
+    drop obsno
+    reshape long `short', i(iso3) j(year)
+    destring `short', replace
+    capture erase wb_download.zip
+    local tidy : dir . files "*_`ind'_DS2*.csv"
+    foreach x of local tidy {
+        capture erase `"`x'"'
+    }
+end
+
 tempfile acc
-foreach ind of local INDS {
-    local ++i
-    local short : word `i' of `SHORT'
-    display as text _n "Downloading `ind' ..."
-    wbopendata, indicator(`ind') long clear
-    local raw = lower(subinstr("`ind'", ".", "_", .))
-    capture confirm variable `raw'
-    if _rc {
-        display as error "wbopendata did not return a variable named `raw'. It returned:"
-        ds
-        exit 111
-    }
-    capture confirm variable countrycode year
-    if _rc {
-        display as error "wbopendata did not return countrycode and year. It returned:"
-        ds
-        exit 111
-    }
-    rename `raw' `short'
-    keep countrycode countryname year `short'
-    if `i' > 1 merge 1:1 countrycode year using `acc', nogenerate
-    save `acc', replace
-}
-rename countrycode iso3
+display as text _n "Downloading World Bank data (three files, about a minute) ..."
+wbget SL.UEM.1524.ZS yu meta
+save `acc', replace
+wbget SL.EMP.VULN.ZS ve
+merge 1:1 iso3 year using `acc', nogenerate
+save `acc', replace
+wbget SP.POP.0014.TO.ZS u15
+merge 1:1 iso3 year using `acc', nogenerate
 keep iso3 countryname year yu ve u15
 
 gen byte africa = 0
@@ -90,6 +112,21 @@ gen byte protest = 0
 foreach c of local PROTEST {
     quietly replace protest = 1 if iso3 == "`c'"
 }
+merge m:1 iso3 using wb_regions.dta, keep(master match) nogenerate
+* Check the Africa definition against the World Bank's own classification
+preserve
+keep if year == `YEAR'
+gen byte should_be = (wbregion == "Sub-Saharan Africa") | inlist(iso3, "DZA", "DJI", "EGY", "LBY", "MAR", "TUN")
+quietly count if wbregion == "Sub-Saharan Africa"
+local nssa = r(N)
+local ok = (`nssa' == 48)
+check `ok' "World Bank lists 48 Sub-Saharan Africa economies (found `nssa')"
+quietly count if should_be != africa
+local nm = r(N)
+local ok = (`nm' == 0)
+check `ok' "Article's 54-economy Africa list matches World Bank regions (`nm' differences)"
+if `nm' list iso3 countryname wbregion africa if should_be != africa, noobs clean
+restore
 tempfile wb
 save `wb'
 
