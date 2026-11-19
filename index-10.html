@@ -712,7 +712,7 @@
           <div style="display: flex; flex-direction: column; gap: 22px; padding: 26px 0; border-top: 1px solid #E2D7C4;">
             <div>
               <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #9A8F7E; margin-bottom: 7px;">Email</div>
-              <a href="/cdn-cgi/l/email-protection#e28a878e8e8da28c878e8190978fcc818d8f" style="text-decoration: none; color: #2B2620; font-size: 16.5px; font-weight: 600;"><span class="__cf_email__" data-cfemail="dcb4b9b0b0b39cb2b9b0bfaea9b1f2bfb3b1">[email&#160;protected]</span></a>
+              <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: #2B2620; font-size: 16.5px; font-weight: 600;">hello@nelcrum.com</a>
             </div>
             <div>
               <div style="font-family: 'Spline Sans Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #9A8F7E; margin-bottom: 7px;">Phone</div>
@@ -753,7 +753,7 @@
               </label>
 
               <sc-if value="{{ contactError }}" hint-placeholder-val="{{ false }}">
-                <div style="font-size: 13.5px; color: #B5623C; margin-bottom: 16px;">Something went wrong sending your message. Please email us directly at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b131e1717143b151e1718090e1655181416">[email&#160;protected]</a>.</div>
+                <div style="font-size: 13.5px; color: #B5623C; margin-bottom: 16px;">Something went wrong sending your message. Please email us directly at <a href="mailto:hello@nelcrum.com">hello@nelcrum.com</a>.</div>
               </sc-if>
 
               <button type="submit" disabled="{{ contactSending }}" style="width: 100%; border: none; cursor: pointer; font-family: inherit; background: #2B2620; color: #fff; padding: 16px 26px; border-radius: 999px; font-size: 16px; font-weight: 700; opacity: {{ submitOpacity }};">{{ submitLabel }}</button>
@@ -827,7 +827,7 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="font-family: 'Spline Sans Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #D69A78; margin-bottom: 4px;">Contact</div>
-          <a href="/cdn-cgi/l/email-protection#59313c35353619373c353a2b2c34773a3634" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;"><span class="__cf_email__" data-cfemail="234b464f4f4c634d464f4051564e0d404c4e">[email&#160;protected]</span></a>
+          <a href="mailto:hello@nelcrum.com" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">hello@nelcrum.com</a>
           <a href="tel:7706762824" style="text-decoration: none; color: rgba(244,238,227,.78); font-size: 14px;">770-676-2824</a>
           <span style="color: rgba(244,238,227,.6); font-size: 14px; line-height: 1.5;">Kennesaw, GA</span>
         </div>
@@ -931,7 +931,7 @@
               <div style="font-family: 'Newsreader', serif; font-size: clamp(20px,2.6vw,26px); line-height: 1.2; margin-bottom: 10px;">Turn this score into an action plan.</div>
               <p style="font-size: 14.5px; line-height: 1.55; color: rgba(244,238,227,.74); margin: 0 0 20px;">Book a free consultation and we'll turn your results into a detailed, prioritized roadmap to close every gap and start responding to funding opportunities with confidence.</p>
               <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                <a href="/cdn-cgi/l/email-protection#573f323b3b381739323b3425223a7934383a682422353d3234236a1025363923726567053236333e393224247265671624243224243a323923" onClick="{{ closeAssessment }}" style="text-decoration: none; background: #B5623C; color: #fff; padding: 14px 24px; border-radius: 999px; font-size: 15px; font-weight: 700;">Book a free consultation →</a>
+                <a href="mailto:hello@nelcrum.com?subject=Grant%20Readiness%20Assessment" onClick="{{ closeAssessment }}" style="text-decoration: none; background: #B5623C; color: #fff; padding: 14px 24px; border-radius: 999px; font-size: 15px; font-weight: 700;">Book a free consultation →</a>
                 <button onClick="{{ restart }}" style="border: 1px solid rgba(244,238,227,.34); cursor: pointer; font-family: inherit; background: transparent; color: #F4EEE3; padding: 14px 24px; border-radius: 999px; font-size: 15px; font-weight: 700;">Retake</button>
               </div>
             </div>
@@ -1008,7 +1008,7 @@
 
 </div>
 </x-dc>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script>
+<script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   // Google Apps Script Web App URL that appends submissions to the NELCRUM contact sheet.
   // Deploy: Sheet → Extensions → Apps Script → doPost(e) appends e.parameter to the sheet →
