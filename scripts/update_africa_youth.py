@@ -10,6 +10,7 @@ Indicators
   SL.UEM.1524.ZS  Youth unemployment, ages 15-24 (% of labor force), ILO modeled estimate
   SL.EMP.VULN.ZS  Vulnerable employment (% of total employment), ILO modeled estimate
   SP.POP.0014.TO.ZS  Population ages 0-14 (% of total population)
+  SP.POP.0014.TO     Population ages 0-14, total
   SL.UEM.NEET.ZS  Share of youth not in education, employment or training
 
 Standard library only, so the GitHub Action needs no installs.
@@ -30,6 +31,7 @@ INDICATORS = {
     "youth_unemployment": "SL.UEM.1524.ZS",
     "vulnerable_employment": "SL.EMP.VULN.ZS",
     "under15_share": "SP.POP.0014.TO.ZS",
+    "under15_count": "SP.POP.0014.TO",
     "neet": "SL.UEM.NEET.ZS",
 }
 # Africa = World Bank Sub-Saharan Africa region plus North African states.
@@ -195,6 +197,7 @@ def main():
         cov = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
         return cov / (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
 
+    N = data["under15_count"]
     headline = {
         "year": year,
         "african_countries_with_estimate": len(af),
@@ -205,6 +208,10 @@ def main():
         "madagascar_vulnerable_employment": data["vulnerable_employment"].get("MDG", {}).get(year),
         "ssa_under15": P.get("SSF", {}).get(year),
         "eu_under15": P.get("EUU", {}).get(year),
+        "ssa_under15_millions": round(N["SSF"][year] / 1e6) if N.get("SSF", {}).get(year) else None,
+        "eu_under15_millions": round(N["EUU"][year] / 1e6) if N.get("EUU", {}).get(year) else None,
+        # Whole multiple, for the article's "more than N times" wording.
+        "ssa_eu_under15_multiple": int(N["SSF"][year] // N["EUU"][year]) if N.get("SSF", {}).get(year) and N.get("EUU", {}).get(year) else None,
         "germany": de,
         "african_countries_below_germany": len(lo_ve),
         "ve_median_above_france": r1(median(hi_ve)) if hi_ve else None,

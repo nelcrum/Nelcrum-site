@@ -114,7 +114,10 @@
     document.querySelectorAll('[data-k]').forEach(function (n) {
       var k = n.getAttribute('data-k'), v = h[k];
       if (v == null) return;
-      n.textContent = (k === 'year' || /countries/.test(k)) ? String(v) : k === 'rank_correlation' ? (+v).toFixed(2) : f1(v);
+      var WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+      n.textContent = (k === 'year' || /countries|_millions$/.test(k)) ? String(v)
+        : /_multiple$/.test(k) ? (WORDS[v] || String(v))
+        : k === 'rank_correlation' ? (+v).toFixed(2) : f1(v);
     });
     // Country values quoted in the text: <span data-c="ISO3" data-f="column">
     var byIso = {}; (D.countries || []).forEach(function (r) { byIso[r.iso3] = r; });
