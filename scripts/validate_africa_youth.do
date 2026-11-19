@@ -5,7 +5,8 @@
   Pulls the World Bank data fresh with wbopendata, rebuilds every figure the
   article quotes, and compares the published data files value by value.
 
-  Requirements: Stata 14 or later, internet access.
+  Requirements: Stata 14 or later, internet access, wbopendata (installed
+                automatically from SSC if missing).
   Run:          do validate_africa_youth.do
   Output:       validate_africa_youth.log, plus a PASS/FAIL line for each check.
 
@@ -46,11 +47,35 @@ end
 *------------------------------------------------------------------------------
 * 1. Fresh World Bank pull, all years
 *------------------------------------------------------------------------------
-wbopendata, indicator(SL.UEM.1524.ZS; SL.EMP.VULN.ZS; SP.POP.0014.TO.ZS) long clear nometadata
+* One indicator per call: older wbopendata versions are most reliable this way.
+local INDS  SL.UEM.1524.ZS SL.EMP.VULN.ZS SP.POP.0014.TO.ZS
+local SHORT yu ve u15
+local i 0
+tempfile acc
+foreach ind of local INDS {
+    local ++i
+    local short : word `i' of `SHORT'
+    display as text _n "Downloading `ind' ..."
+    wbopendata, indicator(`ind') long clear
+    local raw = lower(subinstr("`ind'", ".", "_", .))
+    capture confirm variable `raw'
+    if _rc {
+        display as error "wbopendata did not return a variable named `raw'. It returned:"
+        ds
+        exit 111
+    }
+    capture confirm variable countrycode year
+    if _rc {
+        display as error "wbopendata did not return countrycode and year. It returned:"
+        ds
+        exit 111
+    }
+    rename `raw' `short'
+    keep countrycode countryname year `short'
+    if `i' > 1 merge 1:1 countrycode year using `acc', nogenerate
+    save `acc', replace
+}
 rename countrycode iso3
-rename sl_uem_1524_zs   yu
-rename sl_emp_vuln_zs   ve
-rename sp_pop_0014_to_zs u15
 keep iso3 countryname year yu ve u15
 
 gen byte africa = 0
