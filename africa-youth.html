@@ -61,6 +61,10 @@
   .nx-key-findings b { color: #0B2545; }
   .nx-p { font-family: 'Source Serif 4', Georgia, serif; font-size: 19px; line-height: 1.65; color: #1B2733; margin: 0 0 20px; }
   .nx-p b { font-weight: 600; color: #0B2545; font-variant-numeric: lining-nums tabular-nums; }
+  .nx-define { margin: 4px 0 26px; padding: 16px 20px; background: #F4F7FA; border-left: 3px solid #0B2545; }
+  .nx-define-label { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #0B2545; margin-bottom: 6px; }
+  .nx-define p { font-family: 'Source Sans 3', sans-serif; font-size: 16.5px; line-height: 1.55; color: #1B2733; margin: 0 0 8px; }
+  .nx-define p:last-child { margin-bottom: 0; }
   .nx-lead { font-weight: 600; }
   .nx-article .nx-col { counter-reset: chart; }
   .nx-h2 { font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: clamp(23px,2.6vw,27px); line-height: 1.2; color: #0B2545; margin: 42px 0 12px; }
@@ -150,7 +154,7 @@
   <article id="ay" class="nx-article">
     <div class="nx-col">
 
-<div class="nx-key-findings"><h2>Key findings</h2><ol><li><b><span data-k="african_countries_above_france">16</span> of <span data-k="african_countries_with_estimate">51</span></b> African countries with estimates have higher youth unemployment than France (<span data-k="france">18.9</span>%), the highest of the five countries in the Journal's charts.</li><li>Low unemployment rates can mask precarious work. In Madagascar, youth unemployment is <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>, but <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of workers are in vulnerable employment.</li><li><b><span data-k="ssa_under15">40.4</span>%</b> of Sub-Saharan Africa's population is under 15, against <b><span data-k="eu_under15">14.2</span>%</b> in the European Union.</li></ol></div>
+<div class="nx-key-findings"><h2>Key findings</h2><ol><li><b><span data-k="african_countries_above_france">16</span> of <span data-k="african_countries_with_estimate">51</span></b> African countries with estimates have higher youth unemployment than France (<span data-k="france">18.9</span>%), the highest of the five countries in the Journal's charts.</li><li>Low unemployment rates can mask precarious work. In Madagascar, youth unemployment is <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>, but <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of workers are in vulnerable employment: self-employed without employees, or working unpaid in a family business.</li><li><b><span data-k="ssa_under15">40.4</span>%</b> of Sub-Saharan Africa's population is under 15, against <b><span data-k="eu_under15">14.2</span>%</b> in the European Union.</li></ol></div>
       <div class="nx-why" id="why">
         <div class="nx-why-label">About this analysis</div>
         <p>This week The Wall Street Journal published <a href="https://www.wsj.com/economy/these-charts-show-why-young-people-across-the-world-are-fed-up-with-the-economy-2fd5f804" target="_blank" rel="noopener">a set of charts</a> on why young people around the world are frustrated with the economy, describing a generation that is fed up “in nearly every corner of the world.” The charts compared youth unemployment in France, China, the U.K., the U.S. and Germany, along with the share of young Europeans living with their parents.</p>
@@ -195,10 +199,17 @@
       <p class="nx-p">Several countries where Gen Z protests toppled or shook governments report youth unemployment below Germany's. That is not a sign of health. The unemployment rate counts only people with no work at all who are looking for it. Where there is no unemployment insurance, few young people can afford to be idle, so they take whatever informal work exists.</p>
       <p class="nx-p">Madagascar makes the point. Youth-led protests there ended Andry Rajoelina's presidency in October 2025, yet youth unemployment is just <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>. The telling number is that <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of all workers are in vulnerable employment: working for themselves or unpaid in a family business, usually without a contract or social protection.</p>
 
+      <div class="nx-define" id="define-vulnerable">
+        <div class="nx-define-label">What is vulnerable employment?</div>
+        <p>Vulnerable employment is the share of all workers who are either <b>own-account workers</b>, self-employed with no employees (a street vendor, a smallholder farmer, a motorbike-taxi driver), or <b>contributing family workers</b>, who work unpaid in a business or farm run by a relative.</p>
+        <p>The International Labour Organization uses it as a gauge of precarious work. People in these jobs are less likely to have a written contract, a regular wage, or social protection such as health insurance, sick pay or a pension, and their incomes are more exposed to swings in the economy.</p>
+        <p>It measures how people work, not how much they earn, and it covers workers of all ages, not only the young. A self-employed professional counts too, so it is best read as an indicator of precarious work rather than an exact count of it.</p>
+      </div>
+
       <figure class="nx-fig" id="fig-scatter">
         <figcaption>
           <div class="nx-fig-title">Youth unemployment and vulnerable employment</div>
-          <div class="nx-fig-sub">Youth unemployment and vulnerable employment, <span data-k="year">2025</span>, %</div>
+          <div class="nx-fig-sub">Youth unemployment and vulnerable employment (own-account and unpaid family workers), <span data-k="year">2025</span>, %</div>
         </figcaption>
         <div class="nx-key"><span><i class="nx-dot" style="background:#E3812B"></i>Gen Z protests, 2024 to 2025</span><span><i class="nx-dot" style="background:#1D5C96;opacity:.55"></i>Other African country</span><span><i class="nx-dot" style="background:#A7B4C2"></i>In the original chart</span></div>
         <div id="ay-scatter" class="ay-chart" style="min-height: 420px;"></div>
@@ -232,13 +243,14 @@
           <tbody id="ay-protests"></tbody>
         </table>
       </div>
-      <div class="nx-fig-foot"><span>Protest details from the reporting linked in each row; death tolls are as reported and in several cases disputed by governments. Labor data: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
+      <div class="nx-fig-foot"><span>Protest details from the reporting linked in each row; death tolls are as reported and in several cases disputed by governments. Vulnerable employment: own-account and unpaid family workers, % of all employment (<a href="#define-vulnerable" style="color:inherit">definition</a>). Labor data: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
     </figure>
 
     <div class="nx-col">
       <section class="nx-methods">
         <h2 class="nx-h3">Methods and data</h2>
         <p><b>Data.</b> All labor and population figures come from the World Bank's World Development Indicators, retrieved through its public API. Youth unemployment and vulnerable employment are International Labour Organization modeled estimates, which fill gaps between national labor-force surveys. For countries with few recent surveys, such as Djibouti, Libya and Somalia, treat single-year values as approximate. Africa here means the World Bank's Sub-Saharan Africa region plus the six African members of its Middle East and North Africa region: Algeria, Djibouti, Egypt, Libya, Morocco and Tunisia. Of these 54 economies, 51 have a 2025 estimate; Seychelles, South Sudan and Sudan do not. Values are rounded half up to one decimal.</p>
+        <p><b>Definitions.</b> <i>Youth unemployment</i>: people aged 15 to 24 without work who are available for and seeking work, as a share of the labor force of that age. <i>Vulnerable employment</i>: own-account workers plus contributing family workers, as a share of total employment, all ages (World Bank indicator SL.EMP.VULN.ZS, from ILO modeled estimates). <i>Population under 15</i>: people aged 0 to 14 as a share of the total population.</p>
         <p><b>Updates.</b> The data are checked monthly. When the World Bank revises its estimates, the changes are reviewed before publication, and the figures in this text update with them. World Bank figures last updated <span class="ay-wb-updated">November 11, 2026</span>.</p>
         <p><b>What is missing.</b> The original chart's companion graphic used Eurostat data on young adults living with their parents. No comparable, annually updated series exists across African countries, so it is not reproduced here.</p>
         <p><b>Download.</b> <a href="data/africa-youth/trend_all.csv">Youth unemployment, 1991 onward</a> · <a href="data/africa-youth/countries_latest.csv">Latest country indicators</a> · <a href="data/africa-youth/under15.csv">Population under 15</a> · <a href="data/africa-youth/protests.csv">Protest log</a>. World Bank data are published under a Creative Commons Attribution 4.0 license.</p>
