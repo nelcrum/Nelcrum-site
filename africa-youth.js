@@ -5,10 +5,11 @@
  */
 (function () {
   var BASE = 'data/africa-youth/';
+  // NELCRUM editorial palette: brand green leads, amber and rust accent, slate and sage support.
   var C = {
-    ink: '#17140F', text: '#3A362F', muted: '#8A857B', grid: '#ECE8DF', ref: '#9A9282',
-    green: '#14432F', amber: '#C98A2B', wsj: '#B9B3A6',
-    lines: ['#14432F', '#C98A2B', '#B05733', '#2B4C7E', '#6E8B77', '#6E4A7E']
+    ink: '#17140F', text: '#3A362F', muted: '#76716A', grid: '#E0DDD4', ref: '#17140F',
+    green: '#14432F', amber: '#C98A2B', rust: '#B05733', rustText: '#8C3F22', wsj: '#A8A296',
+    lines: ['#14432F', '#C98A2B', '#B05733', '#294056', '#5E8A6E', '#7A4E6E']
   };
   var TREND_AFRICA = ['ZAF', 'TUN', 'MAR', 'EGY', 'KEN', 'NGA'];
   var TREND_REF = ['FRA', 'USA'];
@@ -155,11 +156,11 @@
     var x = lin(x0, x1, m.l, W - m.r), y = lin(0, ymax, H - m.b, m.t);
     for (var v = 0; v <= ymax; v += 10) {
       el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? C.ref : C.grid }, svg);
-      el('text', { x: m.l, y: y(v) - 4, 'font-size': 11, fill: C.muted }, svg, v === ymax ? v + '%' : String(v));
+      el('text', { x: m.l, y: y(v) - 4, 'font-size': 12.5, fill: C.muted }, svg, v === ymax ? v + '%' : String(v));
     }
     var step = W < 520 ? 10 : 5;
     for (var yr = Math.ceil(x0 / step) * step; yr <= x1; yr += step) {
-      el('text', { x: x(yr), y: H - 6, 'font-size': 11, fill: C.muted, 'text-anchor': 'middle' }, svg, String(yr));
+      el('text', { x: x(yr), y: H - 6, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(yr));
     }
     series.slice().sort(function (a, b) { return (b.ref ? 1 : 0) - (a.ref ? 1 : 0); }).forEach(function (s) {
       var d = s.pts.map(function (p, i) { return (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ',' + y(p[1]).toFixed(1); }).join('');
@@ -169,10 +170,10 @@
     var labs = series.map(function (s) { var p = s.pts[s.pts.length - 1]; return { s: s, y: y(p[1]), x: x(p[0]) }; })
       .sort(function (a, b) { return a.y - b.y; });
     for (var it = 0; it < 60; it++) for (var i = 1; i < labs.length; i++) {
-      var gap = labs[i].y - labs[i - 1].y; if (gap < 13) { var sh = (13 - gap) / 2; labs[i].y += sh; labs[i - 1].y -= sh; }
+      var gap = labs[i].y - labs[i - 1].y; if (gap < 15) { var sh = (15 - gap) / 2; labs[i].y += sh; labs[i - 1].y -= sh; }
     }
     labs.forEach(function (l) {
-      el('text', { x: W - m.r + 6, y: l.y, dy: '0.32em', 'font-size': 12, 'font-weight': l.s.ref ? 400 : 700, fill: l.s.ref ? C.muted : l.s.color }, svg, l.s.name);
+      el('text', { x: W - m.r + 6, y: l.y, dy: '0.32em', 'font-size': 13, 'font-weight': l.s.ref ? 400 : 700, fill: l.s.ref ? C.muted : l.s.color }, svg, l.s.name);
     });
     var rule = el('line', { y1: m.t, y2: H - m.b, stroke: C.ref, opacity: 0 }, svg);
     var t = tip(box);
@@ -196,7 +197,7 @@
     }).filter(function (r) { return r.v != null && (r.ref || state.region === 'all' || r.group === state.region); })
       .sort(function (a, b) { return b.v - a.v; });
     var fr = rows.filter(function (r) { return r.iso3 === 'FRA'; })[0];
-    var W = box.clientWidth, rh = 17, m = { t: 20, r: 36, b: 4 };
+    var W = box.clientWidth, rh = 19, m = { t: 20, r: 38, b: 4 };
     var H = m.t + rows.length * rh + m.b;
     box.style.minHeight = '';
     var svg = svgFor(box, W, H, 'Bar chart ranking African countries and the five originally charted countries by youth unemployment rate');
@@ -206,13 +207,13 @@
     var plotW = W - m.r - m.l, tickStep = plotW < 180 ? 40 : plotW < 360 ? 20 : 10;
     for (var v = 0; v <= xmax; v += tickStep) {
       el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: v === 0 ? C.ref : C.grid }, svg);
-      el('text', { x: x(v), y: m.t - 8, 'font-size': 11, fill: C.muted, 'text-anchor': 'middle' }, svg, v + '%');
+      el('text', { x: x(v), y: m.t - 8, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(v));
     }
     rows.forEach(function (r, i) {
       var yy = m.t + i * rh;
       el('rect', { x: m.l, y: yy + 3, height: rh - 6, width: Math.max(1, x(r.v) - m.l), fill: r.ref ? C.wsj : C.green }, svg);
-      el('text', { x: m.l - 6, y: yy + rh / 2, dy: '0.32em', 'text-anchor': 'end', 'font-size': 12, 'font-weight': r.ref ? 700 : 600, fill: r.ref ? C.muted : C.text }, svg, r.name);
-      el('text', { x: x(r.v) + 4, y: yy + rh / 2, dy: '0.32em', 'font-size': 11, 'font-weight': 700, fill: C.ink }, svg, f1(r.v));
+      el('text', { x: m.l - 6, y: yy + rh / 2, dy: '0.32em', 'text-anchor': 'end', 'font-size': 13, 'font-weight': r.ref ? 700 : 600, fill: r.ref ? C.muted : C.text }, svg, r.name);
+      el('text', { x: x(r.v) + 4, y: yy + rh / 2, dy: '0.32em', 'font-size': 12.5, 'font-weight': 700, fill: C.ink }, svg, f1(r.v));
     });
     if (fr) el('line', { x1: x(fr.v), x2: x(fr.v), y1: m.t - 4, y2: H - m.b, stroke: C.ink, 'stroke-dasharray': '3 3' }, svg);
     var t = tip(box);
@@ -243,24 +244,24 @@
     var x = lin(0, xmax, m.l, W - m.r), y = lin(0, 100, H - m.b, m.t);
     for (var v = 0; v <= 100; v += 20) {
       el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? C.ref : C.grid }, svg);
-      el('text', { x: m.l - 6, y: y(v), dy: '0.32em', 'text-anchor': 'end', 'font-size': 11, fill: C.muted }, svg, v + '%');
+      el('text', { x: m.l - 6, y: y(v), dy: '0.32em', 'text-anchor': 'end', 'font-size': 12.5, fill: C.muted }, svg, v + '%');
     }
     var xs = W < 520 ? 20 : 10;
     for (var u = 0; u <= xmax; u += xs) {
       if (u) el('line', { x1: x(u), x2: x(u), y1: m.t, y2: H - m.b, stroke: C.grid }, svg);
-      el('text', { x: x(u), y: H - 6, 'text-anchor': 'middle', 'font-size': 11, fill: C.muted }, svg, u + '%');
+      el('text', { x: x(u), y: H - 6, 'text-anchor': 'middle', 'font-size': 12.5, fill: C.muted }, svg, u + '%');
     }
     var order = { africa: 0, ref: 1, protest: 2 };
     pts.slice().sort(function (a, b) { return order[a.kind] - order[b.kind]; }).forEach(function (p) {
       el('circle', { cx: x(p.x), cy: y(p.y), r: p.kind === 'protest' ? 6 : 4.5,
-        fill: p.kind === 'ref' ? C.wsj : p.kind === 'protest' ? C.amber : C.green,
+        fill: p.kind === 'ref' ? C.wsj : p.kind === 'protest' ? C.rust : C.green,
         'fill-opacity': p.kind === 'africa' ? 0.55 : 1, stroke: '#fff', 'stroke-width': 1 }, svg);
     });
-    var left = { TZA: 1, NGA: 1, TGO: 1, DEU: 1, GBR: 1, CHN: 1 }, below = { NGA: 1 }, above = { CMR: 1, ZAF: 1 };
+    var left = { NGA: 1, TGO: 1, DEU: 1, GBR: 1, CHN: 1 }, below = { NGA: 1, TZA: 2 }, above = { CMR: 1, ZAF: 1 };
     pts.filter(function (p) { return p.kind !== 'africa' || p.iso3 === 'ZAF'; }).forEach(function (p) {
-      el('text', { x: x(p.x) + (left[p.iso3] ? -9 : 9), y: y(p.y) + (below[p.iso3] ? 9 : above[p.iso3] ? -7 : 0), dy: '0.32em',
-        'text-anchor': left[p.iso3] ? 'end' : 'start', 'font-size': 12, 'font-weight': p.kind === 'ref' ? 400 : 700,
-        fill: p.kind === 'protest' ? '#8A5A12' : p.kind === 'ref' ? C.muted : C.text }, svg, p.name);
+      el('text', { x: x(p.x) + (left[p.iso3] ? -9 : 9), y: y(p.y) + (below[p.iso3] ? 9 * below[p.iso3] : above[p.iso3] ? -7 : 0), dy: '0.32em',
+        'text-anchor': left[p.iso3] ? 'end' : 'start', 'font-size': 13, 'font-weight': p.kind === 'ref' ? 400 : 700,
+        fill: p.kind === 'protest' ? C.rustText : p.kind === 'ref' ? C.muted : C.text }, svg, p.name);
     });
     var t = tip(box);
     var hit = el('rect', { x: m.l, y: m.t, width: Math.max(0, W - m.l - m.r), height: H - m.t - m.b, fill: 'transparent' }, svg);
@@ -273,22 +274,26 @@
     hit.addEventListener('pointerleave', function () { t.hidden = true; });
   }
 
-  // ---------- chart 4: under-15 bars, in the site's existing chart style ----------
+  // ---------- chart 4: under-15 bars ----------
   function drawAge() {
     var box = $('ay-age'); if (!box) return;
     var rows = D.age.map(function (r) { return { name: r.place, group: r.group, v: num(r.under15_share) }; })
       .filter(function (r) { return r.v != null; }).sort(function (a, b) { return b.v - a.v; });
-    box.textContent = '';
-    rows.forEach(function (r) {
-      var row = document.createElement('div'); row.className = 'ec-row'; row.style.gridTemplateColumns = '150px 1fr 54px';
-      var lab = document.createElement('span'); lab.className = 'ec-lab'; lab.textContent = r.name;
-      var plot = document.createElement('div'); plot.className = 'ec-plot';
-      var grid = document.createElement('span'); grid.className = 'ec-grid';
-      var fill = document.createElement('div'); fill.className = 'ec-fill';
-      fill.style.width = (r.v / 50 * 100) + '%'; fill.style.background = r.group === 'Africa' ? C.green : C.wsj;
-      plot.appendChild(grid); plot.appendChild(fill);
-      var val = document.createElement('span'); val.className = 'ec-val'; val.textContent = f1(r.v) + '%';
-      row.appendChild(lab); row.appendChild(plot); row.appendChild(val); box.appendChild(row);
+    var W = box.clientWidth, rh = 26, m = { t: 20, r: 44, b: 4 };
+    var H = m.t + rows.length * rh + m.b;
+    box.style.minHeight = '';
+    var svg = svgFor(box, W, H, 'Bar chart of the share of population under 15, Sub-Saharan Africa compared with the world and the originally charted countries');
+    m.l = textW(svg, rows.map(function (r) { return r.name; }), 13, 700) + 10;
+    var x = lin(0, 50, m.l, W - m.r);
+    for (var v = 0; v <= 50; v += 10) {
+      el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: v === 0 ? C.ref : C.grid }, svg);
+      el('text', { x: x(v), y: m.t - 8, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(v));
+    }
+    rows.forEach(function (r, i) {
+      var yy = m.t + i * rh, af = r.group === 'Africa';
+      el('rect', { x: m.l, y: yy + 5, height: rh - 10, width: Math.max(1, x(r.v) - m.l), fill: af ? C.green : C.wsj }, svg);
+      el('text', { x: m.l - 6, y: yy + rh / 2, dy: '0.32em', 'text-anchor': 'end', 'font-size': 13, 'font-weight': af ? 700 : 500, fill: af ? C.ink : C.text }, svg, r.name);
+      el('text', { x: x(r.v) + 5, y: yy + rh / 2, dy: '0.32em', 'font-size': 13, 'font-weight': 700, fill: C.ink }, svg, f1(r.v));
     });
   }
 

@@ -28,7 +28,7 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
 <style>
   html { scroll-behavior: smooth; }
   body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -39,56 +39,70 @@
     [data-navrow]{ flex-wrap: wrap; gap: 14px 16px !important; }
     [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
   }
-  /* Economist / MGI style charts */
-  @keyframes ecgrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  .ec { background: #fff; border: 1px solid #DDDBD2; border-radius: 2px; padding: 24px 26px 20px; margin: 4px 0 30px; }
-  .ec-tab { display: block; width: 34px; height: 5px; background: #C98A2B; margin-bottom: 15px; }
-  .ec-kick { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #8A857B; margin-bottom: 4px; }
-  .ec-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.25; letter-spacing: -.01em; color: #17140F; margin: 0 0 18px; }
-  .ec-row { display: grid; grid-template-columns: 106px 1fr 50px; align-items: center; height: 30px; transition: background .15s ease; }
-  .ec-row:hover { background: #F7F5F0; }
-  .ec-lab { font-size: 12.5px; font-weight: 600; color: #3A362F; white-space: nowrap; }
-  .ec-plot { position: relative; height: 15px; }
-  .ec-grid { position: absolute; inset: -8px 0; background-image: repeating-linear-gradient(to right, #ECE8DF 0, #ECE8DF 1px, transparent 1px, transparent 25%); }
-  .ec-fill { position: relative; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
-  .ec-val { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; color: #17140F; font-variant-numeric: tabular-nums; text-align: right; }
-  .ec-src { font-size: 11.5px; line-height: 1.5; color: #8A857B; margin: 18px 0 0; padding-top: 12px; border-top: 1px solid #ECE8DF; }
-  .ec-src b { color: #3A362F; font-weight: 700; }
-  /* diverging (zero-baseline) */
-  .ec-dplot { position: relative; height: 15px; }
-  .ec-zero { position: absolute; top: -8px; bottom: -8px; width: 1px; background: #9A9282; }
-  .ec-pos { position: absolute; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
-  .ec-neg { position: absolute; height: 100%; transform-origin: right; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
-  /* stacked */
-  .ec-stack { display: flex; height: 20px; overflow: hidden; border: 1px solid #DDD8CC; }
-  .ec-stack > i { display: block; height: 100%; transform-origin: left; animation: ecgrow .95s cubic-bezier(.2,.7,.2,1) both; }
-  @media (max-width: 520px){ .ec-row, .ec-drow { grid-template-columns: 86px 1fr 46px; } }
-  /* Africa youth data piece */
-  .ay-p { font-size: 18px; line-height: 1.7; color: #4A443B; margin: 0 0 22px; }
-  .ay-p b { color: #17140F; font-variant-numeric: tabular-nums; }
-  .ay-small { font-size: 15px; line-height: 1.65; }
-  .ay-p a { color: #14432F; }
-  .ay-h2 { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(24px,3vw,30px); line-height: 1.15; letter-spacing: -.01em; color: #17140F; margin: 44px 0 16px; }
+
+  /* ===== NELCRUM editorial style =====
+     Serif text (Newsreader), condensed sans for charts (Archivo Narrow),
+     green brand tab and rule over every figure, source line and wordmark under it. */
+  .nx-col { max-width: 700px; margin: 0 auto; padding: 0 24px; }
+  .nx-head { background: #FFFFFF; border-bottom: 1px solid #DDDBD2; }
+  .nx-head .nx-col { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(28px,4vw,40px); }
+  .nx-rubric { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 18px; display: flex; gap: 10px; align-items: center; }
+  .nx-rubric a { color: #14432F; text-decoration: none; }
+  .nx-rubric span { color: #C98A2B; font-weight: 400; }
+  .nx-h1 { font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: clamp(36px,5.2vw,56px); line-height: 1.06; letter-spacing: -.012em; color: #17140F; margin: 0 0 18px; }
+  .nx-stand { font-family: 'Newsreader', Georgia, serif; font-size: clamp(19px,2vw,23px); line-height: 1.42; color: #4A443B; margin: 0 0 26px; }
+  .nx-byline { font-family: 'Archivo', sans-serif; font-size: 13px; color: #57534A; display: flex; flex-wrap: wrap; gap: 6px 18px; padding-top: 14px; border-top: 1px solid #DDDBD2; }
+  .nx-byline b { color: #17140F; font-weight: 700; }
+  .nx-article { background: #FFFFFF; padding: clamp(32px,5vw,56px) 0 clamp(48px,6vw,80px); border-bottom: 1px solid #DDDBD2; }
+  .nx-p { font-family: 'Newsreader', Georgia, serif; font-size: 20px; line-height: 1.62; color: #23201B; margin: 0 0 22px; }
+  .nx-p b { font-weight: 600; color: #17140F; font-variant-numeric: lining-nums tabular-nums; }
+  .nx-lead { font-family: 'Archivo', sans-serif; font-size: .78em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #17140F; }
+  .nx-h2 { font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: clamp(24px,2.8vw,28px); line-height: 1.2; color: #17140F; margin: 44px 0 14px; }
+  .nx-h3 { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin: 0 0 14px; }
+
+  .nx-fig { position: relative; margin: 34px 0 40px; padding-top: 16px; border-top: 1px solid #14432F; }
+  .nx-fig::before { content: ''; position: absolute; top: -1px; left: 0; width: 44px; height: 7px; background: #14432F; }
+  .nx-fig figcaption { margin: 4px 0 12px; }
+  .nx-fig-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px; line-height: 1.25; color: #17140F; }
+  .nx-fig-sub { font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 15px; line-height: 1.35; color: #57534A; margin-top: 2px; }
+  .nx-fig-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-top: 12px; padding-top: 8px; border-top: 1px solid #E6E3DA; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 12.5px; line-height: 1.4; color: #8A857B; }
+  .nx-mark { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: .2em; color: #14432F; white-space: nowrap; }
+  .nx-wide { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 0; padding-right: 0; }
+  @media (max-width: 1048px){ .nx-wide { margin-left: 24px; margin-right: 24px; } }
+
+  .nx-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 14px; color: #57534A; }
+  .nx-ctl label { margin-right: 4px; }
+  .nx-ctl select { font: inherit; color: #17140F; background: #fff; border: 1px solid #B9B3A6; border-radius: 0; padding: 5px 8px; }
+  .ay-reg { font: inherit; font-weight: 600; color: #14432F; background: #fff; border: 1px solid #14432F; border-radius: 0; padding: 5px 12px; cursor: pointer; }
+  .ay-reg[aria-pressed="true"] { background: #14432F; color: #fff; }
+  .nx-key { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 13.5px; color: #3A362F; margin: 0 0 8px; }
+  .nx-key span { display: inline-flex; align-items: center; gap: 6px; }
+  .nx-key i { display: inline-block; width: 12px; height: 12px; }
+  .nx-key i.nx-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .nx-key i.nx-key-dash { width: 14px; height: 0; border-top: 1.5px dashed #17140F; }
+
   .ay-chart { position: relative; width: 100%; }
   .ay-chart svg { display: block; overflow: visible; }
-  .ay-chart text { font-family: 'Archivo', sans-serif; }
-  .ay-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -6px 0 14px; font-size: 12.5px; color: #8A857B; }
-  .ay-ctl select { font: inherit; font-size: 13px; color: #17140F; background: #fff; border: 1px solid #DDDBD2; border-radius: 2px; padding: 6px 8px; }
-  .ay-reg { font: inherit; font-size: 12.5px; font-weight: 600; color: #57534A; background: #fff; border: 1px solid #DDDBD2; border-radius: 2px; padding: 6px 12px; cursor: pointer; }
-  .ay-reg[aria-pressed="true"] { background: #17140F; color: #F5F4F0; border-color: #17140F; }
-  .ay-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: #57534A; margin: 0 0 10px; }
-  .ay-key span { display: inline-flex; align-items: center; gap: 6px; }
-  .ay-key i { display: inline-block; width: 10px; height: 10px; }
-  .ay-tip { position: absolute; pointer-events: none; background: #17140F; color: #F5F4F0; border-radius: 2px; padding: 8px 10px; font-size: 12px; line-height: 1.45; min-width: 150px; z-index: 5; }
-  .ay-tip .h { font-weight: 700; margin-bottom: 2px; }
+  .ay-chart text { font-family: 'Archivo Narrow', 'Archivo', sans-serif; }
+  .ay-tip { position: absolute; pointer-events: none; background: #fff; color: #17140F; border: 1px solid #17140F; border-top: 4px solid #14432F; padding: 7px 10px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 13.5px; line-height: 1.4; min-width: 160px; z-index: 5; box-shadow: 0 2px 8px rgba(23,20,15,.12); }
+  .ay-tip .h { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 3px; }
   .ay-tip .r { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; }
-  .ay-tip .r span:first-child { color: rgba(245,244,240,.65); }
-  .ay-tablewrap { overflow-x: auto; margin: 0 0 4px; width: min(1040px, calc(100vw - 48px)); position: relative; left: 50%; transform: translateX(-50%); }
-  .ay-table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 13.5px; background: #fff; border: 1px solid #DDDBD2; }
-  .ay-table th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8A857B; font-weight: 700; padding: 12px 12px; border-bottom: 1px solid #DDDBD2; vertical-align: bottom; }
-  .ay-table td { padding: 12px; border-bottom: 1px solid #ECE8DF; vertical-align: top; line-height: 1.5; color: #3A362F; }
-  .ay-table td:first-child { font-weight: 700; color: #17140F; white-space: nowrap; }
-  .ay-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ay-tip .r span:first-child { color: #57534A; }
+
+  .nx-tablewrap { overflow-x: auto; }
+  .nx-table { width: 100%; min-width: 760px; border-collapse: collapse; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 14.5px; }
+  .nx-table th { text-align: left; font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: #57534A; padding: 8px 12px 8px 0; border-bottom: 1.5px solid #17140F; vertical-align: bottom; }
+  .nx-table td { padding: 11px 12px 11px 0; border-bottom: 1px solid #E6E3DA; vertical-align: top; line-height: 1.4; color: #2B2620; }
+  .nx-table td:first-child { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14px; color: #14432F; white-space: nowrap; }
+  .nx-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; color: #17140F; }
+
+  .nx-methods { margin-top: 48px; padding-top: 18px; border-top: 1.5px solid #17140F; }
+  .nx-methods p { font-family: 'Newsreader', Georgia, serif; font-size: 16.5px; line-height: 1.6; color: #3A362F; margin: 0 0 14px; }
+  .nx-methods b { font-family: 'Archivo', sans-serif; font-size: 13px; color: #17140F; }
+  .nx-methods a { color: #14432F; }
+  .nx-disclaim { font-style: italic; color: #8A857B !important; }
+  .nx-more { margin-top: 26px; padding-top: 18px; border-top: 1px solid #DDDBD2; }
+  .nx-more a { font-family: 'Archivo', sans-serif; text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px; }
 </style>
 </helmet>
 
@@ -110,95 +124,107 @@
     </div>
   </header>
 
-    <!-- HEADER -->
-  <section style="background: #17140F; color: #F5F4F0; position: relative; overflow: hidden;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px,7vw,104px) 32px; position: relative;">
-      <div style="font-family: 'Archivo', sans-serif; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: #C98A2B; margin-bottom: 24px;"><a href="insights.html" style="color: #C98A2B; text-decoration: none;">Insights</a> · Data</div>
-      <h1 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: clamp(36px,5vw,64px); line-height: 1.04; letter-spacing: -.02em; margin: 0; max-width: 20ch;">The continent the chart left out</h1>
-      <p style="font-size: clamp(16px,1.5vw,19px); line-height: 1.6; color: rgba(245,244,240,.74); max-width: 60ch; margin: 24px 0 0;">A widely shared chart on youth unemployment and Gen Z protest compared France, China, the U.K., the U.S. and Germany. Africa, the youngest continent and home to several of the protests, was not on it. Here is what the same data shows when it is.</p>
-      <p style="font-size: 14px; line-height: 1.6; color: rgba(245,244,240,.6); margin: 28px 0 0;">By Dontá Council, PhD · November 2026 · Data refreshed monthly; last update <span class="ay-refreshed">November 19, 2026</span></p>
+    <!-- ARTICLE HEADER -->
+  <header class="nx-head">
+    <div class="nx-col">
+      <div class="nx-rubric"><a href="insights.html">Insights</a><span>|</span>Africa's youth</div>
+      <h1 class="nx-h1">The continent the chart left out</h1>
+      <p class="nx-stand">A widely shared chart on youth unemployment and Gen Z protest compared France, China, the U.K., the U.S. and Germany. Africa, the youngest continent and home to several of the protests, was missing. Put it back and the story changes.</p>
+      <div class="nx-byline"><span>By <b>Dontá Council, PhD</b></span><span>November 2026</span><span>Data refreshed monthly, last on <span class="ay-refreshed">November 19, 2026</span></span></div>
     </div>
-  </section>
+  </header>
 
   <!-- ARTICLE -->
-  <article id="ay" style="background: #FCFCFA; border-bottom: 1px solid #DDDBD2;">
-    <div style="max-width: 760px; margin: 0 auto; padding: clamp(56px,7vw,96px) 32px;">
+  <article id="ay" class="nx-article">
+    <div class="nx-col">
 
-      <p class="ay-p">The chart compared five economies. France had the highest youth unemployment of the five, at <b><span data-k="france">18.9</span>%</b>. Among the <span data-k="african_countries_with_estimate">51</span> African countries with an estimate, <b><span data-k="african_countries_above_france">16</span></b> have a higher rate than France. South Africa's is <b><span data-k="south_africa">59.9</span>%</b>.</p>
+      <p class="nx-p"><span class="nx-lead">Of the five economies</span> in the chart, France had the highest youth unemployment rate, at <b><span data-k="france">18.9</span>%</b>. Among the <span data-k="african_countries_with_estimate">51</span> African countries with an estimate, <b><span data-k="african_countries_above_france">16</span></b> have a higher rate than France. South Africa's is <b><span data-k="south_africa">59.9</span>%</b>.</p>
 
-      <div class="ec">
-        <span class="ec-tab"></span>
-        <div class="ec-kick">The evidence · three decades of youth unemployment</div>
-        <div class="ec-title">Youth unemployment rate, ages 15 to 24 (% of labor force)</div>
-        <div class="ay-ctl">
+      <figure class="nx-fig" id="fig-trend">
+        <figcaption>
+          <div class="nx-fig-title">Left out</div>
+          <div class="nx-fig-sub">Youth unemployment rate, ages 15 to 24, % of labor force</div>
+        </figcaption>
+        <div class="nx-ctl">
           <label for="ay-pick">Add a country</label>
           <select id="ay-pick" aria-label="Add an African country to the chart"><option value="">None</option></select>
         </div>
-        <div id="ay-trend" class="ay-chart" style="min-height: 380px;"></div>
-        <p class="ec-src">Dashed gray lines are France and the U.S., from the original chart. ILO modeled estimates. <b>Source:</b> World Bank, World Development Indicators (SL.UEM.1524.ZS).</p>
-      </div>
+        <div id="ay-trend" class="ay-chart" style="min-height: 360px;"></div>
+        <div class="nx-fig-foot"><span>Dashed: France and the U.S., from the original chart. ILO modeled estimates. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+      </figure>
 
-      <h2 class="ay-h2">Every African country with an estimate</h2>
-      <p class="ay-p">Ranked against the five countries in the original chart. The dashed line marks France.</p>
+      <h2 class="nx-h2">The whole continent</h2>
+      <p class="nx-p">Ranking every African country with an estimate against the five in the original chart shows how much the comparison was missing. The highest rates cluster in Southern and North Africa. Many of the lowest are in West Africa, for reasons the next chart explains.</p>
 
-      <div class="ec">
-        <span class="ec-tab"></span>
-        <div class="ec-kick">The evidence · the full continent</div>
-        <div class="ec-title">Youth unemployment rate, <span data-k="year">2025</span> (% of labor force ages 15 to 24)</div>
-        <div class="ay-ctl" role="group" aria-label="Filter by region">
-          <button type="button" class="ay-reg" data-region="all" aria-pressed="true">All of Africa</button>
-          <button type="button" class="ay-reg" data-region="North Africa" aria-pressed="false">North Africa</button>
+      <figure class="nx-fig" id="fig-ranked">
+        <figcaption>
+          <div class="nx-fig-title">A crowded top of the table</div>
+          <div class="nx-fig-sub">Youth unemployment rate, <span data-k="year">2025</span>, % of labor force aged 15 to 24</div>
+        </figcaption>
+        <div class="nx-ctl" role="group" aria-label="Filter by region">
+          <button type="button" class="ay-reg" data-region="all" aria-pressed="true">All Africa</button>
+          <button type="button" class="ay-reg" data-region="Middle East and North Africa" aria-pressed="false">North Africa and Djibouti</button>
           <button type="button" class="ay-reg" data-region="Sub-Saharan Africa" aria-pressed="false">Sub-Saharan Africa</button>
         </div>
-        <div class="ay-key"><span><i style="background:#14432F"></i>African country</span><span><i style="background:#B9B3A6"></i>Country in the original chart</span></div>
+        <div class="nx-key"><span><i style="background:#14432F"></i>African country</span><span><i style="background:#A8A296"></i>In the original chart</span><span><i class="nx-key-dash"></i>France</span></div>
         <div id="ay-ranked" class="ay-chart" style="min-height: 600px;"></div>
-        <p class="ec-src">ILO modeled estimates. Countries without an estimate are not shown. <b>Source:</b> World Bank, World Development Indicators.</p>
-      </div>
+        <div class="nx-fig-foot"><span>ILO modeled estimates; countries without an estimate not shown. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+      </figure>
 
-      <h2 class="ay-h2">Why a low unemployment rate can hide a crisis</h2>
-      <p class="ay-p">Several countries where Gen Z protests toppled or shook governments report youth unemployment below Germany's. That is not a sign of health. The unemployment rate counts only people with no work at all who are looking for it. Where there is no unemployment insurance, few young people can afford to be unemployed, so they take whatever informal work exists.</p>
-      <p class="ay-p">In Madagascar, where youth-led protests ended Andry Rajoelina's presidency in October 2025, youth unemployment is just <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>. But <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of all workers are in vulnerable employment: working for themselves or unpaid in a family business, usually without a contract or social protection.</p>
+      <h2 class="nx-h2">Low unemployment, high precarity</h2>
+      <p class="nx-p">Several countries where Gen Z protests toppled or shook governments report youth unemployment below Germany's. That is not a sign of health. The unemployment rate counts only people with no work at all who are looking for it. Where there is no unemployment insurance, few young people can afford to be idle, so they take whatever informal work exists.</p>
+      <p class="nx-p">Madagascar makes the point. Youth-led protests there ended Andry Rajoelina's presidency in October 2025, yet youth unemployment is just <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>. The telling number is that <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of all workers are in vulnerable employment: working for themselves or unpaid in a family business, usually without a contract or social protection.</p>
 
-      <div class="ec">
-        <span class="ec-tab"></span>
-        <div class="ec-kick">The evidence · unemployment versus precarious work</div>
-        <div class="ec-title">Youth unemployment and vulnerable employment, <span data-k="year">2025</span> (%)</div>
-        <div class="ay-key"><span><i style="background:#C98A2B;border-radius:50%"></i>Gen Z protests, 2024 to 2025</span><span><i style="background:#14432F;border-radius:50%;opacity:.6"></i>Other African country</span><span><i style="background:#B9B3A6;border-radius:50%"></i>Country in the original chart</span></div>
+      <figure class="nx-fig" id="fig-scatter">
+        <figcaption>
+          <div class="nx-fig-title">Working, but not secure</div>
+          <div class="nx-fig-sub">Youth unemployment and vulnerable employment, <span data-k="year">2025</span>, %</div>
+        </figcaption>
+        <div class="nx-key"><span><i class="nx-dot" style="background:#B05733"></i>Gen Z protests, 2024 to 2025</span><span><i class="nx-dot" style="background:#14432F;opacity:.55"></i>Other African country</span><span><i class="nx-dot" style="background:#A8A296"></i>In the original chart</span></div>
         <div id="ay-scatter" class="ay-chart" style="min-height: 420px;"></div>
-        <p class="ec-src">Horizontal: youth unemployment, % of labor force ages 15 to 24. Vertical: vulnerable employment (own-account and contributing family workers), % of all employment. ILO modeled estimates. <b>Source:</b> World Bank, World Development Indicators (SL.UEM.1524.ZS, SL.EMP.VULN.ZS).</p>
-      </div>
+        <div class="nx-fig-foot"><span>Horizontal: youth unemployment, % of labor force aged 15 to 24. Vertical: own-account and contributing family workers, % of all employment. ILO modeled estimates. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+      </figure>
 
-      <h2 class="ay-h2">The youngest region on earth</h2>
-      <p class="ay-p">In Sub-Saharan Africa, <b><span data-k="ssa_under15">40.4</span>%</b> of the population is under 15. In the European Union it is <b><span data-k="eu_under15">14.2</span>%</b>. These are the young people who will enter the labor market over the next decade, and the main reason youth labor conditions on the continent matter well beyond it.</p>
+      <h2 class="nx-h2">The youngest region on earth</h2>
+      <p class="nx-p">In Sub-Saharan Africa, <b><span data-k="ssa_under15">40.4</span>%</b> of the population is under 15. In the European Union the figure is <b><span data-k="eu_under15">14.2</span>%</b>. These are the people who will enter the labor market over the next decade, which is why youth labor conditions on the continent matter well beyond it.</p>
 
-      <div class="ec">
-        <span class="ec-tab"></span>
-        <div class="ec-kick">The evidence · the pipeline of young workers</div>
-        <div class="ec-title">Share of population under 15, <span data-k="year">2025</span> (%)</div>
-        <div id="ay-age"></div>
-        <p class="ec-src"><b>Source:</b> World Bank, World Development Indicators (SP.POP.0014.TO.ZS), based on UN World Population Prospects.</p>
-      </div>
+      <figure class="nx-fig" id="fig-age">
+        <figcaption>
+          <div class="nx-fig-title">The next cohort</div>
+          <div class="nx-fig-sub">Share of population under 15, <span data-k="year">2025</span>, %</div>
+        </figcaption>
+        <div id="ay-age" class="ay-chart" style="min-height: 250px;"></div>
+        <div class="nx-fig-foot"><span>Source: World Bank, based on UN World Population Prospects</span><span class="nx-mark">NELCRUM</span></div>
+      </figure>
 
-      <h2 class="ay-h2">Africa's Gen Z protests, by the numbers</h2>
-      <p class="ay-p">Seven African countries where youth-led protests drew national or international attention in 2024 and 2025, with their labor market conditions.</p>
-      <div class="ay-tablewrap">
-        <table class="ay-table">
-          <thead><tr><th>Country</th><th>When</th><th>Spark</th><th>What happened</th><th class="num">Youth unemployment</th><th class="num">Vulnerable employment</th></tr></thead>
+      <h2 class="nx-h2">Africa's Gen Z protests, by the numbers</h2>
+      <p class="nx-p">Seven African countries where youth-led protests drew national or international attention in 2024 and 2025, set beside their labor-market conditions.</p>
+    </div>
+
+    <figure class="nx-fig nx-wide" id="fig-table">
+      <figcaption>
+        <div class="nx-fig-title">Streets and statistics</div>
+        <div class="nx-fig-sub">Youth-led protests in Africa, 2024 to 2025, with <span data-k="year">2025</span> labor indicators</div>
+      </figcaption>
+      <div class="nx-tablewrap">
+        <table class="nx-table">
+          <thead><tr><th>Country</th><th>When</th><th>Spark</th><th>What happened</th><th class="num">Youth unemployment, %</th><th class="num">Vulnerable employment, %</th></tr></thead>
           <tbody id="ay-protests"></tbody>
         </table>
       </div>
-      <p class="ec-src" style="border-top: 0;">Protest details compiled from reporting by NPR, AP, Semafor, Africanews, Daily Maverick and the Institute for Security Studies. Labor data: World Bank, World Development Indicators, <span data-k="year">2025</span>.</p>
+      <div class="nx-fig-foot"><span>Sources: NPR; AP; Semafor; Africanews; Daily Maverick; Institute for Security Studies; World Bank</span><span class="nx-mark">NELCRUM</span></div>
+    </figure>
 
-      <h2 class="ay-h2">Methods and data</h2>
-      <p class="ay-p ay-small"><b>Data.</b> All labor and population figures come from the World Bank's World Development Indicators, retrieved through its public API. Youth unemployment and vulnerable employment are International Labour Organization modeled estimates, which fill gaps between national labor force surveys. For countries with few recent surveys, such as Djibouti, Libya and Somalia, treat single-year values as approximate. Africa here means the World Bank's Sub-Saharan Africa region plus Algeria, Djibouti, Egypt, Libya, Morocco and Tunisia.</p>
-      <p class="ay-p ay-small"><b>Updates.</b> The data is checked monthly. When the World Bank revises its estimates, the changes are reviewed before they are published, and the figures in this text update with them. World Bank figures last updated <span class="ay-wb-updated">November 11, 2026</span>.</p>
-      <p class="ay-p ay-small"><b>What is missing.</b> The original chart's companion graphic used Eurostat data on young adults living with their parents. No comparable, annually updated series exists across African countries, so it is not reproduced here.</p>
-      <p class="ay-p ay-small"><b>Download.</b> <a href="data/africa-youth/trend_all.csv">Youth unemployment, 1991 onward</a> · <a href="data/africa-youth/countries_latest.csv">Latest-year country indicators</a> · <a href="data/africa-youth/under15.csv">Population under 15</a> · <a href="data/africa-youth/protests.csv">Protest log</a>. World Bank data is published under a Creative Commons Attribution 4.0 license.</p>
-      <p class="ay-p ay-small" style="color:#8A857B;">The views expressed are the author's own and do not represent those of the Federal Reserve Bank of Atlanta or the Federal Reserve System.</p>
-
-      <div style="border-top: 1px solid #DDDBD2; padding-top: 22px; margin-top: 12px;">
-        <a href="insights.html" style="text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px;">More from Insights →</a>
-      </div>
+    <div class="nx-col">
+      <section class="nx-methods">
+        <h2 class="nx-h3">Methods and data</h2>
+        <p><b>Data.</b> All labor and population figures come from the World Bank's World Development Indicators, retrieved through its public API. Youth unemployment and vulnerable employment are International Labour Organization modeled estimates, which fill gaps between national labor-force surveys. For countries with few recent surveys, such as Djibouti, Libya and Somalia, treat single-year values as approximate. Africa here means the World Bank's Sub-Saharan Africa region plus the six African members of its Middle East and North Africa region: Algeria, Djibouti, Egypt, Libya, Morocco and Tunisia.</p>
+        <p><b>Updates.</b> The data are checked monthly. When the World Bank revises its estimates, the changes are reviewed before publication, and the figures in this text update with them. World Bank figures last updated <span class="ay-wb-updated">November 11, 2026</span>.</p>
+        <p><b>What is missing.</b> The original chart's companion graphic used Eurostat data on young adults living with their parents. No comparable, annually updated series exists across African countries, so it is not reproduced here.</p>
+        <p><b>Download.</b> <a href="data/africa-youth/trend_all.csv">Youth unemployment, 1991 onward</a> · <a href="data/africa-youth/countries_latest.csv">Latest country indicators</a> · <a href="data/africa-youth/under15.csv">Population under 15</a> · <a href="data/africa-youth/protests.csv">Protest log</a>. World Bank data are published under a Creative Commons Attribution 4.0 license.</p>
+        <p class="nx-disclaim">The views expressed are the author's own and do not represent those of the Federal Reserve Bank of Atlanta or the Federal Reserve System.</p>
+      </section>
+      <div class="nx-more"><a href="insights.html">More from Insights →</a></div>
     </div>
   </article>
 

@@ -115,7 +115,7 @@ def main():
     def group(k):
         if k in COMPARISON:
             return "WSJ chart"
-        return "North Africa" if k in NORTH_AFRICA else "Sub-Saharan Africa"
+        return "Middle East and North Africa" if k in NORTH_AFRICA else "Sub-Saharan Africa"
 
     data, updated = {}, {}
     for key, code in INDICATORS.items():
