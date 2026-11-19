@@ -1,0 +1,21 @@
+{
+  "refreshed_at": "2026-11-19T13:29:51Z",
+  "source": "World Bank, World Development Indicators (api.worldbank.org/v2)",
+  "world_bank_last_updated": {
+    "SL.UEM.1524.ZS": "2026-11-11",
+    "SL.EMP.VULN.ZS": "2026-11-11",
+    "SP.POP.0014.TO.ZS": "2026-11-11",
+    "SL.UEM.NEET.ZS": "2026-11-11"
+  },
+  "headline": {
+    "year": 2025,
+    "african_countries_with_estimate": 51,
+    "african_countries_above_france": 16,
+    "france": 18.9,
+    "south_africa": 59.9,
+    "madagascar_youth_unemployment": 5.2,
+    "madagascar_vulnerable_employment": 84.4,
+    "ssa_under15": 40.4,
+    "eu_under15": 14.2
+  }
+}
