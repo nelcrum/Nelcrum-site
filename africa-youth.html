@@ -3,14 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The continent the chart left out · NELCRUM Solutions</title>
+<title>Africa's Youth Unemployment · NELCRUM Solutions</title>
 <meta name="description" content="Youth unemployment, informal work and Gen Z protest across Africa, from World Bank data refreshed monthly.">
 <meta name="author" content="Dontá Council, PhD">
-<meta property="og:title" content="The continent the chart left out">
+<meta property="og:title" content="Africa's Youth Unemployment">
 <meta property="og:description" content="Youth unemployment, informal work and Gen Z protest across Africa, from World Bank data refreshed monthly.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://nelcrum.com/africa-youth.html">
 <link rel="canonical" href="https://nelcrum.com/africa-youth.html">
+<script>window.AY_THEME = {"axisBox": false, "grid": true, "panel": "#EEF2F6", "colors": {"ink": "#0B2545", "text": "#1B2733", "muted": "#5F6B78", "grid": "#FFFFFF", "ref": "#0B2545", "green": "#1D5C96", "wsj": "#A7B4C2", "rust": "#E3812B", "rustText": "#B35F14", "lines": ["#0B2545", "#E3812B", "#3E7CB1", "#C0392B", "#4A9B6E", "#7D5BA6"]}};</script>
 <script>
 (function(){
   var RO = 'ResizeObserver loop';
@@ -29,6 +30,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   html { scroll-behavior: smooth; }
   body { margin: 0; background: #F5F4F0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -40,74 +42,79 @@
     [data-nav]{ width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px !important; }
   }
 
-  /* ===== NELCRUM editorial style =====
-     Serif text (Newsreader), condensed sans for charts (Archivo Narrow),
-     green brand tab and rule over every figure, source line and wordmark under it. */
-  .nx-col { max-width: 700px; margin: 0 auto; padding: 0 24px; }
-  .nx-head { background: #FFFFFF; border-bottom: 1px solid #DDDBD2; }
-  .nx-head .nx-col { padding-top: clamp(40px,6vw,72px); padding-bottom: clamp(28px,4vw,40px); }
-  .nx-rubric { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 18px; display: flex; gap: 10px; align-items: center; }
-  .nx-rubric a { color: #14432F; text-decoration: none; }
-  .nx-rubric span { color: #C98A2B; font-weight: 400; }
-  .nx-h1 { font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: clamp(36px,5.2vw,56px); line-height: 1.06; letter-spacing: -.012em; color: #17140F; margin: 0 0 18px; }
-  .nx-stand { font-family: 'Newsreader', Georgia, serif; font-size: clamp(19px,2vw,23px); line-height: 1.42; color: #4A443B; margin: 0 0 26px; }
-  .nx-byline { font-family: 'Archivo', sans-serif; font-size: 13px; color: #57534A; display: flex; flex-wrap: wrap; gap: 6px 18px; padding-top: 14px; border-top: 1px solid #DDDBD2; }
-  .nx-byline b { color: #17140F; font-weight: 700; }
-  .nx-article { background: #FFFFFF; padding: clamp(32px,5vw,56px) 0 clamp(48px,6vw,80px); border-bottom: 1px solid #DDDBD2; }
-  .nx-p { font-family: 'Newsreader', Georgia, serif; font-size: 20px; line-height: 1.62; color: #23201B; margin: 0 0 22px; }
-  .nx-p b { font-weight: 600; color: #17140F; font-variant-numeric: lining-nums tabular-nums; }
-  .nx-why { margin: 0 0 34px; padding: 18px 0 4px; border-top: 1px solid #DDDBD2; border-bottom: 1px solid #DDDBD2; }
-  .nx-why-label { font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin-bottom: 10px; }
-  .nx-why p { font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.6; color: #3A362F; margin: 0 0 14px; }
-  .nx-why a { color: #14432F; text-decoration-thickness: 1px; text-underline-offset: 2px; }
-  .nx-lead { font-family: 'Archivo', sans-serif; font-size: .78em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #17140F; }
-  .nx-h2 { font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: clamp(24px,2.8vw,28px); line-height: 1.2; color: #17140F; margin: 44px 0 14px; }
-  .nx-h3 { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #14432F; margin: 0 0 14px; }
+  /* ===== Style B: policy brief (think-tank / research-blog conventions) ===== */
+  .nx-col { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .nx-head { background: #0B2545; color: #fff; }
+  .nx-head .nx-col { padding-top: clamp(40px,5vw,64px); padding-bottom: clamp(30px,4vw,44px); }
+  .nx-rubric { display: inline-flex; gap: 8px; align-items: center; font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9FC3E7; margin-bottom: 16px; }
+  .nx-rubric a { color: #9FC3E7; text-decoration: none; }
+  .nx-rubric span { color: #5D7FA3; }
+  .nx-h1 { font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: clamp(34px,4.8vw,48px); line-height: 1.08; letter-spacing: -.01em; color: #fff; margin: 0 0 14px; }
+  .nx-stand { font-family: 'Source Sans 3', sans-serif; font-size: clamp(18px,1.8vw,21px); line-height: 1.45; color: #D5E2EF; margin: 0 0 22px; }
+  .nx-byline { font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: #B9CCE0; display: flex; flex-wrap: wrap; gap: 4px 18px; padding-top: 14px; border-top: 1px solid #2A4A6E; }
+  .nx-byline b { color: #fff; font-weight: 700; }
+  .nx-article { background: #FFFFFF; padding: clamp(28px,4vw,48px) 0 72px; }
+  .nx-key-findings { background: #EEF3F8; border-top: 4px solid #0B2545; padding: 18px 22px 8px; margin: 0 0 32px; }
+  .nx-key-findings h2 { font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #0B2545; margin: 0 0 10px; }
+  .nx-key-findings ol { margin: 0; padding-left: 20px; }
+  .nx-key-findings li { font-family: 'Source Sans 3', sans-serif; font-size: 17px; line-height: 1.5; color: #1B2733; margin: 0 0 10px; }
+  .nx-key-findings b { color: #0B2545; }
+  .nx-p { font-family: 'Source Serif 4', Georgia, serif; font-size: 19px; line-height: 1.65; color: #1B2733; margin: 0 0 20px; }
+  .nx-p b { font-weight: 600; color: #0B2545; font-variant-numeric: lining-nums tabular-nums; }
+  .nx-lead { font-weight: 600; }
+  .nx-article .nx-col { counter-reset: chart; }
+  .nx-h2 { font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: clamp(23px,2.6vw,27px); line-height: 1.2; color: #0B2545; margin: 42px 0 12px; }
+  .nx-h3 { font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #0B2545; margin: 0 0 12px; }
+  .nx-why { margin: 0 0 30px; padding: 0 0 0 16px; border-left: 3px solid #3E7CB1; }
+  .nx-why-label { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #3E7CB1; margin-bottom: 6px; }
+  .nx-why p { font-family: 'Source Sans 3', sans-serif; font-size: 16.5px; line-height: 1.55; color: #33414F; margin: 0 0 10px; }
+  .nx-why a { color: #1D5C96; }
 
-  .nx-fig { position: relative; margin: 34px 0 40px; padding-top: 16px; border-top: 1px solid #14432F; }
-  .nx-fig::before { content: ''; position: absolute; top: -1px; left: 0; width: 44px; height: 7px; background: #14432F; }
-  .nx-fig figcaption { margin: 4px 0 12px; }
-  .nx-fig-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 18px; line-height: 1.25; color: #17140F; }
-  .nx-fig-sub { font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 15px; line-height: 1.35; color: #57534A; margin-top: 2px; }
-  .nx-fig-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-top: 12px; padding-top: 8px; border-top: 1px solid #E6E3DA; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 12.5px; line-height: 1.4; color: #8A857B; }
-  .nx-mark { font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: .2em; color: #14432F; white-space: nowrap; }
-  .nx-wide { max-width: 1000px; margin-left: auto; margin-right: auto; padding-left: 0; padding-right: 0; }
+  .nx-fig { counter-increment: chart; position: relative; margin: 30px 0 36px; padding: 0; }
+  .nx-fig figcaption { margin: 0 0 12px; }
+  .nx-fig-title { font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 19px; line-height: 1.25; color: #0B2545; }
+  .nx-fig-title::before { content: "Chart " counter(chart); display: block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #3E7CB1; margin-bottom: 4px; }
+  .nx-fig-sub { font-family: 'Source Sans 3', sans-serif; font-size: 15px; line-height: 1.35; color: #4A5866; margin-top: 2px; }
+  .nx-fig-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; margin-top: 10px; font-family: 'Source Sans 3', sans-serif; font-size: 13px; line-height: 1.45; color: #5F6B78; }
+  .nx-mark { font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: .14em; color: #0B2545; white-space: nowrap; }
+  .nx-wide { max-width: 1000px; margin-left: auto; margin-right: auto; }
   @media (max-width: 1048px){ .nx-wide { margin-left: 24px; margin-right: 24px; } }
 
-  .nx-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 14px; color: #57534A; }
-  .nx-ctl label { margin-right: 4px; }
-  .nx-ctl select { font: inherit; color: #17140F; background: #fff; border: 1px solid #B9B3A6; border-radius: 0; padding: 5px 8px; }
-  .ay-reg { font: inherit; font-weight: 600; color: #14432F; background: #fff; border: 1px solid #14432F; border-radius: 0; padding: 5px 12px; cursor: pointer; }
-  .ay-reg[aria-pressed="true"] { background: #14432F; color: #fff; }
-  .nx-key { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 13.5px; color: #3A362F; margin: 0 0 8px; }
+  .nx-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 10px; font-family: 'Source Sans 3', sans-serif; font-size: 14.5px; color: #33414F; }
+  .nx-ctl select { font: inherit; color: #0B2545; background: #fff; border: 1px solid #A7B4C2; border-radius: 3px; padding: 5px 8px; }
+  .ay-reg { font: inherit; font-weight: 600; color: #0B2545; background: #fff; border: 1px solid #A7B4C2; border-radius: 3px; padding: 5px 12px; cursor: pointer; }
+  .ay-reg[aria-pressed="true"] { background: #0B2545; border-color: #0B2545; color: #fff; }
+  .nx-key { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: #33414F; margin: 0 0 8px; }
   .nx-key span { display: inline-flex; align-items: center; gap: 6px; }
   .nx-key i { display: inline-block; width: 12px; height: 12px; }
   .nx-key i.nx-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .nx-key i.nx-key-dash { width: 14px; height: 0; border-top: 1.5px dashed #17140F; }
+  .nx-key i.nx-key-dash { width: 14px; height: 0; border-top: 1.5px dashed #0B2545; }
 
   .ay-chart { position: relative; width: 100%; }
   .ay-chart svg { display: block; overflow: visible; }
-  .ay-chart text { font-family: 'Archivo Narrow', 'Archivo', sans-serif; }
-  .ay-tip { position: absolute; pointer-events: none; background: #fff; color: #17140F; border: 1px solid #17140F; border-top: 4px solid #14432F; padding: 7px 10px; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 13.5px; line-height: 1.4; min-width: 160px; z-index: 5; box-shadow: 0 2px 8px rgba(23,20,15,.12); }
-  .ay-tip .h { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+  .ay-chart text { font-family: 'Source Sans 3', sans-serif; }
+  .ay-tip { position: absolute; pointer-events: none; background: #0B2545; color: #fff; border-radius: 3px; padding: 8px 10px; font-family: 'Source Sans 3', sans-serif; font-size: 13.5px; line-height: 1.4; min-width: 160px; z-index: 5; }
+  .ay-tip .h { font-weight: 700; margin-bottom: 3px; }
   .ay-tip .r { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; }
-  .ay-tip .r span:first-child { color: #57534A; }
+  .ay-tip .r span:first-child { color: #B9CCE0; }
 
   .nx-tablewrap { overflow-x: auto; }
-  .nx-table { width: 100%; min-width: 860px; border-collapse: collapse; font-family: 'Archivo Narrow', 'Archivo', sans-serif; font-size: 14.5px; }
-  .nx-table th { text-align: left; font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: #57534A; padding: 8px 12px 8px 0; border-bottom: 1.5px solid #17140F; vertical-align: bottom; }
-  .nx-table td { padding: 11px 12px 11px 0; border-bottom: 1px solid #E6E3DA; vertical-align: top; line-height: 1.4; color: #2B2620; }
-  .nx-table td:first-child { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14px; color: #14432F; white-space: nowrap; }
-  .nx-table td a { color: #14432F; font-weight: 600; white-space: nowrap; }
-  .nx-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; color: #17140F; }
+  .nx-table { width: 100%; min-width: 860px; border-collapse: collapse; font-family: 'Source Sans 3', sans-serif; font-size: 14.5px; }
+  .nx-table th { text-align: left; font-size: 12.5px; font-weight: 700; color: #fff; background: #0B2545; padding: 9px 12px; vertical-align: bottom; }
+  .nx-table td { padding: 10px 12px; vertical-align: top; line-height: 1.4; color: #1B2733; border-bottom: 1px solid #DDE4EC; }
+  .nx-table tbody tr:nth-child(even) td { background: #F4F7FA; }
+  .nx-table td:first-child { font-weight: 700; color: #0B2545; white-space: nowrap; }
+  .nx-table td a { color: #1D5C96; white-space: nowrap; }
+  .nx-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
 
-  .nx-methods { margin-top: 48px; padding-top: 18px; border-top: 1.5px solid #17140F; }
-  .nx-methods p { font-family: 'Newsreader', Georgia, serif; font-size: 16.5px; line-height: 1.6; color: #3A362F; margin: 0 0 14px; }
-  .nx-methods b { font-family: 'Archivo', sans-serif; font-size: 13px; color: #17140F; }
-  .nx-methods a { color: #14432F; }
-  .nx-disclaim { font-style: italic; color: #8A857B !important; }
-  .nx-more { margin-top: 26px; padding-top: 18px; border-top: 1px solid #DDDBD2; }
-  .nx-more a { font-family: 'Archivo', sans-serif; text-decoration: none; color: #14432F; font-weight: 700; font-size: 15px; }
+  .nx-methods { margin-top: 44px; padding: 20px 22px 8px; background: #F4F7FA; }
+  .nx-methods p { font-family: 'Source Sans 3', sans-serif; font-size: 15.5px; line-height: 1.55; color: #33414F; margin: 0 0 12px; }
+  .nx-methods b { color: #0B2545; }
+  .nx-methods a { color: #1D5C96; }
+  .nx-cite { border-left: 3px solid #3E7CB1; padding-left: 12px; }
+  .nx-disclaim { font-style: italic; color: #5F6B78 !important; }
+  .nx-more { margin-top: 24px; padding-top: 14px; border-top: 1px solid #DDE4EC; }
+  .nx-more a { font-family: 'Source Sans 3', sans-serif; text-decoration: none; color: #1D5C96; font-weight: 700; font-size: 15.5px; }
 </style>
 </helmet>
 
@@ -133,8 +140,8 @@
   <header class="nx-head">
     <div class="nx-col">
       <div class="nx-rubric"><a href="insights.html">Insights</a><span>|</span>Africa's youth</div>
-      <h1 class="nx-h1">The continent the chart left out</h1>
-      <p class="nx-stand">A widely shared chart on youth unemployment and Gen Z protest compared France, China, the U.K., the U.S. and Germany. Africa, the youngest continent and home to several of the protests, was not among them. Adding it changes the picture.</p>
+      <h1 class="nx-h1">Africa's Youth Unemployment</h1>
+      <p class="nx-stand">A companion to The Wall Street Journal's charts on why young people are fed up with the economy, extending the same World Bank comparison to the world's youngest continent.</p>
       <div class="nx-byline"><span>By <b>Dontá Council, PhD</b></span><span>November 2026</span><span>Data refreshed monthly, last on <span class="ay-refreshed">November 19, 2026</span></span></div>
     </div>
   </header>
@@ -143,6 +150,7 @@
   <article id="ay" class="nx-article">
     <div class="nx-col">
 
+<div class="nx-key-findings"><h2>Key findings</h2><ol><li><b><span data-k="african_countries_above_france">16</span> of <span data-k="african_countries_with_estimate">51</span></b> African countries with estimates have higher youth unemployment than France (<span data-k="france">18.9</span>%), the highest of the five countries in the Journal's charts.</li><li>Low unemployment rates can mask precarious work. In Madagascar, youth unemployment is <b><span data-k="madagascar_youth_unemployment">5.2</span>%</b>, but <b><span data-k="madagascar_vulnerable_employment">84.4</span>%</b> of workers are in vulnerable employment.</li><li><b><span data-k="ssa_under15">40.4</span>%</b> of Sub-Saharan Africa's population is under 15, against <b><span data-k="eu_under15">14.2</span>%</b> in the European Union.</li></ol></div>
       <div class="nx-why" id="why">
         <div class="nx-why-label">About this analysis</div>
         <p>This week The Wall Street Journal published <a href="https://www.wsj.com/economy/these-charts-show-why-young-people-across-the-world-are-fed-up-with-the-economy-2fd5f804" target="_blank" rel="noopener">a set of charts</a> on why young people around the world are frustrated with the economy, describing a generation that is fed up “in nearly every corner of the world.” The charts compared youth unemployment in France, China, the U.K., the U.S. and Germany, along with the share of young Europeans living with their parents.</p>
@@ -154,7 +162,7 @@
 
       <figure class="nx-fig" id="fig-trend">
         <figcaption>
-          <div class="nx-fig-title">Left out</div>
+          <div class="nx-fig-title">Youth unemployment rates, 1991 to 2025</div>
           <div class="nx-fig-sub">Youth unemployment rate, ages 15 to 24, % of labor force</div>
         </figcaption>
         <div class="nx-ctl">
@@ -162,7 +170,7 @@
           <select id="ay-pick" aria-label="Add an African country to the chart"><option value="">None</option></select>
         </div>
         <div id="ay-trend" class="ay-chart" style="min-height: 360px;"></div>
-        <div class="nx-fig-foot"><span>Dashed: France and the U.S., from the original chart. ILO modeled estimates. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+        <div class="nx-fig-foot"><span>Dashed: France and the U.S., from the original chart. ILO modeled estimates. Source: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
       </figure>
 
       <h2 class="nx-h2">The whole continent</h2>
@@ -170,7 +178,7 @@
 
       <figure class="nx-fig" id="fig-ranked">
         <figcaption>
-          <div class="nx-fig-title">A crowded top of the table</div>
+          <div class="nx-fig-title">Youth unemployment by country</div>
           <div class="nx-fig-sub">Youth unemployment rate, <span data-k="year">2025</span>, % of labor force aged 15 to 24</div>
         </figcaption>
         <div class="nx-ctl" role="group" aria-label="Filter by region">
@@ -178,9 +186,9 @@
           <button type="button" class="ay-reg" data-region="Middle East and North Africa" aria-pressed="false">North Africa and Djibouti</button>
           <button type="button" class="ay-reg" data-region="Sub-Saharan Africa" aria-pressed="false">Sub-Saharan Africa</button>
         </div>
-        <div class="nx-key"><span><i style="background:#14432F"></i>African country</span><span><i style="background:#A8A296"></i>In the original chart</span><span><i class="nx-key-dash"></i>France</span></div>
+        <div class="nx-key"><span><i style="background:#1D5C96"></i>African country</span><span><i style="background:#A7B4C2"></i>In the original chart</span><span><i class="nx-key-dash"></i>France</span></div>
         <div id="ay-ranked" class="ay-chart" style="min-height: 600px;"></div>
-        <div class="nx-fig-foot"><span>ILO modeled estimates; countries without an estimate not shown. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+        <div class="nx-fig-foot"><span>ILO modeled estimates; countries without an estimate not shown. Source: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
       </figure>
 
       <h2 class="nx-h2">Low unemployment, high precarity</h2>
@@ -189,12 +197,12 @@
 
       <figure class="nx-fig" id="fig-scatter">
         <figcaption>
-          <div class="nx-fig-title">Working, but not secure</div>
+          <div class="nx-fig-title">Youth unemployment and vulnerable employment</div>
           <div class="nx-fig-sub">Youth unemployment and vulnerable employment, <span data-k="year">2025</span>, %</div>
         </figcaption>
-        <div class="nx-key"><span><i class="nx-dot" style="background:#B05733"></i>Gen Z protests, 2024 to 2025</span><span><i class="nx-dot" style="background:#14432F;opacity:.55"></i>Other African country</span><span><i class="nx-dot" style="background:#A8A296"></i>In the original chart</span></div>
+        <div class="nx-key"><span><i class="nx-dot" style="background:#E3812B"></i>Gen Z protests, 2024 to 2025</span><span><i class="nx-dot" style="background:#1D5C96;opacity:.55"></i>Other African country</span><span><i class="nx-dot" style="background:#A7B4C2"></i>In the original chart</span></div>
         <div id="ay-scatter" class="ay-chart" style="min-height: 420px;"></div>
-        <div class="nx-fig-foot"><span>Horizontal: youth unemployment, % of labor force aged 15 to 24. Vertical: own-account and contributing family workers, % of all employment. ILO modeled estimates. Source: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+        <div class="nx-fig-foot"><span>Horizontal: youth unemployment, % of labor force aged 15 to 24. Vertical: own-account and contributing family workers, % of all employment. ILO modeled estimates. Source: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
       </figure>
 
       <h2 class="nx-h2">The youngest region on earth</h2>
@@ -202,11 +210,11 @@
 
       <figure class="nx-fig" id="fig-age">
         <figcaption>
-          <div class="nx-fig-title">The next cohort</div>
+          <div class="nx-fig-title">Population under age 15</div>
           <div class="nx-fig-sub">Share of population under 15, <span data-k="year">2025</span>, %</div>
         </figcaption>
         <div id="ay-age" class="ay-chart" style="min-height: 250px;"></div>
-        <div class="nx-fig-foot"><span>Source: World Bank, based on UN World Population Prospects</span><span class="nx-mark">NELCRUM</span></div>
+        <div class="nx-fig-foot"><span>Source: World Bank, World Development Indicators, based on UN World Population Prospects; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
       </figure>
 
       <h2 class="nx-h2">Africa's Gen Z protests, by the numbers</h2>
@@ -215,7 +223,7 @@
 
     <figure class="nx-fig nx-wide" id="fig-table">
       <figcaption>
-        <div class="nx-fig-title">Streets and statistics</div>
+        <div class="nx-fig-title">Youth-led protests in Africa and labor-market conditions</div>
         <div class="nx-fig-sub">Youth-led protests in Africa, 2024 to 2025, with <span data-k="year">2025</span> labor indicators</div>
       </figcaption>
       <div class="nx-tablewrap">
@@ -224,7 +232,7 @@
           <tbody id="ay-protests"></tbody>
         </table>
       </div>
-      <div class="nx-fig-foot"><span>Protest details from the reporting linked in each row; death tolls are as reported and in several cases disputed by governments. Labor data: World Bank</span><span class="nx-mark">NELCRUM</span></div>
+      <div class="nx-fig-foot"><span>Protest details from the reporting linked in each row; death tolls are as reported and in several cases disputed by governments. Labor data: World Bank, World Development Indicators; authors' calculations</span><span class="nx-mark">NELCRUM</span></div>
     </figure>
 
     <div class="nx-col">
@@ -234,7 +242,8 @@
         <p><b>Updates.</b> The data are checked monthly. When the World Bank revises its estimates, the changes are reviewed before publication, and the figures in this text update with them. World Bank figures last updated <span class="ay-wb-updated">November 11, 2026</span>.</p>
         <p><b>What is missing.</b> The original chart's companion graphic used Eurostat data on young adults living with their parents. No comparable, annually updated series exists across African countries, so it is not reproduced here.</p>
         <p><b>Download.</b> <a href="data/africa-youth/trend_all.csv">Youth unemployment, 1991 onward</a> · <a href="data/africa-youth/countries_latest.csv">Latest country indicators</a> · <a href="data/africa-youth/under15.csv">Population under 15</a> · <a href="data/africa-youth/protests.csv">Protest log</a>. World Bank data are published under a Creative Commons Attribution 4.0 license.</p>
-        <p class="nx-disclaim">The views expressed are the author's own and do not represent those of the Federal Reserve Bank of Atlanta or the Federal Reserve System.</p>
+        <p class="nx-cite"><b>Suggested citation.</b> Council, Dontá. 2026. "Africa's Youth Unemployment." NELCRUM Solutions Insights, November 19, 2026. https://nelcrum.com/africa-youth.html.</p>
+        <p class="nx-disclaim">The views expressed are the author's own and do not represent those of Nelcrum Solutions or other affiliate organizations.</p>
       </section>
       <div class="nx-more"><a href="insights.html">More from Insights →</a></div>
     </div>

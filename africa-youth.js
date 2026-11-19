@@ -11,6 +11,13 @@
     green: '#14432F', amber: '#C98A2B', rust: '#B05733', rustText: '#8C3F22', wsj: '#A8A296',
     lines: ['#14432F', '#C98A2B', '#B05733', '#294056', '#5E8A6E', '#7A4E6E']
   };
+  // A page can restyle every chart by defining window.AY_THEME before this script runs:
+  // { colors: {...overrides of C}, axisBox: true|false, panel: '#hex'|null, grid: true|false }
+  var T = window.AY_THEME || {};
+  if (T.colors) for (var ck in T.colors) C[ck] = T.colors[ck];
+  var GRID = T.grid !== false;
+  function gridStroke(isZero) { return isZero ? C.ref : (GRID ? C.grid : 'none'); }
+
   var TREND_AFRICA = ['ZAF', 'TUN', 'MAR', 'EGY', 'KEN', 'NGA'];
   var TREND_REF = ['FRA', 'USA'];
   var state = { pick: '', region: 'all' };
@@ -61,6 +68,9 @@
     if (text != null) e.textContent = text;
     if (parent) parent.appendChild(e);
     return e;
+  }
+  function panel(svg, x0, y0, x1, y1) {
+    if (T.panel) el('rect', { x: x0, y: y0, width: Math.max(0, x1 - x0), height: Math.max(0, y1 - y0), fill: T.panel }, svg);
   }
   function svgFor(box, w, h, label) {
     box.textContent = '';
@@ -149,15 +159,18 @@
     box.style.minHeight = '';
     var svg = svgFor(box, W, H, 'Line chart of youth unemployment since 1991 for ' + series.map(function (s) { return s.name; }).join(', '));
     var endW = textW(svg, series.map(function (s) { return s.name; }), 12, 700);
-    var m = { t: 16, r: endW + 14, b: 24, l: 4 };
+    var m = { t: 16, r: endW + 14, b: 24, l: T.axisBox ? 38 : 4 };
     var all = []; series.forEach(function (s) { all = all.concat(s.pts); });
     var x0 = Math.min.apply(null, all.map(function (p) { return p[0]; })), x1 = Math.max.apply(null, all.map(function (p) { return p[0]; }));
     var ymax = niceMax(Math.max.apply(null, all.map(function (p) { return p[1]; })), 10);
     var x = lin(x0, x1, m.l, W - m.r), y = lin(0, ymax, H - m.b, m.t);
+    panel(svg, m.l, m.t, W - m.r, H - m.b);
     for (var v = 0; v <= ymax; v += 10) {
-      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? C.ref : C.grid }, svg);
-      el('text', { x: m.l, y: y(v) - 4, 'font-size': 12.5, fill: C.muted }, svg, v === ymax ? v + '%' : String(v));
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: gridStroke(v === 0) }, svg);
+      if (T.axisBox) el('text', { x: m.l - 7, y: y(v), dy: '0.32em', 'text-anchor': 'end', 'font-size': 12.5, fill: C.muted }, svg, v + '%');
+      else el('text', { x: m.l, y: y(v) - 4, 'font-size': 12.5, fill: C.muted }, svg, v === ymax ? v + '%' : String(v));
     }
+    if (T.axisBox) el('line', { x1: m.l, x2: m.l, y1: m.t, y2: H - m.b, stroke: C.ink }, svg);
     var step = W < 520 ? 10 : 5;
     for (var yr = Math.ceil(x0 / step) * step; yr <= x1; yr += step) {
       el('text', { x: x(yr), y: H - 6, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(yr));
@@ -204,9 +217,10 @@
     m.l = textW(svg, rows.map(function (r) { return r.name; }), 12, 700) + 10;
     var xmax = niceMax(Math.max.apply(null, rows.map(function (r) { return r.v; })), 10);
     var x = lin(0, xmax, m.l, W - m.r);
+    panel(svg, m.l, m.t - 4, W - m.r, H - m.b);
     var plotW = W - m.r - m.l, tickStep = plotW < 180 ? 40 : plotW < 360 ? 20 : 10;
     for (var v = 0; v <= xmax; v += tickStep) {
-      el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: v === 0 ? C.ref : C.grid }, svg);
+      el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: gridStroke(v === 0) }, svg);
       el('text', { x: x(v), y: m.t - 8, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(v));
     }
     rows.forEach(function (r, i) {
@@ -242,13 +256,15 @@
     var svg = svgFor(box, W, H, 'Scatter plot of youth unemployment against vulnerable employment, highlighting African countries with Gen Z protests');
     var xmax = niceMax(Math.max.apply(null, pts.map(function (p) { return p.x; })), 10);
     var x = lin(0, xmax, m.l, W - m.r), y = lin(0, 100, H - m.b, m.t);
+    panel(svg, m.l, m.t, W - m.r, H - m.b);
     for (var v = 0; v <= 100; v += 20) {
-      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? C.ref : C.grid }, svg);
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: gridStroke(v === 0) }, svg);
       el('text', { x: m.l - 6, y: y(v), dy: '0.32em', 'text-anchor': 'end', 'font-size': 12.5, fill: C.muted }, svg, v + '%');
     }
+    if (T.axisBox) el('line', { x1: m.l, x2: m.l, y1: m.t, y2: H - m.b, stroke: C.ink }, svg);
     var xs = W < 520 ? 20 : 10;
     for (var u = 0; u <= xmax; u += xs) {
-      if (u) el('line', { x1: x(u), x2: x(u), y1: m.t, y2: H - m.b, stroke: C.grid }, svg);
+      if (u) el('line', { x1: x(u), x2: x(u), y1: m.t, y2: H - m.b, stroke: gridStroke(false) }, svg);
       el('text', { x: x(u), y: H - 6, 'text-anchor': 'middle', 'font-size': 12.5, fill: C.muted }, svg, u + '%');
     }
     var order = { africa: 0, ref: 1, protest: 2 };
@@ -285,8 +301,9 @@
     var svg = svgFor(box, W, H, 'Bar chart of the share of population under 15, Sub-Saharan Africa compared with the world and the originally charted countries');
     m.l = textW(svg, rows.map(function (r) { return r.name; }), 13, 700) + 10;
     var x = lin(0, 50, m.l, W - m.r);
+    panel(svg, m.l, m.t - 4, W - m.r, H - m.b);
     for (var v = 0; v <= 50; v += 10) {
-      el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: v === 0 ? C.ref : C.grid }, svg);
+      el('line', { x1: x(v), x2: x(v), y1: m.t - 4, y2: H - m.b, stroke: gridStroke(v === 0) }, svg);
       el('text', { x: x(v), y: m.t - 8, 'font-size': 12.5, fill: C.muted, 'text-anchor': 'middle' }, svg, String(v));
     }
     rows.forEach(function (r, i) {
