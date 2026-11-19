@@ -167,6 +167,34 @@ def main():
     # 4) Headline figures the article text depends on
     fr = U["FRA"][year]
     af = [r for r in snap if r[2] != "WSJ chart"]
+    # Figures for the conclusion: vulnerable employment where youth unemployment is
+    # above France's rate versus below Germany's, and the rank correlation.
+    de = U["DEU"][year]
+    V_ = data["vulnerable_employment"]
+    pairs = [(r[4], V_[r[1]][year]) for r in af if year in V_.get(r[1], {})]
+    hi_ve = [v for u, v in pairs if u > fr]
+    lo_ve = [v for u, v in pairs if u < de]
+
+    def median(xs):
+        xs = sorted(xs); n = len(xs)
+        return None if not n else (xs[n // 2] if n % 2 else (xs[n // 2 - 1] + xs[n // 2]) / 2)
+
+    def ranks(xs):
+        order = sorted(range(len(xs)), key=lambda i: xs[i]); rk = [0.0] * len(xs); i = 0
+        while i < len(order):
+            j = i
+            while j + 1 < len(order) and xs[order[j + 1]] == xs[order[i]]:
+                j += 1
+            for k in range(i, j + 1):
+                rk[order[k]] = (i + j) / 2 + 1
+            i = j + 1
+        return rk
+
+    def spearman(xs, ys):
+        rx, ry = ranks(xs), ranks(ys); n = len(xs); mx = sum(rx) / n; my = sum(ry) / n
+        cov = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+        return cov / (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+
     headline = {
         "year": year,
         "african_countries_with_estimate": len(af),
@@ -177,6 +205,12 @@ def main():
         "madagascar_vulnerable_employment": data["vulnerable_employment"].get("MDG", {}).get(year),
         "ssa_under15": P.get("SSF", {}).get(year),
         "eu_under15": P.get("EUU", {}).get(year),
+        "germany": de,
+        "african_countries_below_germany": len(lo_ve),
+        "ve_median_above_france": r1(median(hi_ve)) if hi_ve else None,
+        "ve_median_below_germany": r1(median(lo_ve)) if lo_ve else None,
+        "ve_min_below_germany": min(lo_ve) if lo_ve else None,
+        "rank_correlation": round(spearman([u for u, v in pairs], [v for u, v in pairs]), 2) if pairs else None,
     }
     old_meta_path = os.path.join(args.out, "meta.json")
     old_head = {}
