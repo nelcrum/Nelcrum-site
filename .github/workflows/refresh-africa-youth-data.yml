@@ -1,0 +1,39 @@
+name: Refresh Africa youth data
+
+# Runs on the 3rd of every month, and on demand from the Actions tab.
+# It never publishes on its own: it opens a pull request with the new data
+# and a summary of what changed, and the site updates only when you merge it.
+on:
+  schedule:
+    - cron: "17 13 3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull latest World Bank data
+        run: python scripts/update_africa_youth.py --out data/africa-youth
+
+      - name: Open a pull request for review
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: data/africa-youth-refresh
+          delete-branch: true
+          commit-message: "Data refresh: Africa youth labor indicators"
+          title: "Data refresh: Africa youth labor indicators"
+          body-path: data/africa-youth/CHANGES.md
+          labels: data-refresh
+          add-paths: |
+            data/africa-youth/*.csv
+            data/africa-youth/meta.json
