@@ -41,6 +41,30 @@ program define check
     else    display as error  "FAIL  `label'"
 end
 
+* getpub: fetch a published data file. nelcrum.com first; if Stata's Java cannot
+* verify that site's certificate (Stata 14 predates Let's Encrypt's root), use the
+* same file from the GitHub repository that publishes the site; else a local copy.
+capture program drop getpub
+program define getpub
+    args fname
+    foreach base in "https://nelcrum.com/data/africa-youth" "https://raw.githubusercontent.com/nelcrum/Nelcrum-site/main/data/africa-youth" {
+        capture copy "`base'/`fname'" "pub_`fname'", replace
+        if !_rc {
+            display as text "      Read `fname' from `base'"
+            exit
+        }
+    }
+    capture confirm file "`fname'"
+    if !_rc {
+        copy "`fname'" "pub_`fname'", replace
+        display as text "      Read `fname' from a local copy in this folder"
+        exit
+    }
+    display as error "Could not download `fname'. Save https://nelcrum.com/data/africa-youth/`fname'"
+    display as error "into this folder from a web browser, then run the do-file again."
+    exit 601
+end
+
 *------------------------------------------------------------------------------
 * 1. Fresh World Bank pull, all years
 *------------------------------------------------------------------------------
@@ -198,7 +222,8 @@ save `y2025'
 *------------------------------------------------------------------------------
 * 3. Published snapshot vs fresh data
 *------------------------------------------------------------------------------
-import delimited "`URL'/countries_latest.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
+getpub countries_latest.csv
+import delimited "pub_countries_latest.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
 destring youth_unemployment vulnerable_employment under15_share, replace
 rename (youth_unemployment vulnerable_employment under15_share) (pub_yu pub_ve pub_u15)
 keep iso3 group pub_yu pub_ve pub_u15
@@ -222,7 +247,8 @@ check `ok' "Published file has all `n_est' African countries with estimates"
 *------------------------------------------------------------------------------
 * 4. Published time series vs fresh data
 *------------------------------------------------------------------------------
-import delimited "`URL'/trend_all.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
+getpub trend_all.csv
+import delimited "pub_trend_all.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
 destring year youth_unemployment, replace
 rename youth_unemployment pub_yu
 keep iso3 year pub_yu
@@ -240,7 +266,8 @@ if `nm' list iso3 year pub_yu yu if d > `TOL' & !missing(d), noobs clean
 *------------------------------------------------------------------------------
 * 5. Population under 15 file
 *------------------------------------------------------------------------------
-import delimited "`URL'/under15.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
+getpub under15.csv
+import delimited "pub_under15.csv", clear varnames(1) encoding("utf-8") stringcols(_all)
 destring under15_share, replace
 rename (code under15_share) (iso3 pub_u15)
 merge 1:1 iso3 using `y2025', keep(master match) keepusing(u15)
@@ -250,5 +277,8 @@ local ok = (r(N) == 0)
 check `ok' "Published under-15 shares match fresh data within rounding"
 list iso3 pub_u15 u15, noobs clean
 
+foreach fn in countries_latest.csv trend_all.csv under15.csv {
+    capture erase "pub_`fn'"
+}
 display as text _n "Done. A FAIL after a World Bank revision is expected until the monthly refresh is merged."
 log close
