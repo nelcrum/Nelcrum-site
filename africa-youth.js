@@ -309,6 +309,14 @@
         [num(c.vulnerable_employment) == null ? '' : f1(+c.vulnerable_employment) + '%', 'num']].forEach(function (cell) {
         var td = document.createElement('td'); td.textContent = cell[0]; if (cell[1]) td.className = cell[1]; tr.appendChild(td);
       });
+      var src = document.createElement('td');
+      (p.source || '').split(/\s+/).filter(function (u) { return /^https:\/\//.test(u); }).forEach(function (u, i) {
+        var a = document.createElement('a'); a.href = u; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = u.replace(/^https:\/\/(www\.)?/, '').split('/')[0];
+        if (i) src.appendChild(document.createElement('br'));
+        src.appendChild(a);
+      });
+      tr.appendChild(src);
       tb.appendChild(tr);
     });
   }
